@@ -1,0 +1,24 @@
+dndwright
+Copyright (c) 2026 Anthony Sligar
+Licensed under the MIT License (see LICENSE).
+
+------------------------------------------------------------------------------
+Game-rules content
+------------------------------------------------------------------------------
+
+dndwright's rules tables (hit dice, spellcasting progression / spell slots,
+armor base AC, save proficiencies, class spellcasting abilities, etc.) encode
+game *mechanics* — facts about how D&D 5e (2024) characters are computed. Where
+those facts come from published game content, they derive from the:
+
+    Dungeons & Dragons System Reference Document 5.2 (SRD 5.2)
+    © Wizards of the Coast LLC, licensed under
+    Creative Commons Attribution 4.0 International (CC-BY-4.0).
+    https://creativecommons.org/licenses/by/4.0/
+
+This project is not affiliated with, endorsed, or sponsored by Wizards of the
+Coast. It contains no content from the Player's Handbook, Dungeon Master's
+Guide, Monster Manual, or any other non-SRD source.
+
+"Dungeons & Dragons" and "D&D" are trademarks of Wizards of the Coast; they are
+used here only nominatively to describe the rules system this engine computes.
