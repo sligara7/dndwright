@@ -1,0 +1,111 @@
+{
+  "metadata": {
+    "source": "dndwright original homebrew",
+    "license": "Original content — not derived from any copyrighted RPG product.",
+    "note": "Sample starter content; generate more with dndwright.content.generate."
+  },
+  "species": [
+    {
+      "name": "Kryth-Vaal",
+      "mechanics": {
+        "size": "Medium",
+        "speed": 30,
+        "ability_bonuses": "+2 Strength, +1 Constitution",
+        "traits": [
+          "Crystalline carapace grants natural armor",
+          "Resonant hum creates minor sonic pulses",
+          "Photosynthetic skin heals in sunlight"
+        ]
+      },
+      "narrative": {
+        "description": "Living statues composed of sentient quartz and volcanic glass. They process solar energy into kinetic force.",
+        "flavor": "Born from the heat of the mantle, tempered by the light of the stars."
+      }
+    },
+    {
+      "name": "Orynthian",
+      "mechanics": {
+        "size": "Small",
+        "speed": 30,
+        "ability_bonuses": "+2 Dexterity, +1 Intelligence",
+        "traits": [
+          "Gliding membranes under outstretched arms",
+          "Multi-faceted eyes grant darkvision",
+          "Prehensile quill-tipped tail"
+        ]
+      },
+      "narrative": {
+        "description": "Avian-insectoid hybrids with slender frames and iridescent, hive-integrated consciousness. They excel at high-altitude navigation.",
+        "flavor": "The wind is not merely a path, but the language they speak."
+      }
+    },
+    {
+      "name": "Mire-Strider",
+      "mechanics": {
+        "size": "Medium",
+        "speed": 30,
+        "ability_bonuses": "flexible +2/+1",
+        "traits": [
+          "Amphibious dual-lung system",
+          "Mud-camo grants stealth in foliage",
+          "Enzymatic touch dissolves organic bonds"
+        ]
+      },
+      "narrative": {
+        "description": "Slime-skinned beings with symbiotic fungal colonies living within their porous outer layers. They act as the immune system of the wetlands.",
+        "flavor": "Where the water meets the rot, the Strider finds home."
+      }
+    },
+    {
+      "name": "Nebulite",
+      "mechanics": {
+        "size": "Medium",
+        "speed": 30,
+        "ability_bonuses": "+2 Charisma, +1 Wisdom",
+        "traits": [
+          "Incorporeal shimmer avoids opportunity attacks",
+          "Gravitational tether lifts small objects",
+          "Stellar glow illuminates dark spaces"
+        ]
+      },
+      "narrative": {
+        "description": "Sentient gas clouds contained within intricate, self-forged brass shells. They are chroniclers of cosmic anomalies.",
+        "flavor": "A flicker of starlight trapped in a cage of clockwork."
+      }
+    },
+    {
+      "name": "Thrum-Kin",
+      "mechanics": {
+        "size": "Small",
+        "speed": 30,
+        "ability_bonuses": "+2 Constitution, +1 Charisma",
+        "traits": [
+          "Vibration sense detects movement",
+          "Sonic scream creates minor concussions",
+          "Dense fur absorbs elemental impact"
+        ]
+      },
+      "narrative": {
+        "description": "Subterranean mammals that communicate through rhythmic drumming against cave walls. They possess deep empathy for the tremors of the earth.",
+        "flavor": "They hear the heartbeat of the world before it even begins to pulse."
+      }
+    },
+    {
+      "name": "Xylosian",
+      "mechanics": {
+        "size": "Medium",
+        "speed": 30,
+        "ability_bonuses": "+2 Intelligence, +1 Wisdom",
+        "traits": [
+          "Root-link telepathy with other Xylosians",
+          "Hardwood skin hardens when stationary",
+          "Chlorophyll stores allow for brief starvation"
+        ]
+      },
+      "narrative": {
+        "description": "Bipedal plant-folk whose blood is essentially concentrated sap. They spend decades in deep meditation to gain ancestral knowledge.",
+        "flavor": "Growth is slow, but the memory of the forest is eternal."
+      }
+    }
+  ]
+}

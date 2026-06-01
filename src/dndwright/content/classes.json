@@ -1,0 +1,147 @@
+{
+  "metadata": {
+    "source": "dndwright original homebrew",
+    "license": "Original content — not derived from any copyrighted RPG product.",
+    "note": "Sample starter content; generate more with dndwright.content.generate."
+  },
+  "classes": [
+    {
+      "name": "Echo-Binder",
+      "mechanics": {
+        "hit_die": "d8",
+        "primary_ability": "CHA",
+        "saving_throws": [
+          "CHA",
+          "INT"
+        ],
+        "spellcasting_type": "full",
+        "key_features": [
+          "Resonant Tether",
+          "Harmonic Mimicry",
+          "Sonic Feedback",
+          "Shatter-Point Focus"
+        ]
+      },
+      "narrative": {
+        "description": "Echo-Binders capture the lingering vibrations of historical events and reality itself to weave them into offensive spells. They manipulate the soundscapes of combat to disrupt enemies and amplify their own presence.",
+        "role": "Controller/Support",
+        "flavor": "Every silence has a story, and I am the one who makes it scream."
+      }
+    },
+    {
+      "name": "Kinetics-Smith",
+      "mechanics": {
+        "hit_die": "d10",
+        "primary_ability": "STR",
+        "saving_throws": [
+          "STR",
+          "CON"
+        ],
+        "spellcasting_type": "none",
+        "key_features": [
+          "Momentum Storage",
+          "Inertia Plating",
+          "Impact Discharge",
+          "Velocity Strike"
+        ]
+      },
+      "narrative": {
+        "description": "These warriors wear heavy, specialized armor designed to absorb and store the kinetic energy of incoming blows. They release this stored force in devastating, explosive counter-attacks that can shatter stone.",
+        "role": "Frontline Tank",
+        "flavor": "Hit me harder; you are only fueling my next strike."
+      }
+    },
+    {
+      "name": "Vellum-Weaver",
+      "mechanics": {
+        "hit_die": "d6",
+        "primary_ability": "INT",
+        "saving_throws": [
+          "INT",
+          "WIS"
+        ],
+        "spellcasting_type": "full",
+        "key_features": [
+          "Ink-Skin Calligraphy",
+          "Living Manuscript",
+          "Paper-Slide Mobility",
+          "Scripted Reality"
+        ]
+      },
+      "narrative": {
+        "description": "Vellum-Weavers treat the fabric of the world as a blank page, using enchanted inks to inscribe reality-altering runes directly onto the air or their own skin. They command shifting geometries and constructs birthed from written logic.",
+        "role": "Utility/Blaster",
+        "flavor": "History is not written by the victors, it is written by those who know how to edit."
+      }
+    },
+    {
+      "name": "Soul-Sifter",
+      "mechanics": {
+        "hit_die": "d8",
+        "primary_ability": "WIS",
+        "saving_throws": [
+          "WIS",
+          "CHA"
+        ],
+        "spellcasting_type": "half",
+        "key_features": [
+          "Ethereal Sieve",
+          "Spirit-Dust Extraction",
+          "Vestige Manifestation",
+          "Ancestral Tether"
+        ]
+      },
+      "narrative": {
+        "description": "Soul-Sifters act as conduits for the residual spiritual energy left behind by the departed. By filtering this energy through a spectral tool, they can briefly manifest the skills or memories of those long gone.",
+        "role": "Utility/Support",
+        "flavor": "The dead have so much to say if you simply know how to filter the noise."
+      }
+    },
+    {
+      "name": "Cinder-Gardener",
+      "mechanics": {
+        "hit_die": "d10",
+        "primary_ability": "CON",
+        "saving_throws": [
+          "CON",
+          "DEX"
+        ],
+        "spellcasting_type": "none",
+        "key_features": [
+          "Ash-Bloom Cultivation",
+          "Emberskin Growth",
+          "Root-Fire Entanglement",
+          "Coal-Heart Resilience"
+        ]
+      },
+      "narrative": {
+        "description": "These survivalists cultivate symbiotic relationships with magical, fire-consuming flora that thrives in arid or destroyed landscapes. They heal themselves and trap foes using blackened thorns and smoldering pollen.",
+        "role": "Defender/Controller",
+        "flavor": "From the ashes of the world, I grow the beauty that will consume you."
+      }
+    },
+    {
+      "name": "Void-Strider",
+      "mechanics": {
+        "hit_die": "d8",
+        "primary_ability": "DEX",
+        "saving_throws": [
+          "DEX",
+          "CHA"
+        ],
+        "spellcasting_type": "pact",
+        "key_features": [
+          "Phase-Shift Step",
+          "Vacuum Edge",
+          "Null-Space Pocket",
+          "Shadow-Stutter"
+        ]
+      },
+      "narrative": {
+        "description": "Void-Striders navigate the thin, freezing gaps between dimensions, using these shortcuts to teleport and reposition instantly. They wield weapons forged from the absolute cold and silence of the void.",
+        "role": "Striker/Skirmisher",
+        "flavor": "I am not moving; I am simply deciding where the world should keep me."
+      }
+    }
+  ]
+}

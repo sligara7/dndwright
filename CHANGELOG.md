@@ -10,6 +10,16 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+## [0.3.0] — 2026-06-01
+
+### Added
+- **Bundled starter content** — `load_content(category)` + `categories()`: original
+  homebrew classes/species/creatures, plus 236 SRD 5.2 (CC-BY) magic items.
+- **LLM-agnostic content generator** — `generate_library(llm, ...)` (and
+  `generate_classes`/`species`/`creatures`): you pass a `complete_json(prompt, system)
+  -> dict` callable wrapping your own LLM; prompts produce *original homebrew* (no
+  official content), matching the bundled schema and component ontology.
+
 ## [0.2.0] — 2026-06-01
 
 ### Added

@@ -1,0 +1,334 @@
+{
+  "metadata": {
+    "source": "dndwright original homebrew",
+    "license": "Original content — not derived from any copyrighted RPG product.",
+    "note": "Sample starter content; generate more with dndwright.content.generate."
+  },
+  "creatures": [
+    {
+      "name": "Gliss-Tick",
+      "size": "Tiny",
+      "creature_type": "beast",
+      "alignment": "unaligned",
+      "cr": "1/8",
+      "hp": 4,
+      "ac": 13,
+      "speed": "10 ft., climb 20 ft.",
+      "stat_block": {
+        "abilities": {
+          "str": 2,
+          "dex": 17,
+          "con": 10,
+          "int": 2,
+          "wis": 12,
+          "cha": 4
+        },
+        "actions": [
+          "Bite: +5 to hit, 1 piercing damage",
+          "Adhesive Secretion: Target must succeed on a DC 10 Strength save or have speed reduced by 10 feet"
+        ],
+        "traits": [
+          "Spider Climb: The creature can climb difficult surfaces"
+        ]
+      }
+    },
+    {
+      "name": "Vellocite Swarmer",
+      "size": "Small",
+      "creature_type": "monstrosity",
+      "alignment": "neutral evil",
+      "cr": "1/2",
+      "hp": 22,
+      "ac": 14,
+      "speed": "30 ft.",
+      "stat_block": {
+        "abilities": {
+          "str": 10,
+          "dex": 16,
+          "con": 12,
+          "int": 6,
+          "wis": 11,
+          "cha": 8
+        },
+        "actions": [
+          "Razor Claw: +5 to hit, 6 slashing damage",
+          "Pack Tactics: Advantage on attack rolls if an ally is within 5 feet"
+        ],
+        "traits": [
+          "Frenzy Reflexes: Can take the Disengage action as a bonus action"
+        ]
+      }
+    },
+    {
+      "name": "Amber-Wisp",
+      "size": "Medium",
+      "creature_type": "elemental",
+      "alignment": "neutral",
+      "cr": "1",
+      "hp": 30,
+      "ac": 15,
+      "speed": "0 ft., fly 40 ft. (hover)",
+      "stat_block": {
+        "abilities": {
+          "str": 6,
+          "dex": 18,
+          "con": 12,
+          "int": 10,
+          "wis": 14,
+          "cha": 12
+        },
+        "actions": [
+          "Sear: +6 to hit, 9 fire damage",
+          "Flashblind: Creatures within 10 feet must succeed on a DC 12 Constitution save or be blinded until the end of their next turn"
+        ],
+        "traits": [
+          "Illumination: Sheds bright light in a 20-foot radius"
+        ]
+      }
+    },
+    {
+      "name": "Thrum-Carapace",
+      "size": "Large",
+      "creature_type": "construct",
+      "alignment": "lawful neutral",
+      "cr": "3",
+      "hp": 65,
+      "ac": 17,
+      "speed": "20 ft.",
+      "stat_block": {
+        "abilities": {
+          "str": 18,
+          "dex": 8,
+          "con": 16,
+          "int": 5,
+          "wis": 10,
+          "cha": 6
+        },
+        "actions": [
+          "Slam: +6 to hit, 13 bludgeoning damage",
+          "Resonating Pulse: Creatures within 15 feet must succeed on a DC 13 Constitution save or take 7 thunder damage"
+        ],
+        "traits": [
+          "Immutable Form: Immune to any spell or effect that would alter its form"
+        ]
+      }
+    },
+    {
+      "name": "Mycelian Weaver",
+      "size": "Large",
+      "creature_type": "plant",
+      "alignment": "chaotic neutral",
+      "cr": "5",
+      "hp": 90,
+      "ac": 14,
+      "speed": "30 ft.",
+      "stat_block": {
+        "abilities": {
+          "str": 16,
+          "dex": 14,
+          "con": 18,
+          "int": 12,
+          "wis": 15,
+          "cha": 10
+        },
+        "actions": [
+          "Spore Lash: +6 to hit, 14 slashing damage plus 7 poison damage",
+          "Entangling Growth: Targets within 20 feet must succeed on a DC 14 Strength save or be restrained"
+        ],
+        "traits": [
+          "Regeneration: Regains 5 hit points at the start of its turn if it is in contact with soil"
+        ]
+      }
+    },
+    {
+      "name": "Void-Stalker Maw",
+      "size": "Huge",
+      "creature_type": "aberration",
+      "alignment": "chaotic evil",
+      "cr": "8",
+      "hp": 125,
+      "ac": 16,
+      "speed": "40 ft.",
+      "stat_block": {
+        "abilities": {
+          "str": 20,
+          "dex": 12,
+          "con": 18,
+          "int": 8,
+          "wis": 14,
+          "cha": 16
+        },
+        "actions": [
+          "Bite: +8 to hit, 18 piercing damage",
+          "Gravity Well: Targeted creature must succeed on a DC 15 Strength save or be pulled 30 feet toward the Maw"
+        ],
+        "traits": [
+          "Magic Resistance: Advantage on saving throws against spells and other magical effects"
+        ]
+      }
+    },
+    {
+      "name": "Kril-Sliver",
+      "size": "Tiny",
+      "creature_type": "monstrosity",
+      "alignment": "unaligned",
+      "cr": "1/8",
+      "hp": 7,
+      "ac": 14,
+      "speed": "20 ft., climb 20 ft.",
+      "stat_block": {
+        "abilities": {
+          "str": 4,
+          "dex": 18,
+          "con": 10,
+          "int": 3,
+          "wis": 12,
+          "cha": 6
+        },
+        "actions": [
+          "Bite: +6 to hit, reach 5 ft., 1 piercing damage.",
+          "Phase Shift: The creature turns invisible until the end of its next turn."
+        ],
+        "traits": [
+          "Evasion: Takes no damage on successful Dexterity saves."
+        ]
+      }
+    },
+    {
+      "name": "Vex-Bloom",
+      "size": "Small",
+      "creature_type": "plant",
+      "alignment": "neutral",
+      "cr": "1/2",
+      "hp": 22,
+      "ac": 12,
+      "speed": "5 ft.",
+      "stat_block": {
+        "abilities": {
+          "str": 10,
+          "dex": 14,
+          "con": 14,
+          "int": 6,
+          "wis": 15,
+          "cha": 10
+        },
+        "actions": [
+          "Pollen Burst: Each creature within 10 ft. must succeed on a DC 12 Constitution saving throw or be poisoned for 1 minute.",
+          "Root Lash: +4 to hit, reach 10 ft., 5 bludgeoning damage."
+        ],
+        "traits": [
+          "False Appearance: While motionless, it looks like a normal flowering shrub."
+        ]
+      }
+    },
+    {
+      "name": "Cinder-Husk",
+      "size": "Medium",
+      "creature_type": "elemental",
+      "alignment": "chaotic neutral",
+      "cr": "1",
+      "hp": 30,
+      "ac": 13,
+      "speed": "30 ft.",
+      "stat_block": {
+        "abilities": {
+          "str": 14,
+          "dex": 16,
+          "con": 12,
+          "int": 8,
+          "wis": 10,
+          "cha": 10
+        },
+        "actions": [
+          "Searing Touch: +5 to hit, reach 5 ft., 7 fire damage.",
+          "Ignite: The Cinder-Husk targets one flammable object and sets it on fire."
+        ],
+        "traits": [
+          "Death Burst: When the husk dies, it explodes in a 5 ft. radius for 2d6 fire damage."
+        ]
+      }
+    },
+    {
+      "name": "Gloom-Strider",
+      "size": "Large",
+      "creature_type": "aberration",
+      "alignment": "neutral evil",
+      "cr": "3",
+      "hp": 45,
+      "ac": 15,
+      "speed": "40 ft.",
+      "stat_block": {
+        "abilities": {
+          "str": 16,
+          "dex": 14,
+          "con": 15,
+          "int": 10,
+          "wis": 12,
+          "cha": 8
+        },
+        "actions": [
+          "Shadow Claw: +5 to hit, reach 10 ft., 12 slashing damage.",
+          "Terrifying Gaze: Target must succeed on a DC 13 Wisdom saving throw or be frightened for 1 minute."
+        ],
+        "traits": [
+          "Shadow Stealth: Can hide as a bonus action in dim light or darkness."
+        ]
+      }
+    },
+    {
+      "name": "Ion-Shell Sentinel",
+      "size": "Large",
+      "creature_type": "construct",
+      "alignment": "lawful neutral",
+      "cr": "5",
+      "hp": 68,
+      "ac": 18,
+      "speed": "20 ft.",
+      "stat_block": {
+        "abilities": {
+          "str": 20,
+          "dex": 8,
+          "con": 18,
+          "int": 4,
+          "wis": 10,
+          "cha": 5
+        },
+        "actions": [
+          "Slam: +8 to hit, reach 5 ft., 18 bludgeoning damage.",
+          "Lightning Discharge: Recharge 5-6, 30 ft. line, 24 lightning damage (DC 15 Dex save for half)."
+        ],
+        "traits": [
+          "Magic Resistance: Advantage on saving throws against spells."
+        ]
+      }
+    },
+    {
+      "name": "Skyshard Weaver",
+      "size": "Huge",
+      "creature_type": "fey",
+      "alignment": "chaotic good",
+      "cr": "8",
+      "hp": 110,
+      "ac": 16,
+      "speed": "10 ft., fly 50 ft.",
+      "stat_block": {
+        "abilities": {
+          "str": 18,
+          "dex": 20,
+          "con": 16,
+          "int": 14,
+          "wis": 16,
+          "cha": 18
+        },
+        "actions": [
+          "Multiattack: Makes two crystalline claw attacks.",
+          "Crystalline Claw: +8 to hit, reach 10 ft., 16 slashing damage.",
+          "Prism Pulse: Each creature in 20 ft. radius must succeed on DC 15 Con save or be blinded until end of next turn."
+        ],
+        "traits": [
+          "Reflective Carapace: Any spell targeting the weaver has a 25% chance to reflect back at the caster."
+        ]
+      }
+    }
+  ]
+}

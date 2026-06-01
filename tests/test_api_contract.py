@@ -24,6 +24,9 @@ EXPECTED_PUBLIC = {
     "NodeType",
     "load_ontology",
     "Ontology",
+    "load_content",
+    "categories",
+    "generate_library",
 }
 
 

@@ -31,6 +31,7 @@ The rules tables (hit dice, spell slots, armour AC, save proficiencies) encode
 game mechanics derived from the **D&D SRD 5.2 (CC-BY-4.0)** — see NOTICE.
 """
 
+from .content import categories, generate_library, load_content
 from .ontology import Ontology, load_ontology
 from .rules.adapters import character_data_to_inputs, computed_values_to_sheet
 from .rules.assembler import apply_modifiers, assemble_character_inputs
@@ -39,7 +40,7 @@ from .rules.dnd_5e_2024 import DND_5E_2024_RULESET
 from .rules.evaluator import evaluate
 from .rules.schema import ComputationNode, FormulaSpec, NodeType, Ruleset
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 __all__ = [
     # high-level (dict in -> computed sheet out)
@@ -61,4 +62,8 @@ __all__ = [
     # component ontology (graph schema)
     "load_ontology",
     "Ontology",
+    # content (bundled starter + generator)
+    "load_content",
+    "categories",
+    "generate_library",
 ]
