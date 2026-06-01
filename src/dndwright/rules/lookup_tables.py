@@ -329,9 +329,9 @@ WEAPON_MASTERY_MAP: dict[str, str] = {
 # D&D 2024 weapon mastery rule text — paraphrased from PHB pp. 213-214,
 # keyed by the canonical mastery label that WEAPON_MASTERY_MAP emits.
 # Used by adapters.py::_build_equipment_info to surface the effect in
-# the character-sheet response (tech-debt #156). An unknown key MUST
+# the character-sheet response. An unknown key MUST
 # surface as `mastery_unknown: true` rather than silently empty
-# description (per feedback_no_silent_fallbacks anti-pattern #7).
+# description.
 WEAPON_MASTERY_DESCRIPTIONS: dict[str, str] = {
     "Cleave": (
         "After hitting a creature with a melee attack, you can make "

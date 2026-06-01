@@ -10,6 +10,16 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+## [0.2.0] — 2026-06-01
+
+### Added
+- **Component ontology** — `load_ontology()` → `Ontology`: a graph schema for D&D
+  building blocks (Class, Species, Spell, Equipment, MagicItem, Background, Feat,
+  Subclass, Creature) and how a Character connects to them (`HAS_*`, `INSTANCE_OF`,
+  `HAS_STAT_BLOCK`). Typed models (`NodeTypeDef`, `EdgeTypeDef`, `PropertyDef`) with
+  `edges_from`/`edges_to` helpers, parsed from the bundled `dnd.yaml`.
+- Dependency: `pyyaml` (for the ontology loader).
+
 ## [0.1.0] — 2026-06-01
 
 Initial release. The D&D 5e (2024) rules & character-computation engine, extracted

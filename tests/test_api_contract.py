@@ -22,6 +22,8 @@ EXPECTED_PUBLIC = {
     "ComputationNode",
     "FormulaSpec",
     "NodeType",
+    "load_ontology",
+    "Ontology",
 }
 
 

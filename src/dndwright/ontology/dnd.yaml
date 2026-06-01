@@ -1,0 +1,141 @@
+# dndwright — D&D 5e (2024) component ontology
+#
+# A graph schema for the building blocks of a D&D character/world: the mechanical
+# component types (Class, Species, Spell, …) and how a Character connects to them.
+# Domain-neutral — a host app supplies the `Character` (and any narrative) nodes;
+# this schema describes the D&D components those nodes attach to.
+#
+# `mechanics` / `narrative` properties hold a JSON blob (rules data / flavour),
+# so a component can carry arbitrary structured detail without schema churn.
+#
+# Component facts derive from the D&D SRD 5.2 (CC-BY-4.0); see NOTICE.
+
+schema:
+  name: dnd
+  version: 1
+
+  node_types:
+
+    Class:
+      properties:
+        name: { type: string, required: true }
+        description: { type: string }
+        hit_die: { type: string, description: "Hit die, e.g. 'd8' (string so the 'd' prefix shows)." }
+        primary_ability: { type: string }
+        mechanics: { type: string, description: "JSON: progression, proficiencies, spellcasting, features." }
+        narrative: { type: string, description: "JSON: concept, role, flavour." }
+
+    Subclass:
+      properties:
+        name: { type: string, required: true }
+        class_name: { type: string, description: "Name of the parent Class." }
+        description: { type: string }
+        mechanics: { type: string }
+        narrative: { type: string }
+
+    Species:
+      properties:
+        name: { type: string, required: true }
+        description: { type: string }
+        size: { type: string }
+        speed: { type: int }
+        mechanics: { type: string, description: "JSON: traits, ability bonuses." }
+        narrative: { type: string }
+
+    Background:
+      properties:
+        name: { type: string, required: true }
+        description: { type: string }
+        mechanics: { type: string }
+        narrative: { type: string }
+
+    Feat:
+      properties:
+        name: { type: string, required: true }
+        description: { type: string }
+        prerequisite: { type: string }
+        mechanics: { type: string }
+
+    Spell:
+      properties:
+        name: { type: string, required: true }
+        level: { type: int }
+        school: { type: string }
+        description: { type: string }
+        mechanics: { type: string }
+        narrative: { type: string }
+
+    Equipment:
+      properties:
+        name: { type: string, required: true }
+        equipment_type: { type: string, description: "weapon | armor | gear | tool | …" }
+        rarity: { type: string }
+        description: { type: string }
+        mechanics: { type: string, description: "JSON: damage, properties, cost, weight." }
+        narrative: { type: string }
+
+    MagicItem:
+      properties:
+        name: { type: string, required: true }
+        category: { type: string, indexed: true, description: "Armor | Potion | Ring | Rod | Scroll | Staff | Wand | Weapon | Wondrous Item." }
+        rarity: { type: string, indexed: true, description: "common | uncommon | rare | very_rare | legendary | artifact." }
+        attunement_required: { type: bool, indexed: true }
+        type_line: { type: string, description: "Display type line, e.g. 'Wondrous Item, Rare (Requires Attunement)'." }
+        description: { type: string }
+        # True for reusable library templates; instances copy from them (see INSTANCE_OF).
+        is_library: { type: bool, indexed: true }
+
+    Creature:
+      properties:
+        name: { type: string, required: true }
+        creature_type: { type: string, description: "aberration | beast | dragon | fiend | undead | …" }
+        size: { type: string }
+        alignment: { type: string }
+        cr: { type: string, description: "Challenge rating as a string, e.g. '1/4', '8'." }
+        challenge_rating: { type: float, description: "Numeric CR for sorting/budgeting (1/4 -> 0.25)." }
+        ac: { type: int }
+        hp_max: { type: int }
+        speed_walk: { type: int }
+        # Full stat block as a JSON string (abilities, actions, traits, …).
+        stat_block: { type: string }
+        description: { type: string }
+        is_library: { type: bool, indexed: true }
+      embedding_field: description
+
+  edge_types:
+
+    # === A Character is built from components ===
+    HAS_CLASS:      { from: Character, to: Class }
+    HAS_SUBCLASS:   { from: Character, to: Subclass }
+    HAS_SPECIES:    { from: Character, to: Species }
+    HAS_BACKGROUND: { from: Character, to: Background }
+    HAS_FEAT:       { from: Character, to: Feat }
+    HAS_SPELL:      { from: Character, to: Spell }
+    HAS_EQUIPMENT:  { from: Character, to: Equipment }
+
+    SUBCLASS_OF:
+      from: [Subclass]
+      to: [Class]
+      description: "A Subclass specialises a Class."
+
+    # === Mechanical form of an entity ===
+    HAS_STAT_BLOCK:
+      from: [Character]
+      to: [MagicItem, Equipment, Creature]
+      properties:
+        is_overridden: { type: bool, description: "Instance values diverge from its INSTANCE_OF template." }
+      description: >
+        Bridge from an identity-bearing entity to its D&D mechanical form
+        (e.g. a named NPC -> a Creature stat block; a signature weapon -> a
+        MagicItem/Equipment). A host app may extend `from` with its own
+        narrative node types.
+
+    # === Library template / instance ===
+    INSTANCE_OF:
+      from: [MagicItem, Equipment, Creature]
+      to: [MagicItem, Equipment, Creature]
+      description: >
+        Links a campaign-scoped instance to a reusable library template
+        (target is_library=true, source is_library=false), same type only.
+        Instances copy template properties at creation; this edge is for
+        traceability / 'modified-from-template' diffing, not runtime fallback.

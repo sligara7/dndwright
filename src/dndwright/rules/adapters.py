@@ -579,7 +579,7 @@ def _build_equipment_info(
         if not weapon_mastery:
             weapon_mastery = WEAPON_MASTERY_MAP.get(weapon_name.lower())
 
-        # tech-debt #156: rule-text join for the equipped weapon's
+        # rule-text join for the equipped weapon's
         # mastery. `mastery_description` is null for weapons with no
         # mastery (simple 2024 weapons) AND for weapons with a mastery
         # label that isn't in the descriptions map (typos / unknown).
