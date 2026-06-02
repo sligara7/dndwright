@@ -11,6 +11,10 @@ breaking changes; these will always be noted here.
 ## [Unreleased]
 
 ### Added
+- **Initiative** (`dndwright.combat.initiative`) — pure ordering + turn tracking:
+  `roll_initiative` (1d20 + modifier), `order_initiative` (total desc, DEX-modifier
+  tie-break, stable), and `advance_turn` / `previous_turn` (skip inactive, wrap →
+  round change). Frozen `InitiativeEntry` / `InitiativeRoll` / `TurnAdvance` value types.
 - **Combat rules** (`dndwright.combat`) — pure, identity-free 5e combat over a frozen
   `CombatantState` value object (no IDs, no persistence). Operations are
   `(state, input) -> (new_state, explanation)`: `apply_damage` (temp-HP absorption,

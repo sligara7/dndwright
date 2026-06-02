@@ -13,6 +13,7 @@ Identity-free, persistence-free value functions: state is a frozen
 Depends on :mod:`dndwright.dice` (``roll_death_save`` takes a ``DiceEngine``).
 """
 
+from . import initiative
 from .combat import (
     DEATH_SAVE_DC,
     DEATH_SAVES_TO_DIE,
@@ -48,4 +49,6 @@ __all__ = [
     "DEATH_SAVE_DC",
     "DEATH_SAVES_TO_STABILIZE",
     "DEATH_SAVES_TO_DIE",
+    # subpackage: initiative ordering + turn advancement
+    "initiative",
 ]

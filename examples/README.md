@@ -16,5 +16,6 @@ python examples/quickstart.py
 | [`export_graph.py`](export_graph.py) | Render the computation DAG as Mermaid / Graphviz DOT. |
 | [`dice.py`](dice.py) | Roll 5e dice (expressions, advantage, attacks/saves, crit damage, stat arrays). |
 | [`combat.py`](combat.py) | Resolve a combat round with pure rules: damage, temp HP, death saves, healing. |
+| [`initiative.py`](initiative.py) | Roll initiative, order combatants (DEX tie-break), walk the turn tracker. |
 
 See also the `dndwright` CLI (`dndwright eval`, `graph`, `content`, `validate`).
