@@ -83,6 +83,41 @@ Assume the work to release is already committed/merged on `main` and accumulated
    pip install -U dndwright          # eventually resolves to X.Y.Z
    ```
 
+## The README version badge lags — that's expected, not a bug
+
+After a release you'll often see the **PyPI version badge in the README still showing an
+older version** (e.g. the project page header says `dndwright 0.5.0` but the
+shields.io badge says `v0.3.0`). This is **CDN caching of the badge image**, not a broken
+release:
+
+- The badge is a live image from `img.shields.io/pypi/v/dndwright.svg`, which shields.io
+  (and GitHub's camo image proxy) cache for a while. It trails the real version by minutes
+  to hours, then catches up on its own. **You can't reliably force it; just wait.**
+- The **source of truth** is the PyPI project page header (`dndwright X.Y.Z`) and the
+  JSON API (`pypi.org/pypi/dndwright/json` → `info.version`) — both update immediately.
+  `pip install -U dndwright` always resolves to the real latest regardless of the badge.
+- So: confirm a release with step 8 (the versioned JSON), **not** the README badge. The
+  badge catching up is cosmetic and needs no action.
+
+To sanity-check what the badge currently renders (vs. the real version):
+```bash
+curl -s https://img.shields.io/pypi/v/dndwright.svg | grep -o '<title>[^<]*</title>'   # cached badge text
+curl -s https://pypi.org/pypi/dndwright/json | python3 -c "import sys,json;print(json.load(sys.stdin)['info']['version'])"  # real
+```
+
+## The PyPI page README is frozen per-version
+
+PyPI renders the **README that was packaged with the latest *released* version** — it does
+**not** re-read `README.md` from `main`. So editing the README, adding images to `assets/`,
+or fixing typos does **not** change the PyPI project page until you **publish a new version**
+(there's no way to refresh the description for an already-released version; you can't re-upload
+the same number). Images are referenced by absolute `raw.githubusercontent.com/...@main` URLs,
+so once pushed they render on GitHub immediately and on PyPI from the next release onward.
+
+Practical rule: **if a change is meant to improve the PyPI page (README copy, screenshots,
+diagrams), it only goes live with the next release.** A docs-only patch bump (e.g. `X.Y.(Z+1)`)
+is a fine way to push README/graphics to PyPI without code changes.
+
 ## If something goes wrong
 
 - **Workflow fails before upload** (build/twine error): fix on `main`, delete the Release + tag (`gh release delete vX.Y.Z --cleanup-tag`), and redo from step 5. Nothing reached PyPI.
@@ -96,4 +131,4 @@ Assume the work to release is already committed/merged on `main` and accumulated
 - [ ] `pip install -e .` then `pytest` / `ruff` / `build` / `twine check` all pass
 - [ ] commit `Release X.Y.Z`, tag `vX.Y.Z`, both pushed
 - [ ] GitHub Release published → publish workflow green
-- [ ] PyPI shows `X.Y.Z` (wheel + sdist)
+- [ ] PyPI versioned JSON shows `X.Y.Z` (wheel + sdist) — the README badge lags; don't trust it

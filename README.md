@@ -14,7 +14,7 @@
 </p>
 
 <p align="center">
-  <img alt="dndwright computation graph: ability scores, level, class and equipment flow through ability modifiers and proficiency bonus to saves, skills, spell DC/attack, spell slots, HP, AC and initiative" width="760" src="https://raw.githubusercontent.com/sligara7/dndwright/main/assets/computation-graph.svg">
+  <img alt="dndwright is a complete pure-Python D&D 5e toolkit: a rules engine (character sheet as a computation DAG), a dice engine, pure combat rules (HP, death saves, initiative, conditions), and bundled SRD content" width="820" src="https://raw.githubusercontent.com/sligara7/dndwright/main/assets/overview.svg">
 </p>
 
 A character sheet is modelled as a **directed acyclic computation graph** — nodes are values,
@@ -75,6 +75,10 @@ dndwright validate ruleset.json         # check a ruleset (built-in if omitted)
 
 ## Rolling dice
 
+<p align="center">
+  <img alt="dndwright dice notation: 1d20+5, 4d6kh3, 2d6+1d8+3, advantage, reroll, exploding dice, and crit doubling — rolled into a typed frozen ExpressionResult" width="760" src="https://raw.githubusercontent.com/sligara7/dndwright/main/assets/dice.svg">
+</p>
+
 A self-contained, typed dice engine (`dndwright.dice`) — deterministic by default:
 
 ```python
@@ -92,6 +96,10 @@ DiceEngine(rng=secrets.SystemRandom())
 ```
 
 ## Combat rules
+
+<p align="center">
+  <img alt="dndwright combat as pure state transitions: a CombatantState moves between Healthy, Dying (0 HP, making death saves), Stable, and Dead, via apply_damage, roll_death_save, apply_healing and stabilize" width="760" src="https://raw.githubusercontent.com/sligara7/dndwright/main/assets/combat-flow.svg">
+</p>
 
 Pure, persistence-free 5e combat (`dndwright.combat`) — state is a frozen value object,
 every op is `(state, input) → (new_state, explanation)`:
@@ -115,6 +123,10 @@ Derived character values form a dependency DAG: ability scores → modifiers →
 save DCs / spell slots / AC / HP. dndwright represents that DAG explicitly and stores the
 formulas as **data** (`FormulaSpec`: an op + args), so the rules are inspectable, testable,
 and serialisable — not buried in imperative code. `DND_5E_2024_RULESET` is a 135-node graph.
+
+<p align="center">
+  <img alt="The dndwright computation graph: ability scores, level, class and equipment flow through ability modifiers and proficiency bonus to saves, skills, spell DC/attack, spell slots, HP, AC and initiative" width="760" src="https://raw.githubusercontent.com/sligara7/dndwright/main/assets/computation-graph.svg">
+</p>
 
 ## What's inside
 

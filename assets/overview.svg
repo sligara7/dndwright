@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" font-family="ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <style>
+      .card  { fill:#1e293b; stroke-width:1.5; rx:12; }
+      .ttl   { font-size:16px; font-weight:700; }
+      .desc  { fill:#cbd5e1; font-size:11.5px; }
+      .code  { fill:#7dd3fc; font-size:11px; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .codebg{ fill:#0b1220; rx:7; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="960" height="440" rx="16" fill="url(#bg)"/>
+
+  <text x="40" y="52" fill="#f8fafc" font-size="30" font-weight="700">dndwright</text>
+  <text x="40" y="82" fill="#94a3b8" font-size="15.5">A complete, pure-Python D&amp;D 5e (2024) toolkit — rules, dice &amp; combat, all as data.</text>
+
+  <!-- Card 1 — Rules engine (amber) -->
+  <g>
+    <rect class="card" x="40" y="108" width="205" height="284" stroke="#f59e0b"/>
+    <circle cx="60" cy="134" r="5" fill="#f59e0b"/>
+    <text class="ttl" x="74" y="139" fill="#f59e0b">Rules engine</text>
+    <text class="desc" x="60" y="166">A 135-node computation DAG.</text>
+    <text class="desc" x="60" y="182">Formulas are data, not code.</text>
+    <rect class="codebg" x="58" y="200" width="169" height="170"/>
+    <text class="code" x="70" y="226">evaluate_character(data)</text>
+    <text class="code" x="70" y="250">compute_key_stats(data)</text>
+    <text class="code" x="70" y="274">validate_ruleset(rs)</text>
+    <text class="code" x="70" y="298">to_mermaid(rs)</text>
+    <text class="code" x="70" y="322">register_operation(...)</text>
+    <text class="code" x="70" y="346">DND_5E_2024_RULESET</text>
+  </g>
+
+  <!-- Card 2 — Dice (teal) -->
+  <g>
+    <rect class="card" x="263" y="108" width="205" height="284" stroke="#2dd4bf"/>
+    <circle cx="283" cy="134" r="5" fill="#2dd4bf"/>
+    <text class="ttl" x="297" y="139" fill="#2dd4bf">Dice</text>
+    <text class="desc" x="283" y="166">Parse &amp; roll any 5e expression.</text>
+    <text class="desc" x="283" y="182">Seedable, typed, frozen results.</text>
+    <rect class="codebg" x="281" y="200" width="169" height="170"/>
+    <text class="code" x="293" y="226">roll("4d6kh3")</text>
+    <text class="code" x="293" y="250">roll("1d20", advantage)</text>
+    <text class="code" x="293" y="274">roll_attack(5, ac=15)</text>
+    <text class="code" x="293" y="298">roll_damage("2d8", crit)</text>
+    <text class="code" x="293" y="322">roll_stat_array()</text>
+    <text class="code" x="293" y="346">DiceEngine(seed=42)</text>
+  </g>
+
+  <!-- Card 3 — Combat (violet) -->
+  <g>
+    <rect class="card" x="486" y="108" width="205" height="284" stroke="#a78bfa"/>
+    <circle cx="506" cy="134" r="5" fill="#a78bfa"/>
+    <text class="ttl" x="520" y="139" fill="#a78bfa">Combat</text>
+    <text class="desc" x="506" y="166">Pure HP, death saves, initiative</text>
+    <text class="desc" x="506" y="182">&amp; conditions. Identity-free state.</text>
+    <rect class="codebg" x="504" y="200" width="169" height="170"/>
+    <text class="code" x="516" y="226">apply_damage(s, 12)</text>
+    <text class="code" x="516" y="250">roll_death_save(s, eng)</text>
+    <text class="code" x="516" y="274">apply_healing(s, 8)</text>
+    <text class="code" x="516" y="298">order_initiative(...)</text>
+    <text class="code" x="516" y="322">advance_turn(...)</text>
+    <text class="code" x="516" y="346">tick_conditions(...)</text>
+  </g>
+
+  <!-- Card 4 — Content (rose) -->
+  <g>
+    <rect class="card" x="709" y="108" width="211" height="284" stroke="#fb7185"/>
+    <circle cx="729" cy="134" r="5" fill="#fb7185"/>
+    <text class="ttl" x="743" y="139" fill="#fb7185">Content</text>
+    <text class="desc" x="729" y="166">Bundled SRD 5.2 (CC-BY) plus an</text>
+    <text class="desc" x="729" y="182">LLM homebrew generator.</text>
+    <rect class="codebg" x="727" y="200" width="175" height="170"/>
+    <text class="code" x="739" y="226">load_content("creatures")</text>
+    <text class="code" x="739" y="250">load_content("conditions")</text>
+    <text class="code" x="739" y="274">load_content("magic_items")</text>
+    <text class="code" x="739" y="298">load_content("classes")</text>
+    <text class="code" x="739" y="322">generate_library(llm)</text>
+    <text class="code" x="739" y="346">load_ontology()</text>
+  </g>
+
+  <text x="40" y="420" fill="#64748b" font-size="12">pure Python · pydantic + stdlib · PEP 561 typed · MIT · mechanics from the SRD 5.2 (CC-BY-4.0)</text>
+</svg>

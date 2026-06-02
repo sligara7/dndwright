@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 430" font-family="ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#64748b"/>
+    </marker>
+    <style>
+      .state { fill:#1e293b; stroke-width:1.8; rx:11; }
+      .sname { font-size:15px; font-weight:700; }
+      .ssub  { fill:#94a3b8; font-size:10.5px; }
+      .edge  { stroke:#475569; stroke-width:1.5; fill:none; }
+      .elbl  { fill:#cbd5e1; font-size:11px; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .note  { fill:#64748b; font-size:11px; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="920" height="430" rx="16" fill="url(#bg2)"/>
+
+  <text x="36" y="46" fill="#f8fafc" font-size="24" font-weight="700">Combat as pure state transitions</text>
+  <text x="36" y="70" fill="#94a3b8" font-size="14.5">CombatantState in -> (new state, explanation) out. No database, no IDs — just the 5e rules.</text>
+
+  <!-- edges (behind states) -->
+  <!-- Healthy -> Dying -->
+  <path class="edge" marker-end="url(#ar)" d="M250 150 C360 150 360 150 470 150"/>
+  <!-- Dying -> Stable -->
+  <path class="edge" marker-end="url(#ar)" d="M600 185 C600 250 730 250 730 215"/>
+  <!-- Dying -> Dead -->
+  <path class="edge" marker-end="url(#ar)" d="M600 185 C600 320 470 330 250 330"/>
+  <!-- Dying self-loop (death saves) -->
+  <path class="edge" marker-end="url(#ar)" d="M510 120 C500 88 600 88 590 120"/>
+  <!-- Stable -> Healthy (heal) -->
+  <path class="edge" marker-end="url(#ar)" d="M730 215 C730 110 250 110 160 122"/>
+  <!-- Dying -> Healthy (nat 20) -->
+  <path class="edge" marker-end="url(#ar)" d="M470 165 C360 200 250 185 160 160"/>
+
+  <!-- States -->
+  <g>
+    <rect class="state" x="40" y="122" width="120" height="56" stroke="#2dd4bf"/>
+    <text class="sname" x="62" y="148" fill="#2dd4bf">Healthy</text>
+    <text class="ssub" x="62" y="166">current_hp &gt; 0</text>
+  </g>
+  <g>
+    <rect class="state" x="470" y="122" width="130" height="56" stroke="#f59e0b"/>
+    <text class="sname" x="490" y="148" fill="#f59e0b">Dying</text>
+    <text class="ssub" x="490" y="166">0 HP · death saves</text>
+  </g>
+  <g>
+    <rect class="state" x="730" y="159" width="120" height="56" stroke="#34d399"/>
+    <text class="sname" x="752" y="185" fill="#34d399">Stable</text>
+    <text class="ssub" x="752" y="203">3 successes</text>
+  </g>
+  <g>
+    <rect class="state" x="130" y="304" width="120" height="56" stroke="#ef4444"/>
+    <text class="sname" x="155" y="330" fill="#ef4444">Dead</text>
+    <text class="ssub" x="152" y="348">3 failures</text>
+  </g>
+
+  <!-- edge labels -->
+  <text class="elbl" x="300" y="142">apply_damage</text>
+  <text class="elbl" x="612" y="246">3 saves</text>
+  <text class="elbl" x="350" y="322">3 fails / massive</text>
+  <text class="elbl" x="505" y="86">roll_death_save</text>
+  <text class="elbl" x="430" y="103">heal -> apply_healing</text>
+  <text class="elbl" x="250" y="183">nat 20 -> 1 HP</text>
+
+  <!-- notes -->
+  <text class="note" x="36" y="404">temp HP absorbs first · overkill >= max HP = instant death · nat 1 counts as two failures · stabilize() ends the saves</text>
+</svg>
