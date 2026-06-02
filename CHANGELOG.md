@@ -10,6 +10,13 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+### Added
+- **More public accessors for downstream consumers** (finishing the storyflow-alignment
+  surface): `describe_operations()` (operation name → docstring summary, a read-only view of
+  the registry for building an ops reference without touching the mutable `OPERATIONS` dict),
+  and the theme-scaling surface — `get_theme_scaling`, `list_predefined_themes`,
+  `PREDEFINED_THEME_SCALING`, `ThemeScalingLayer` (mechanical profiles per setting theme).
+
 ## [0.6.0] — 2026-06-02
 
 ### Added

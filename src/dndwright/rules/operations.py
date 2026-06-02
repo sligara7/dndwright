@@ -449,3 +449,15 @@ def register_operation(name: str, fn: Operation, *, overwrite: bool = False) -> 
             f"operation {name!r} already registered; pass overwrite=True to replace"
         )
     OPERATIONS[name] = fn
+
+
+def describe_operations() -> dict[str, str]:
+    """Map each operation name to the first line of its docstring.
+
+    A public, read-only view of the operation registry's metadata — for building an
+    operations reference / UI without importing the mutable ``OPERATIONS`` dict.
+    """
+    return {
+        name: (fn.__doc__ or "").strip().split("\n")[0]
+        for name, fn in sorted(OPERATIONS.items())
+    }

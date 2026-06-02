@@ -75,3 +75,26 @@ def test_compute_stat_diff_is_usable_from_top_level():
             "species_data": {"name": "Human", "speed": 30}, "level": 4}
     diff = compute_stat_diff(base, {**base, "level": 5})
     assert "proficiency_bonus" in diff  # +2 → +3 at level 5
+
+
+class TestOperationsAndThemeAccessors:
+    def test_describe_operations_returns_name_to_doc(self):
+        from dndwright import describe_operations, known_operations
+        ops = describe_operations()
+        assert set(ops) == set(known_operations())  # same names as known_operations
+        assert ops["ability_mod"].startswith("(score - 10)")  # first docstring line
+        assert all(isinstance(v, str) for v in ops.values())
+
+    def test_theme_scaling_public_surface(self):
+        from dndwright import (
+            PREDEFINED_THEME_SCALING,
+            ThemeScalingLayer,
+            get_theme_scaling,
+            list_predefined_themes,
+        )
+        themes = list_predefined_themes()
+        assert themes and all("theme" in t for t in themes)
+        name = themes[0]["theme"]
+        assert name in PREDEFINED_THEME_SCALING
+        assert isinstance(get_theme_scaling(name), ThemeScalingLayer)
+        assert get_theme_scaling("nonexistent-theme") is None

@@ -53,7 +53,13 @@ from .rules.evaluator import (
 )
 from .rules.export import to_dot, to_mermaid
 from .rules.lookup_tables import get_all_lookup_tables
-from .rules.operations import Operation, register_operation
+from .rules.operations import Operation, describe_operations, register_operation
+from .rules.theme_scaling import (
+    PREDEFINED_THEME_SCALING,
+    ThemeScalingLayer,
+    get_theme_scaling,
+    list_predefined_themes,
+)
 from .rules.schema import ComputationNode, FormulaSpec, NodeType, Ruleset
 from .rules.validation import (
     RulesetValidationError,
@@ -101,6 +107,12 @@ __all__ = [
     # extend the formula DSL with custom operations
     "register_operation",
     "Operation",
+    "describe_operations",
+    # theme scaling (mechanical profiles per setting theme)
+    "get_theme_scaling",
+    "list_predefined_themes",
+    "PREDEFINED_THEME_SCALING",
+    "ThemeScalingLayer",
     # graph export (visualise the DAG)
     "to_mermaid",
     "to_dot",
