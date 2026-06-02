@@ -10,6 +10,17 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+## [0.5.1] — 2026-06-02
+
+### Docs
+- Promotional graphics for the README / PyPI page: a toolkit **overview** hero (rules
+  engine · dice · combat · content), a **dice** DSL showcase, and a **combat** state-machine
+  diagram, alongside the existing computation-graph diagram. Docs-only release so these
+  reach the PyPI project page (which renders the README frozen per version).
+- `RELEASING.md`: documented that the shields.io version badge is CDN-cached (lags the real
+  version) and that the PyPI README is frozen per-version (README/graphics changes only go
+  live on the next release).
+
 ## [0.5.0] — 2026-06-02
 
 ### Added
@@ -148,7 +159,8 @@ from a working application.
 Pure (pydantic + stdlib); no application/framework coupling. Rules content derives
 from the SRD 5.2 (CC-BY-4.0); see NOTICE.
 
-[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.5.1...HEAD
+[0.5.1]: https://github.com/sligara7/dndwright/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/sligara7/dndwright/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/sligara7/dndwright/compare/v0.3.0...v0.4.0
 [0.1.0]: https://github.com/sligara7/dndwright/releases/tag/v0.1.0
