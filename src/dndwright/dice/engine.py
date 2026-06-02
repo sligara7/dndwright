@@ -25,12 +25,17 @@ from __future__ import annotations
 
 import random
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Protocol
+
+# Hard safety bound on reroll/explode loops so a pathological group (e.g. a die
+# whose every face is in the reroll set, or ``1d1!``) can never hang the engine.
+_MAX_DIE_ITERATIONS = 100
 
 
 # ---------------------------------------------------------------------------
-# Parsed spec + roll results (frozen, typed surface to build on)
+# Parsed spec + roll results (immutable value types — sequence fields are tuples,
+# so every result is genuinely frozen *and* hashable / usable as a dict key).
 # ---------------------------------------------------------------------------
 
 
@@ -44,7 +49,7 @@ class DiceGroup:
     keep_lowest: int | None = None
     drop_highest: int | None = None
     drop_lowest: int | None = None
-    reroll_on: list[int] = field(default_factory=list)
+    reroll_on: tuple[int, ...] = ()
     reroll_once: bool = False
     exploding: bool = False
 
@@ -69,7 +74,7 @@ class DiceGroup:
 class ParsedExpression:
     """A dice expression broken into its groups and flat modifier."""
 
-    dice_groups: list[DiceGroup]
+    dice_groups: tuple[DiceGroup, ...]
     modifier: int
     original: str
 
@@ -79,11 +84,11 @@ class RollResult:
     """The outcome of rolling one :class:`DiceGroup`."""
 
     dice_group: DiceGroup
-    all_rolls: list[int]  # every die rolled, including dropped/exploded
-    kept_rolls: list[int]  # the dice that count toward the subtotal
-    dropped_rolls: list[int]  # dice removed by keep/drop
-    rerolled_from: list[int]  # original values that were rerolled away
-    exploded_rolls: list[int]  # extra dice from exploding
+    all_rolls: tuple[int, ...]  # every die rolled, including dropped/exploded
+    kept_rolls: tuple[int, ...]  # the dice that count toward the subtotal
+    dropped_rolls: tuple[int, ...]  # dice removed by keep/drop
+    rerolled_from: tuple[int, ...]  # original values that were rerolled away
+    exploded_rolls: tuple[int, ...]  # extra dice from exploding
     subtotal: int
 
 
@@ -103,10 +108,10 @@ class ExpressionResult:
     """The full result of evaluating a dice expression (return type of :meth:`DiceEngine.roll`)."""
 
     expression: str
-    dice_results: list[RollResult]
+    dice_results: tuple[RollResult, ...]
     modifier: int
     total: int
-    individual_rolls: list[int]  # flat list of all kept rolls
+    individual_rolls: tuple[int, ...]  # flat list of all kept rolls
     is_critical: bool = False  # natural 20 on a single d20
     is_fumble: bool = False  # natural 1 on a single d20
     natural_roll: int | None = None  # the d20 face, for single d20 rolls
@@ -165,7 +170,7 @@ class AbilityScoreRoll:
     """One generated ability score and the dice behind it."""
 
     total: int
-    rolls: list[int]
+    rolls: tuple[int, ...]
 
 
 @dataclass(frozen=True)
@@ -173,8 +178,8 @@ class StatArray:
     """Six generated ability scores (sorted high→low) and their per-score detail."""
 
     method: str
-    scores: list[int]
-    roll_details: list[AbilityScoreRoll]
+    scores: tuple[int, ...]
+    roll_details: tuple[AbilityScoreRoll, ...]
     total: int
 
 
@@ -194,7 +199,7 @@ class HitDiceResult:
     hit_die: str
     con_modifier: int
     level: int
-    rolls: list[HitDieRoll]
+    rolls: tuple[HitDieRoll, ...]
     total_hp: int
 
 
@@ -252,27 +257,38 @@ class DiceEngine:
         rerolled_from: list[int] = []
         exploded_rolls: list[int] = []
 
+        # If every face of the die is in the reroll set, rerolling can never escape
+        # it — skip rerolling for this group rather than loop forever.
+        reroll_covers_all = bool(group.reroll_on) and set(range(1, group.sides + 1)).issubset(
+            group.reroll_on
+        )
+
         for _ in range(group.count):
             roll = self._roll_die(group.sides)
 
-            # Handle rerolls
-            if group.reroll_on and roll in group.reroll_on:
+            # Handle rerolls (capped; no-op when the reroll set covers every face)
+            if group.reroll_on and roll in group.reroll_on and not reroll_covers_all:
                 rerolled_from.append(roll)
                 if group.reroll_once:
                     roll = self._roll_die(group.sides)
                 else:
-                    while roll in group.reroll_on:
+                    iterations = 0
+                    while roll in group.reroll_on and iterations < _MAX_DIE_ITERATIONS:
                         rerolled_from.append(roll)
                         roll = self._roll_die(group.sides)
+                        iterations += 1
 
             all_rolls.append(roll)
 
-            # Handle exploding dice
-            if group.exploding and roll == group.sides:
-                while roll == group.sides:
+            # Handle exploding dice. A 1-sided die always shows its max, so it would
+            # explode forever — guard on sides > 1 and cap the chain either way.
+            if group.exploding and group.sides > 1 and roll == group.sides:
+                iterations = 0
+                while roll == group.sides and iterations < _MAX_DIE_ITERATIONS:
                     roll = self._roll_die(group.sides)
                     exploded_rolls.append(roll)
                     all_rolls.append(roll)
+                    iterations += 1
 
         sorted_desc = sorted(all_rolls, reverse=True)
         sorted_asc = sorted(all_rolls)
@@ -294,11 +310,11 @@ class DiceEngine:
 
         return RollResult(
             dice_group=group,
-            all_rolls=all_rolls,
-            kept_rolls=kept_rolls,
-            dropped_rolls=dropped_rolls,
-            rerolled_from=rerolled_from,
-            exploded_rolls=exploded_rolls,
+            all_rolls=tuple(all_rolls),
+            kept_rolls=tuple(kept_rolls),
+            dropped_rolls=tuple(dropped_rolls),
+            rerolled_from=tuple(rerolled_from),
+            exploded_rolls=tuple(exploded_rolls),
             subtotal=sum(kept_rolls),
         )
 
@@ -312,12 +328,14 @@ class DiceEngine:
             count = int(match.group(1)) if match.group(1) else 1
             sides = int(match.group(2))
 
-            reroll_on: list[int] = []
+            reroll_on: tuple[int, ...] = ()
             reroll_once = False
             if match.group(7):
-                reroll_on = [int(x) for x in match.group(7).split(",")]
-                # "ro" = reroll once; "r" = keep rerolling.
-                reroll_once = re.search(r"ro\d", expr) is not None
+                reroll_on = tuple(int(x) for x in match.group(7).split(","))
+                # "ro" = reroll once; "r" = keep rerolling. Detect from THIS group's
+                # matched text, not the whole expression, so a later 'ro' group can't
+                # flip an earlier 'r' group to reroll-once.
+                reroll_once = re.search(r"ro\d", match.group(0)) is not None
 
             dice_groups.append(
                 DiceGroup(
@@ -338,7 +356,9 @@ class DiceEngine:
         for match in self.MODIFIER_PATTERN.finditer(cleaned):
             modifier += int(match.group(1))
 
-        return ParsedExpression(dice_groups=dice_groups, modifier=modifier, original=expression)
+        return ParsedExpression(
+            dice_groups=tuple(dice_groups), modifier=modifier, original=expression
+        )
 
     def roll(
         self, expression: str, advantage: bool = False, disadvantage: bool = False
@@ -399,10 +419,10 @@ class DiceEngine:
 
         return ExpressionResult(
             expression=expression,
-            dice_results=dice_results,
+            dice_results=tuple(dice_results),
             modifier=parsed.modifier,
             total=total,
-            individual_rolls=all_kept_rolls,
+            individual_rolls=tuple(all_kept_rolls),
             is_critical=is_critical,
             is_fumble=is_fumble,
             natural_roll=natural_roll,
@@ -483,7 +503,10 @@ class DiceEngine:
             details.append(AbilityScoreRoll(total=result.total, rolls=result.individual_rolls))
         scores = sorted((d.total for d in details), reverse=True)
         return StatArray(
-            method=method, scores=scores, roll_details=details, total=sum(scores)
+            method=method,
+            scores=tuple(scores),
+            roll_details=tuple(details),
+            total=sum(scores),
         )
 
     def roll_hit_dice(
@@ -500,7 +523,7 @@ class DiceEngine:
             hit_die=hit_die,
             con_modifier=con_modifier,
             level=level,
-            rolls=rolls,
+            rolls=tuple(rolls),
             total_hp=sum(r.hp_gained for r in rolls),
         )
 

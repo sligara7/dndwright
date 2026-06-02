@@ -12,11 +12,13 @@ from dndwright import DiceEngine as TopLevelDiceEngine
 from dndwright.dice import (
     AttackRoll,
     DiceEngine,
+    DiceGroup,
     ExpressionResult,
     ParsedExpression,
     SaveRoll,
     StatArray,
 )
+from dndwright.dice.engine import _MAX_DIE_ITERATIONS
 
 
 class TestParsing:
@@ -148,7 +150,7 @@ class TestSpecialRolls:
         assert isinstance(r, StatArray)
         assert len(r.scores) == 6
         assert all(3 <= s <= 18 for s in r.scores)
-        assert r.scores == sorted(r.scores, reverse=True)
+        assert list(r.scores) == sorted(r.scores, reverse=True)
         assert len(r.roll_details) == 6
 
     def test_death_save(self):
@@ -204,6 +206,85 @@ class TestRngAndDeterminism:
         result = DiceEngine(seed=1).roll("1d20")
         with pytest.raises(dataclasses.FrozenInstanceError):
             result.total = 999  # type: ignore[misc]
+
+
+class TestTermination:
+    """Pathological reroll/explode groups must terminate, not hang (review #1)."""
+
+    def test_explode_on_one_sided_die_terminates(self):
+        # 1d1! would explode forever (every face is the max); guard skips exploding.
+        result = DiceEngine(seed=1).roll("1d1!")
+        assert result.total == 1
+        assert result.dice_results[0].exploded_rolls == ()
+
+    def test_reroll_covering_all_faces_terminates(self):
+        # 1d2r1,2 — every face is in the reroll set, so rerolling can never escape.
+        result = DiceEngine(seed=1).roll("1d2r1,2")
+        assert result.total in (1, 2)  # kept the original roll, did not loop
+
+    def test_runaway_explode_is_capped(self):
+        # A die that always rolls its max would explode forever without the cap.
+        class AlwaysMax(DiceEngine):
+            def _roll_die(self, sides):
+                return sides
+
+        result = AlwaysMax().roll("1d6!")
+        exploded = result.dice_results[0].exploded_rolls
+        assert len(exploded) == _MAX_DIE_ITERATIONS  # capped, terminated
+
+    def test_runaway_reroll_is_capped(self):
+        # Always rolling a 1 with reroll-on-1 (partial set) would loop forever uncapped.
+        class AlwaysOne(DiceEngine):
+            def _roll_die(self, sides):
+                return 1
+
+        result = AlwaysOne().roll("1d6r1")  # 1 in {1}, but {1} != all faces
+        assert result.total == 1  # terminated at the cap
+
+
+class TestRerollParsing:
+    """reroll-once must be detected per-group, not from the whole expression (review #2)."""
+
+    def test_r_is_keep_rerolling(self):
+        assert DiceEngine().parse_expression("2d6r1").dice_groups[0].reroll_once is False
+
+    def test_ro_is_reroll_once(self):
+        assert DiceEngine().parse_expression("2d6ro1").dice_groups[0].reroll_once is True
+
+    def test_ro_group_does_not_contaminate_an_r_group(self):
+        groups = DiceEngine().parse_expression("2d6r1+1d8ro2").dice_groups
+        assert groups[0].reroll_once is False  # the 'r1' group — was wrongly True before
+        assert groups[1].reroll_once is True  # the 'ro2' group
+
+
+class TestHashableImmutable:
+    """The result value types are genuinely immutable: tuples, hashable (review #3)."""
+
+    def test_sequence_fields_are_tuples(self):
+        result = DiceEngine(seed=1).roll("4d6kh3")
+        assert isinstance(result.dice_results, tuple)
+        assert isinstance(result.individual_rolls, tuple)
+        rr = result.dice_results[0]
+        assert isinstance(rr.all_rolls, tuple)
+        assert isinstance(rr.kept_rolls, tuple)
+        assert isinstance(rr.dice_group.reroll_on, tuple)
+
+    def test_dice_group_is_hashable_and_set_usable(self):
+        a = DiceGroup(count=1, sides=6)
+        b = DiceGroup(count=1, sides=6)
+        assert hash(a) == hash(b)
+        assert len({a, b}) == 1  # value-equal, dedups in a set
+
+    def test_results_are_hashable_and_dict_keyable(self):
+        result = DiceEngine(seed=1).roll("2d6")
+        assert isinstance(hash(result), int)
+        assert isinstance(hash(result.dice_results[0]), int)
+        {result: "ok"}  # usable as a dict key without raising
+
+    def test_reroll_on_with_values_is_hashable(self):
+        g = DiceEngine().parse_expression("2d6r1,2").dice_groups[0]
+        assert g.reroll_on == (1, 2)
+        assert isinstance(hash(g), int)
 
 
 def test_top_level_export_is_same_class():

@@ -31,4 +31,4 @@ print(f"crit 2d8   = {crit.roll.total}  (rolled as {crit.roll.dice_results[0].di
 
 # A full ability-score array
 array = eng.roll_stat_array("4d6kh3")
-print("stat array =", array.scores)
+print("stat array =", list(array.scores))

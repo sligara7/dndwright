@@ -22,6 +22,12 @@ breaking changes; these will always be noted here.
   re-exported at the top level.
 
 ### Fixed
+- **Dice engine hardening** — pathological groups can no longer hang the engine: rerolls
+  whose set covers every die face are skipped, exploding requires `sides > 1`, and both
+  loops are capped (`1d1!`, `1d2r1,2` now terminate). `reroll_once` is detected per dice
+  group instead of from the whole expression, so a later `ro` group can't flip an earlier
+  `r` group. Result value types are now genuinely immutable — sequence fields are tuples,
+  making every result hashable and usable as a set member / dict key.
 - **CLI robustness** — `dndwright eval` now reports a clean error for non-object JSON
   (was an uncaught `AttributeError`), and `dndwright validate` reports a clean error for
   valid-JSON-but-invalid rulesets (was an uncaught pydantic `ValidationError`).
