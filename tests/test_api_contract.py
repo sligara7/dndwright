@@ -42,6 +42,19 @@ class TestPublicSurface:
         assert isinstance(dndwright.__version__, str)
         assert dndwright.__version__.count(".") >= 2
 
+    def test_version_matches_package_metadata(self):
+        # __version__ must match the installed (pyproject) version, so a missed
+        # bump can't ship a mislabelled wheel. Skips when run from source.
+        import importlib.metadata as md
+
+        try:
+            installed = md.version("dndwright")
+        except md.PackageNotFoundError:
+            import pytest
+
+            pytest.skip("dndwright not installed; running from source tree")
+        assert installed == dndwright.__version__
+
 
 class TestKeySignatures:
     def test_evaluate_character_takes_a_mapping(self):
