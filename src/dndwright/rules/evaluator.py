@@ -237,3 +237,18 @@ def get_downstream_nodes(ruleset: Ruleset, node_id: str) -> list[str]:
 
     visited.discard(node_id)
     return sorted(visited)
+
+
+def get_graph_edges(ruleset: Ruleset) -> list[tuple[str, str]]:
+    """Return the dependency edges of the graph as ``(from_node, to_node)`` pairs.
+
+    Each edge points from a dependency to the node that consumes it (evaluation order),
+    sorted for deterministic output. Useful for building a graph/adjacency view without
+    re-deriving edges from ``node.inputs`` + ``formula.args`` by hand.
+    """
+    nodes = ruleset.nodes
+    edges: list[tuple[str, str]] = []
+    for nid, node in nodes.items():
+        for dep in _get_dependencies(node, nodes):
+            edges.append((dep, nid))
+    return sorted(edges)

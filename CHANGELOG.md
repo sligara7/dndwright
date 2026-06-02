@@ -10,6 +10,15 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+### Added
+- **Public graph-introspection + table accessors.** Promoted load-bearing symbols from the
+  internal `dndwright.rules.*` modules to the public top-level API so consumers stop coupling
+  to internal layout: `compute_stat_diff` (before/after sheet deltas), `get_evaluation_order`,
+  `get_node_dependencies`, `get_downstream_nodes`, the new `get_graph_edges(ruleset)` (a
+  structured `(from, to)` edge list, so you don't hand-derive edges from `node.inputs` +
+  `formula.args`), and `get_all_lookup_tables()` (the SRD reference tables — hit dice, spell
+  slots, AC, rarity, XP, weapon mastery, …). All additive.
+
 ## [0.5.1] — 2026-06-02
 
 ### Docs

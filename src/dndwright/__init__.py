@@ -39,12 +39,20 @@ from .rules.assembler import apply_modifiers, assemble_character_inputs
 from .rules.character_evaluator import (
     CharacterInputError,
     compute_key_stats,
+    compute_stat_diff,
     evaluate_character,
     validate_character_data,
 )
 from .rules.dnd_5e_2024 import DND_5E_2024_RULESET
-from .rules.evaluator import evaluate
+from .rules.evaluator import (
+    evaluate,
+    get_downstream_nodes,
+    get_evaluation_order,
+    get_graph_edges,
+    get_node_dependencies,
+)
 from .rules.export import to_dot, to_mermaid
+from .rules.lookup_tables import get_all_lookup_tables
 from .rules.operations import Operation, register_operation
 from .rules.schema import ComputationNode, FormulaSpec, NodeType, Ruleset
 from .rules.validation import (
@@ -61,6 +69,7 @@ __all__ = [
     # high-level (dict in -> computed sheet out)
     "evaluate_character",
     "compute_key_stats",
+    "compute_stat_diff",
     "validate_character_data",
     "CharacterInputError",
     # ruleset + low-level evaluation
@@ -68,6 +77,13 @@ __all__ = [
     "evaluate",
     "assemble_character_inputs",
     "apply_modifiers",
+    # graph introspection (evaluation order, dependencies, edges)
+    "get_evaluation_order",
+    "get_node_dependencies",
+    "get_downstream_nodes",
+    "get_graph_edges",
+    # SRD reference tables (hit dice, spell slots, AC, rarity, XP, …)
+    "get_all_lookup_tables",
     # neutral adapters
     "character_data_to_inputs",
     "computed_values_to_sheet",

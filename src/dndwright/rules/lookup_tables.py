@@ -492,6 +492,7 @@ def get_all_lookup_tables() -> dict:
         "spellcasting_type_by_class": SPELLCASTING_TYPE_BY_CLASS,
         "xp_thresholds": XP_THRESHOLDS,
         "rarity_unlock_requirements": RARITY_UNLOCK_REQUIREMENTS,
+        "rarity_level_requirements": RARITY_LEVEL_REQUIREMENTS,
         "weapon_mastery_map": WEAPON_MASTERY_MAP,
         "archetype_weapon_proficiencies": ARCHETYPE_WEAPON_PROFICIENCIES,
         "archetype_armor_proficiencies": ARCHETYPE_ARMOR_PROFICIENCIES,

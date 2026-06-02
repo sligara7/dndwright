@@ -21,8 +21,15 @@ Usage:
 """
 
 from .assembler import apply_modifiers, assemble_character_inputs
-from .evaluator import evaluate
+from .evaluator import (
+    evaluate,
+    get_downstream_nodes,
+    get_evaluation_order,
+    get_graph_edges,
+    get_node_dependencies,
+)
 from .export import to_dot, to_mermaid
+from .lookup_tables import get_all_lookup_tables
 from .operations import Operation, register_operation
 from .schema import ComputationNode, FormulaSpec, NodeType, Ruleset
 from .validation import (
@@ -45,6 +52,11 @@ __all__ = [
     "assemble_character_inputs",
     "assert_valid_ruleset",
     "evaluate",
+    "get_all_lookup_tables",
+    "get_downstream_nodes",
+    "get_evaluation_order",
+    "get_graph_edges",
+    "get_node_dependencies",
     "known_operations",
     "register_operation",
     "to_dot",
