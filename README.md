@@ -116,7 +116,8 @@ and serialisable — not buried in imperative code. `DND_5E_2024_RULESET` is a 1
 
 The public API is exactly `dndwright.__all__`, pinned by `tests/test_api_contract.py`.
 Versioning follows [SemVer](https://semver.org/); at `0.x` minor versions may break, with
-every change recorded in `CHANGELOG.md`.
+every change recorded in `CHANGELOG.md`. Maintainers: the release process is documented in
+[`RELEASING.md`](RELEASING.md).
 
 ## Credits & license
 
