@@ -10,6 +10,8 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+## [0.7.0] — 2026-06-02
+
 ### Added
 - **More public accessors for downstream consumers** (finishing the storyflow-alignment
   surface): `describe_operations()` (operation name → docstring summary, a read-only view of
@@ -177,7 +179,8 @@ from a working application.
 Pure (pydantic + stdlib); no application/framework coupling. Rules content derives
 from the SRD 5.2 (CC-BY-4.0); see NOTICE.
 
-[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.6.0...HEAD
+[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/sligara7/dndwright/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/sligara7/dndwright/compare/v0.5.1...v0.6.0
 [0.5.1]: https://github.com/sligara7/dndwright/compare/v0.5.0...v0.5.1
 [0.5.0]: https://github.com/sligara7/dndwright/compare/v0.4.0...v0.5.0
