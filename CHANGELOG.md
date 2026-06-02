@@ -10,6 +10,8 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+## [0.5.0] — 2026-06-02
+
 ### Added
 - **Conditions** (`dndwright.combat.conditions`) — pure rules over the bundled SRD
   catalog: `condition_effects` (effect text + mechanical flags), `implied_conditions`,
@@ -146,6 +148,7 @@ from a working application.
 Pure (pydantic + stdlib); no application/framework coupling. Rules content derives
 from the SRD 5.2 (CC-BY-4.0); see NOTICE.
 
-[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/sligara7/dndwright/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/sligara7/dndwright/compare/v0.3.0...v0.4.0
 [0.1.0]: https://github.com/sligara7/dndwright/releases/tag/v0.1.0
