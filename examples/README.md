@@ -15,5 +15,6 @@ python examples/quickstart.py
 | [`custom_operation.py`](custom_operation.py) | Extend the DSL with `register_operation` + a custom `Ruleset`. |
 | [`export_graph.py`](export_graph.py) | Render the computation DAG as Mermaid / Graphviz DOT. |
 | [`dice.py`](dice.py) | Roll 5e dice (expressions, advantage, attacks/saves, crit damage, stat arrays). |
+| [`combat.py`](combat.py) | Resolve a combat round with pure rules: damage, temp HP, death saves, healing. |
 
 See also the `dndwright` CLI (`dndwright eval`, `graph`, `content`, `validate`).

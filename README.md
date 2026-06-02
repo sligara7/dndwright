@@ -91,6 +91,24 @@ import secrets
 DiceEngine(rng=secrets.SystemRandom())
 ```
 
+## Combat rules
+
+Pure, persistence-free 5e combat (`dndwright.combat`) — state is a frozen value object,
+every op is `(state, input) → (new_state, explanation)`:
+
+```python
+from dndwright.combat import CombatantState, apply_damage, roll_death_save
+from dndwright.dice import DiceEngine
+
+s = CombatantState(current_hp=8, max_hp=20, temp_hp=3)
+s, applied = apply_damage(s, 10)            # temp HP absorbs first, overkill tracked
+s, save = roll_death_save(s, DiceEngine(seed=1))   # nat 20 → 1 HP; 3 fails → dead
+s.is_stable, s.is_dead, s.hp_percentage
+```
+
+Your app owns persistence: load a row → call these → write the new state back. The rules
+never see a database.
+
 ## Why a computation graph?
 
 Derived character values form a dependency DAG: ability scores → modifiers → proficiency →
@@ -109,6 +127,7 @@ and serialisable — not buried in imperative code. `DND_5E_2024_RULESET` is a 1
 | `validate_ruleset` / `assert_valid_ruleset` | Static integrity check for a ruleset (unknown ops, cycles, dangling refs) — catch authoring errors before evaluation. |
 | `to_mermaid` / `to_dot` | Render the computation DAG as Mermaid or Graphviz DOT — *see* the dependency graph. |
 | `dndwright.dice` | Typed dice engine: parse/roll 5e expressions, attacks, saves, damage, stat arrays. |
+| `dndwright.combat` | Pure combat rules over a frozen `CombatantState`: damage, temp HP, healing, death saves. |
 | `dndwright.rules.components` | Typed inputs (`ClassMechanics`, `SpeciesMechanics`, …). |
 | `dndwright.rules.lookup_tables` | SRD-derived rules tables (hit dice, spell slots, AC, saves). |
 

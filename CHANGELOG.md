@@ -10,6 +10,16 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+### Added
+- **Combat rules** (`dndwright.combat`) — pure, identity-free 5e combat over a frozen
+  `CombatantState` value object (no IDs, no persistence). Operations are
+  `(state, input) -> (new_state, explanation)`: `apply_damage` (temp-HP absorption,
+  overkill, massive-damage instant death), `apply_healing`, `set_temp_hp` (no-stack),
+  `roll_death_save` (takes a `DiceEngine`; nat 20 regains 1 HP, nat 1 = two failures,
+  3 successes stabilise / 3 failures kill), `stabilize`, `reset_death_saves`, plus the
+  `calculate_damage_application` helper and `DamageApplication`/`HPChange`/`DeathSaveResult`
+  result types. Extracted from a working SQL-bound service; the rules layer is pure.
+
 ## [0.4.0] — 2026-06-01
 
 ### Added
