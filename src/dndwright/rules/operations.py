@@ -13,6 +13,7 @@ Operations fall into three categories:
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from typing import Any
 
 # ---------------------------------------------------------------------------
@@ -376,7 +377,9 @@ def op_hit_dice_str(args: list[Any], _tables: dict) -> str:
 # Operation registry
 # ---------------------------------------------------------------------------
 
-OPERATIONS: dict[str, callable] = {
+Operation = Callable[[list[Any], dict], Any]
+
+OPERATIONS: dict[str, Operation] = {
     # Arithmetic
     "add": op_add,
     "sub": op_sub,
@@ -410,3 +413,39 @@ OPERATIONS: dict[str, callable] = {
     "passive_score": op_passive_score,
     "spell_mod_resolve": op_spell_mod_resolve,
 }
+
+# Names present at import time — the rules a built-in op may never be silently replaced.
+_BUILTIN_OPERATIONS = frozenset(OPERATIONS)
+
+
+def register_operation(name: str, fn: Operation, *, overwrite: bool = False) -> None:
+    """Register a custom operation for use in formulas (the DSL extension point).
+
+    ``fn`` must be a pure function ``(args: list, tables: dict) -> value`` — the same
+    shape as the built-ins. Once registered, ``name`` may be used as a ``FormulaSpec.op``
+    and is recognised everywhere the registry is consulted (``evaluate``,
+    ``validate_ruleset``, ``known_operations``). Lets custom rulesets extend the DSL
+    without forking the package.
+
+    Args:
+        name: The op name a formula will reference. Must be non-empty.
+        fn: The operation callable.
+        overwrite: Allow replacing an already-registered name. Built-in operation names
+            can never be overwritten (raises regardless of this flag).
+
+    Raises:
+        ValueError: empty name, replacing a built-in, or replacing an existing custom
+            op without ``overwrite=True``.
+        TypeError: ``fn`` is not callable.
+    """
+    if not isinstance(name, str) or not name:
+        raise ValueError("operation name must be a non-empty string")
+    if not callable(fn):
+        raise TypeError("operation must be callable")
+    if name in _BUILTIN_OPERATIONS:
+        raise ValueError(f"cannot overwrite built-in operation {name!r}")
+    if name in OPERATIONS and not overwrite:
+        raise ValueError(
+            f"operation {name!r} already registered; pass overwrite=True to replace"
+        )
+    OPERATIONS[name] = fn

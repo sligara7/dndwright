@@ -22,14 +22,32 @@ Usage:
 
 from .assembler import apply_modifiers, assemble_character_inputs
 from .evaluator import evaluate
+from .export import to_dot, to_mermaid
+from .operations import Operation, register_operation
 from .schema import ComputationNode, FormulaSpec, NodeType, Ruleset
+from .validation import (
+    RulesetValidationError,
+    ValidationIssue,
+    assert_valid_ruleset,
+    known_operations,
+    validate_ruleset,
+)
 
 __all__ = [
     "ComputationNode",
     "FormulaSpec",
     "NodeType",
+    "Operation",
     "Ruleset",
+    "RulesetValidationError",
+    "ValidationIssue",
     "apply_modifiers",
     "assemble_character_inputs",
+    "assert_valid_ruleset",
     "evaluate",
+    "known_operations",
+    "register_operation",
+    "to_dot",
+    "to_mermaid",
+    "validate_ruleset",
 ]

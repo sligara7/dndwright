@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" font-family="ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#64748b"/>
+    </marker>
+    <style>
+      .lbl    { fill:#e2e8f0; font-size:13px; }
+      .node   { stroke-width:1.5; rx:9; }
+      .input  { fill:#1e293b; stroke:#f59e0b; }
+      .derive { fill:#1e293b; stroke:#2dd4bf; }
+      .output { fill:#1e293b; stroke:#a78bfa; }
+      .layer  { fill:#94a3b8; font-size:12px; letter-spacing:.14em; text-transform:uppercase; }
+      .edge   { stroke:#475569; stroke-width:1.5; fill:none; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="900" height="470" rx="16" fill="url(#bg)"/>
+
+  <text x="36" y="46" fill="#f8fafc" font-size="26" font-weight="700">dndwright</text>
+  <text x="36" y="72" fill="#94a3b8" font-size="15">A D&amp;D 5e character sheet as a directed acyclic computation graph — formulas as data.</text>
+
+  <!-- layer captions -->
+  <text class="layer" x="120" y="118" text-anchor="middle">Inputs</text>
+  <text class="layer" x="450" y="118" text-anchor="middle">Derived</text>
+  <text class="layer" x="780" y="118" text-anchor="middle">Computed outputs</text>
+
+  <!-- edges (drawn first, behind nodes) -->
+  <!-- inputs -> derived -->
+  <path class="edge" marker-end="url(#arrow)" d="M210 165 C300 165 300 190 360 190"/>
+  <path class="edge" marker-end="url(#arrow)" d="M210 225 C300 225 300 260 360 260"/>
+  <path class="edge" marker-end="url(#arrow)" d="M210 285 C300 285 300 268 360 264"/>
+  <!-- derived -> outputs -->
+  <path class="edge" marker-end="url(#arrow)" d="M540 190 C620 190 620 165 690 165"/>
+  <path class="edge" marker-end="url(#arrow)" d="M540 190 C620 190 620 215 690 215"/>
+  <path class="edge" marker-end="url(#arrow)" d="M540 190 C620 190 620 265 690 265"/>
+  <path class="edge" marker-end="url(#arrow)" d="M540 260 C620 260 620 315 690 315"/>
+  <path class="edge" marker-end="url(#arrow)" d="M540 260 C620 260 620 165 690 165"/>
+  <!-- level/class/equipment -> outputs directly -->
+  <path class="edge" marker-end="url(#arrow)" d="M210 285 C440 360 470 365 690 365"/>
+  <path class="edge" marker-end="url(#arrow)" d="M210 345 C440 415 470 415 690 415"/>
+
+  <!-- input nodes -->
+  <g>
+    <rect rx="9" class="node input" x="40" y="148" width="170" height="34"/>
+    <text class="lbl" x="56" y="170">Ability scores</text>
+    <rect rx="9" class="node input" x="40" y="208" width="170" height="34"/>
+    <text class="lbl" x="56" y="230">Level</text>
+    <rect rx="9" class="node input" x="40" y="268" width="170" height="34"/>
+    <text class="lbl" x="56" y="290">Class</text>
+    <rect rx="9" class="node input" x="40" y="328" width="170" height="34"/>
+    <text class="lbl" x="56" y="350">Equipment</text>
+  </g>
+
+  <!-- derived nodes -->
+  <g>
+    <rect rx="9" class="node derive" x="360" y="173" width="180" height="34"/>
+    <text class="lbl" x="376" y="195">Ability modifiers</text>
+    <rect rx="9" class="node derive" x="360" y="243" width="180" height="34"/>
+    <text class="lbl" x="376" y="265">Proficiency bonus</text>
+  </g>
+
+  <!-- output nodes -->
+  <g>
+    <rect rx="9" class="node output" x="690" y="148" width="180" height="34"/>
+    <text class="lbl" x="706" y="170">Saves &amp; skills</text>
+    <rect rx="9" class="node output" x="690" y="198" width="180" height="34"/>
+    <text class="lbl" x="706" y="220">Spell DC / attack</text>
+    <rect rx="9" class="node output" x="690" y="248" width="180" height="34"/>
+    <text class="lbl" x="706" y="270">Spell slots</text>
+    <rect rx="9" class="node output" x="690" y="298" width="180" height="34"/>
+    <text class="lbl" x="706" y="320">Hit points</text>
+    <rect rx="9" class="node output" x="690" y="348" width="180" height="34"/>
+    <text class="lbl" x="706" y="370">Armor class</text>
+    <rect rx="9" class="node output" x="690" y="398" width="180" height="34"/>
+    <text class="lbl" x="706" y="420">Initiative</text>
+  </g>
+
+  <text x="36" y="454" fill="#64748b" font-size="12">135-node ruleset · pure Python (pydantic + stdlib) · inspectable, testable, serialisable</text>
+</svg>

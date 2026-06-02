@@ -21,3 +21,7 @@ htmlcov/
 .vscode/
 .idea/
 .DS_Store
+
+# Local planning / scratch notes (never committed)
+*.local.md
+*.local

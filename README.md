@@ -1,14 +1,29 @@
-# dndwright
+<h1 align="center">dndwright</h1>
 
-> ⚠️ **Early development (v0.1, alpha).** The API is still moving and may change without
-> notice between minor versions. Extracted from a working application; usable today, but
-> pin a tag/commit if you depend on it.
+<p align="center">
+  <em>A domain-neutral D&amp;D 5e (2024) rules &amp; character-sheet computation engine —
+  formulas as data, not code.</em>
+</p>
 
-**A domain-neutral D&D 5e (2024) rules & character-sheet computation engine.** A character
-sheet is modelled as a **directed acyclic computation graph** — nodes are values, edges are
-dependencies, and formulas are *data* (a JSON-serialisable DSL), not code. Pure Python
-(`pydantic` + stdlib), no application or framework coupling: map your own character data in,
-read computed stats out.
+<p align="center">
+  <a href="https://pypi.org/project/dndwright/"><img alt="PyPI" src="https://img.shields.io/pypi/v/dndwright.svg"></a>
+  <a href="https://pypi.org/project/dndwright/"><img alt="Python versions" src="https://img.shields.io/pypi/pyversions/dndwright.svg"></a>
+  <a href="https://github.com/sligara7/dndwright/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/sligara7/dndwright/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://github.com/sligara7/dndwright/blob/main/LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
+  <img alt="Typed" src="https://img.shields.io/badge/typing-PEP%20561-blue.svg">
+</p>
+
+<p align="center">
+  <img alt="dndwright computation graph: ability scores, level, class and equipment flow through ability modifiers and proficiency bonus to saves, skills, spell DC/attack, spell slots, HP, AC and initiative" width="760" src="https://raw.githubusercontent.com/sligara7/dndwright/main/assets/computation-graph.svg">
+</p>
+
+A character sheet is modelled as a **directed acyclic computation graph** — nodes are values,
+edges are dependencies, and formulas are *data* (a JSON-serialisable DSL), not code. Pure
+Python (`pydantic` + stdlib), no application or framework coupling: map your own character
+data in, read computed stats out.
+
+> ⚠️ **Early development (alpha).** The API is still moving and may change between minor
+> versions while at `0.x`. Usable today — pin a version if you depend on it.
 
 ## Install
 
@@ -47,6 +62,17 @@ inputs   = assemble_character_inputs(class_mechanics=..., ability_scores={...}, 
 computed = apply_modifiers(evaluate(DND_5E_2024_RULESET, inputs), inputs)
 ```
 
+## Command line
+
+Installing the package also installs a `dndwright` command (no Python required):
+
+```bash
+dndwright eval character.json          # character JSON → computed sheet (or '-' for stdin)
+dndwright graph --format mermaid        # export the computation DAG (mermaid|dot)
+dndwright content magic_items           # dump bundled content (omit category to list)
+dndwright validate ruleset.json         # check a ruleset (built-in if omitted)
+```
+
 ## Why a computation graph?
 
 Derived character values form a dependency DAG: ability scores → modifiers → proficiency →
@@ -62,6 +88,8 @@ and serialisable — not buried in imperative code. `DND_5E_2024_RULESET` is a 1
 | `DND_5E_2024_RULESET` | The 135-node 5e-2024 computation DAG (formulas as data). |
 | `evaluate` / `assemble_character_inputs` / `apply_modifiers` | The lower-level engine. |
 | `Ruleset` / `ComputationNode` / `FormulaSpec` / `NodeType` | The DAG schema. |
+| `validate_ruleset` / `assert_valid_ruleset` | Static integrity check for a ruleset (unknown ops, cycles, dangling refs) — catch authoring errors before evaluation. |
+| `to_mermaid` / `to_dot` | Render the computation DAG as Mermaid or Graphviz DOT — *see* the dependency graph. |
 | `dndwright.rules.components` | Typed inputs (`ClassMechanics`, `SpeciesMechanics`, …). |
 | `dndwright.rules.lookup_tables` | SRD-derived rules tables (hit dice, spell slots, AC, saves). |
 

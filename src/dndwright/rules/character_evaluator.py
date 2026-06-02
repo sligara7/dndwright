@@ -22,6 +22,69 @@ from .evaluator import evaluate
 
 logger = logging.getLogger(__name__)
 
+_ABILITIES = ("strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma")
+
+
+class CharacterInputError(ValueError):
+    """Raised by ``evaluate_character(..., strict=True)`` on malformed character data."""
+
+    def __init__(self, problems: list[str]) -> None:
+        self.problems = problems
+        joined = "\n".join(f"  - {p}" for p in problems)
+        super().__init__(f"character data has {len(problems)} problem(s):\n{joined}")
+
+
+def validate_character_data(session_data: dict) -> list[str]:
+    """Return human-readable problems with ``session_data`` (empty list = usable).
+
+    Surfaces input that would otherwise be silently coerced into a plausible-but-wrong
+    sheet: missing/out-of-range ability scores default to 10, an omitted level defaults
+    to 1, a missing class zeroes HP and spellcasting, etc. Use
+    ``evaluate_character(data, strict=True)`` to raise on these.
+    """
+    if not isinstance(session_data, dict):
+        return [f"character data must be a JSON object, got {type(session_data).__name__}"]
+
+    fields = _extract_session_fields(session_data)
+    problems: list[str] = []
+
+    scores = fields["ability_scores"]
+    if not scores:
+        problems.append("ability_scores is missing or empty")
+    elif not isinstance(scores, dict):
+        problems.append(f"ability_scores must be a mapping, got {type(scores).__name__}")
+    else:
+        for ability in _ABILITIES:
+            if ability not in scores:
+                problems.append(f"ability_scores is missing {ability!r}")
+                continue
+            value = scores[ability]
+            if isinstance(value, bool) or not isinstance(value, (int, float)):
+                problems.append(f"ability score {ability!r} must be a number, got {value!r}")
+            elif isinstance(value, float) and not value.is_integer():
+                problems.append(f"ability score {ability!r}={value} must be a whole number")
+            elif not 1 <= value <= 30:
+                problems.append(f"ability score {ability!r}={value} is out of range 1..30")
+
+    # Check the *raw* input for level presence: _extract_session_fields defaults a
+    # missing level to 1, so we can't tell "omitted" from "1" from the normalized field.
+    inner = session_data.get("data", session_data)
+    level_given = isinstance(inner, dict) and "level" in inner
+    level = fields["level"]
+    if not level_given:
+        problems.append("level is missing")
+    elif isinstance(level, bool) or not isinstance(level, int):
+        problems.append(f"level must be an integer, got {level!r}")
+    elif level < 1:
+        problems.append(f"level must be >= 1, got {level}")
+
+    class_data = fields["class_data"]
+    if not (isinstance(class_data, dict) and class_data.get("class_name")):
+        problems.append("class_data.class_name is missing")
+
+    return problems
+
+
 # Key stats to include in diffs and summaries
 KEY_STAT_NODES = {
     "hp_max": "Hit Points",
@@ -97,7 +160,7 @@ def _extract_session_fields(data: dict) -> dict:
     }
 
 
-def evaluate_character(session_data: dict) -> dict:
+def evaluate_character(session_data: dict, *, strict: bool = False) -> dict:
     """Evaluate a character from session data → full computed character sheet.
 
     This is the single entry point that replaces derive_character_sheet().
@@ -105,10 +168,21 @@ def evaluate_character(session_data: dict) -> dict:
 
     Args:
         session_data: Session data dict (full session or inner data sub-dict).
+        strict: If True, raise :class:`CharacterInputError` when the input is malformed
+            (see :func:`validate_character_data`) instead of silently coercing it into a
+            plausible-but-wrong sheet. Default False preserves the lenient behaviour.
 
     Returns:
         Complete character sheet dict matching the old derive_character_sheet() shape.
+
+    Raises:
+        CharacterInputError: when ``strict`` is True and the input has problems.
     """
+    if strict:
+        problems = validate_character_data(session_data)
+        if problems:
+            raise CharacterInputError(problems)
+
     fields = _extract_session_fields(session_data)
 
     # Convert to flat graph inputs

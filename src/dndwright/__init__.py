@@ -35,10 +35,24 @@ from .content import categories, generate_library, load_content
 from .ontology import Ontology, load_ontology
 from .rules.adapters import character_data_to_inputs, computed_values_to_sheet
 from .rules.assembler import apply_modifiers, assemble_character_inputs
-from .rules.character_evaluator import compute_key_stats, evaluate_character
+from .rules.character_evaluator import (
+    CharacterInputError,
+    compute_key_stats,
+    evaluate_character,
+    validate_character_data,
+)
 from .rules.dnd_5e_2024 import DND_5E_2024_RULESET
 from .rules.evaluator import evaluate
+from .rules.export import to_dot, to_mermaid
+from .rules.operations import Operation, register_operation
 from .rules.schema import ComputationNode, FormulaSpec, NodeType, Ruleset
+from .rules.validation import (
+    RulesetValidationError,
+    ValidationIssue,
+    assert_valid_ruleset,
+    known_operations,
+    validate_ruleset,
+)
 
 __version__ = "0.3.0"
 
@@ -46,6 +60,8 @@ __all__ = [
     # high-level (dict in -> computed sheet out)
     "evaluate_character",
     "compute_key_stats",
+    "validate_character_data",
+    "CharacterInputError",
     # ruleset + low-level evaluation
     "DND_5E_2024_RULESET",
     "evaluate",
@@ -59,6 +75,18 @@ __all__ = [
     "ComputationNode",
     "FormulaSpec",
     "NodeType",
+    # ruleset validation (catch authoring errors before evaluation)
+    "validate_ruleset",
+    "assert_valid_ruleset",
+    "ValidationIssue",
+    "RulesetValidationError",
+    "known_operations",
+    # extend the formula DSL with custom operations
+    "register_operation",
+    "Operation",
+    # graph export (visualise the DAG)
+    "to_mermaid",
+    "to_dot",
     # component ontology (graph schema)
     "load_ontology",
     "Ontology",

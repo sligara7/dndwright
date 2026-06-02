@@ -10,6 +10,7 @@ No I/O, no side effects, trivially testable.
 
 from __future__ import annotations
 
+import weakref
 from typing import Any
 
 from .operations import OPERATIONS
@@ -18,6 +19,27 @@ from .schema import ComputationNode, NodeType, Ruleset
 
 class EvaluationError(Exception):
     """Raised when the evaluator encounters an unresolvable node."""
+
+
+# Cache of computed evaluation orders, keyed by (id(ruleset), node_count).
+# The topological sort depends only on graph *structure*, which is immutable for
+# the built-in singleton and for the usual build-once-then-evaluate pattern — so
+# we compute it once per ruleset instead of on every evaluate() call. A
+# weakref.finalize callback evicts the entry when the ruleset is garbage
+# collected, preventing both memory leaks and id-reuse staleness. The node_count
+# in the key guards against in-place add/remove of nodes on a mutable ruleset.
+_ORDER_CACHE: dict[tuple[int, int], list[str]] = {}
+
+
+def _cached_eval_order(ruleset: Ruleset) -> list[str]:
+    """Return the topological evaluation order for ``ruleset``, cached per instance."""
+    key = (id(ruleset), len(ruleset.nodes))
+    order = _ORDER_CACHE.get(key)
+    if order is None:
+        order = _topological_sort(ruleset.nodes)
+        _ORDER_CACHE[key] = order
+        weakref.finalize(ruleset, _ORDER_CACHE.pop, key, None)
+    return order
 
 
 def _topological_sort(nodes: dict[str, ComputationNode]) -> list[str]:
@@ -115,8 +137,8 @@ def evaluate(
     nodes = ruleset.nodes
     tables = ruleset.lookup_tables
 
-    # Sort nodes in dependency order
-    order = _topological_sort(nodes)
+    # Sort nodes in dependency order (cached per ruleset instance)
+    order = _cached_eval_order(ruleset)
 
     computed: dict[str, Any] = {}
 
@@ -164,7 +186,7 @@ def evaluate(
 
 def get_evaluation_order(ruleset: Ruleset) -> list[str]:
     """Return the topological evaluation order for debugging/visualization."""
-    return _topological_sort(ruleset.nodes)
+    return _cached_eval_order(ruleset)
 
 
 def get_node_dependencies(ruleset: Ruleset, node_id: str) -> list[str]:

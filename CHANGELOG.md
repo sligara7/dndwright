@@ -10,6 +10,64 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+### Fixed
+- **CLI robustness** — `dndwright eval` now reports a clean error for non-object JSON
+  (was an uncaught `AttributeError`), and `dndwright validate` reports a clean error for
+  valid-JSON-but-invalid rulesets (was an uncaught pydantic `ValidationError`).
+- **Graph export escaping** — `to_mermaid` now escapes label special characters
+  (`[](){}<>"#`) and emits subgraphs as `id["title"]`, so labels and group names with
+  spaces/punctuation no longer break the diagram. `to_dot` now escapes backslashes,
+  quotes, and newlines in labels and node ids.
+- **Strict input validation** — `validate_character_data` now rejects non-integer float
+  ability scores (e.g. `15.7`; integral floats like `15.0` are fine), reports an omitted
+  `level` (previously masked by the default-to-1 normalization), and handles non-dict
+  input without crashing.
+
+### Added
+- **Property-based tests** (hypothesis, dev-only) — invariants checked over wide input
+  ranges: ability-modifier and proficiency-bonus formulas, PB in its published 2..6 range,
+  and HP monotonic in level.
+- **Examples** — runnable scripts under `examples/` (quickstart, multiclass, stat-diff,
+  custom operation, graph export), exercised in CI so they can't rot.
+- **Input validation** — `validate_character_data(data) -> list[str]` reports problems
+  (missing/out-of-range ability scores, bad level, missing class) that would otherwise be
+  silently coerced into a plausible-but-wrong sheet. `evaluate_character(data, strict=True)`
+  raises `CharacterInputError` on those; default lenient behaviour is unchanged. The CLI
+  gains `dndwright eval --strict`.
+- **Custom operations** — `register_operation(name, fn)` extends the formula DSL without
+  forking. Custom ops are recognised everywhere the registry is consulted (`evaluate`,
+  `validate_ruleset`, `known_operations`). Built-in op names cannot be overwritten; the
+  `Operation` callable type is exported for typing custom ops.
+- **CLI** — a `dndwright` console command (stdlib only): `eval` (character JSON → sheet,
+  file or stdin), `graph` (export the DAG as Mermaid/DOT), `content` (list/dump bundled
+  content), `validate` (check a ruleset). Usable without writing Python.
+- **Graph export** — `to_mermaid(ruleset)` and `to_dot(ruleset)` render the computation
+  DAG as Mermaid or Graphviz DOT (node shapes by type, optional clustering by group),
+  making the "formulas as data / inspectable DAG" design visible for docs and debugging.
+- **Ruleset validation** — `validate_ruleset(ruleset) -> list[ValidationIssue]` and
+  `assert_valid_ruleset(ruleset)` statically check a ruleset before evaluation, catching
+  authoring mistakes (unknown op, key/`id` mismatch, missing formula, cycles) with clear
+  messages instead of a deep runtime `EvaluationError`, plus warnings (INPUT-with-formula,
+  unknown explicit input ref, absent lookup table). Also `known_operations()` lists every
+  op a formula may use, and `ValidationIssue` / `RulesetValidationError` are exported.
+
+### Changed
+- **Faster evaluation** — the evaluator now caches each ruleset's topological order
+  instead of recomputing it on every `evaluate()` call (~2.2× faster per evaluation;
+  ~0.41 → ~0.18 ms for a level-5 character). Cache is keyed per ruleset instance and
+  evicted on garbage collection, so custom/transient rulesets neither leak nor go stale.
+
+### Docs
+- Revamped the README landing page: centered header, status badges (PyPI version, Python
+  versions, CI, license, typed), and a hero SVG of the computation graph (`assets/`).
+- Added a "Command line" section and `validate_ruleset` / `to_mermaid` / `to_dot` rows.
+
+### Packaging
+- Ship a `py.typed` marker (PEP 561) so downstream type-checkers see dndwright's type
+  hints. Added Python 3.10–3.13, `Typing :: Typed`, `Intended Audience :: Developers`,
+  and `Topic :: Software Development :: Libraries` classifiers, plus `Changelog`/`Issues`
+  project URLs. Internal: `OPERATIONS` is now typed `dict[str, Operation]`.
+
 ## [0.3.0] — 2026-06-01
 
 ### Added
