@@ -14,5 +14,6 @@ python examples/quickstart.py
 | [`stat_diff.py`](stat_diff.py) | Which key stats change on level-up (`compute_stat_diff`). |
 | [`custom_operation.py`](custom_operation.py) | Extend the DSL with `register_operation` + a custom `Ruleset`. |
 | [`export_graph.py`](export_graph.py) | Render the computation DAG as Mermaid / Graphviz DOT. |
+| [`dice.py`](dice.py) | Roll 5e dice (expressions, advantage, attacks/saves, crit damage, stat arrays). |
 
 See also the `dndwright` CLI (`dndwright eval`, `graph`, `content`, `validate`).

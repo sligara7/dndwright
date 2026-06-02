@@ -38,6 +38,7 @@ EXPECTED_PUBLIC = {
     "load_content",
     "categories",
     "generate_library",
+    "DiceEngine",
 }
 
 

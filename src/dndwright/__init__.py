@@ -32,6 +32,7 @@ game mechanics derived from the **D&D SRD 5.2 (CC-BY-4.0)** — see NOTICE.
 """
 
 from .content import categories, generate_library, load_content
+from .dice import DiceEngine
 from .ontology import Ontology, load_ontology
 from .rules.adapters import character_data_to_inputs, computed_values_to_sheet
 from .rules.assembler import apply_modifiers, assemble_character_inputs
@@ -94,4 +95,6 @@ __all__ = [
     "load_content",
     "categories",
     "generate_library",
+    # dice engine (full typed surface in dndwright.dice)
+    "DiceEngine",
 ]

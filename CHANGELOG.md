@@ -10,6 +10,17 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+### Added
+- **Dice engine** (`dndwright.dice`) — `DiceEngine`: parse and roll D&D 5e dice
+  expressions (`1d20+5`, `4d6kh3`, `2d6r1`, `1d6!`, advantage/disadvantage) plus
+  `roll_attack`/`roll_save`/`roll_check`/`roll_damage`/`roll_initiative`/`roll_stat_array`/
+  `roll_hit_dice`/`roll_death_save`. Returns a **typed, frozen result surface**
+  (`ExpressionResult`, `RollResult`, `AttackRoll`, `SaveRoll`, `DamageRoll`, `DeathSave`,
+  `StatArray`, `HitDiceResult`, …). Deterministic by default (`DiceEngine(seed=…)`); for
+  unpredictable production rolls inject any `random.Random` (e.g.
+  `DiceEngine(rng=secrets.SystemRandom())`) — no NumPy dependency. `DiceEngine` is also
+  re-exported at the top level.
+
 ### Fixed
 - **CLI robustness** — `dndwright eval` now reports a clean error for non-object JSON
   (was an uncaught `AttributeError`), and `dndwright validate` reports a clean error for

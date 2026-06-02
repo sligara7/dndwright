@@ -73,6 +73,24 @@ dndwright content magic_items           # dump bundled content (omit category to
 dndwright validate ruleset.json         # check a ruleset (built-in if omitted)
 ```
 
+## Rolling dice
+
+A self-contained, typed dice engine (`dndwright.dice`) — deterministic by default:
+
+```python
+from dndwright.dice import DiceEngine
+
+eng = DiceEngine(seed=42)               # reproducible (stdlib RNG)
+eng.roll("4d6kh3").total                # keep highest 3 of 4
+eng.roll("1d20", advantage=True)        # -> ExpressionResult
+eng.roll_attack(modifier=5, target_ac=15).is_hit
+eng.roll_damage("2d8", is_critical=True)  # crit doubles the dice
+
+# unpredictable production rolls (no NumPy dependency):
+import secrets
+DiceEngine(rng=secrets.SystemRandom())
+```
+
 ## Why a computation graph?
 
 Derived character values form a dependency DAG: ability scores → modifiers → proficiency →
@@ -90,6 +108,7 @@ and serialisable — not buried in imperative code. `DND_5E_2024_RULESET` is a 1
 | `Ruleset` / `ComputationNode` / `FormulaSpec` / `NodeType` | The DAG schema. |
 | `validate_ruleset` / `assert_valid_ruleset` | Static integrity check for a ruleset (unknown ops, cycles, dangling refs) — catch authoring errors before evaluation. |
 | `to_mermaid` / `to_dot` | Render the computation DAG as Mermaid or Graphviz DOT — *see* the dependency graph. |
+| `dndwright.dice` | Typed dice engine: parse/roll 5e expressions, attacks, saves, damage, stat arrays. |
 | `dndwright.rules.components` | Typed inputs (`ClassMechanics`, `SpeciesMechanics`, …). |
 | `dndwright.rules.lookup_tables` | SRD-derived rules tables (hit dice, spell slots, AC, saves). |
 
