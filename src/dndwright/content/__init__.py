@@ -28,6 +28,7 @@ _CONTENT = {
     "species": ("species.json", "species"),
     "creatures": ("creatures.json", "creatures"),
     "magic_items": ("magic_items.json", "magic_items"),
+    "conditions": ("conditions.json", "conditions"),
 }
 
 

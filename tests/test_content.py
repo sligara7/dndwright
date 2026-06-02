@@ -8,16 +8,24 @@ from dndwright.content import generate_classes, generate_creatures
 
 class TestBundledContent:
     def test_categories(self):
-        assert set(categories()) == {"classes", "species", "creatures", "magic_items"}
+        assert set(categories()) == {
+            "classes", "species", "creatures", "magic_items", "conditions"
+        }
 
     @pytest.mark.parametrize("category,min_count", [
         ("classes", 6), ("species", 6), ("creatures", 12), ("magic_items", 100),
+        ("conditions", 15),
     ])
     def test_load_content(self, category, min_count):
         items = load_content(category)
         assert isinstance(items, list)
         assert len(items) >= min_count
         assert all(isinstance(i, dict) and "name" in i for i in items)
+
+    def test_conditions_have_mechanics(self):
+        for c in load_content("conditions"):
+            assert "display_name" in c and "description" in c
+            assert "mechanics" in c and isinstance(c["mechanics"], dict)
 
     def test_creatures_have_stats(self):
         for c in load_content("creatures"):

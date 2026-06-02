@@ -1,0 +1,312 @@
+{
+  "conditions": [
+    {
+      "name": "blinded",
+      "display_name": "Blinded",
+      "description": "A blinded creature can't see and automatically fails any ability check that requires sight. Attack rolls against the creature have advantage, and the creature's attack rolls have disadvantage.",
+      "effects": [
+        "Can't see",
+        "Auto-fails sight-based checks",
+        "Attacks against have advantage",
+        "Attack rolls have disadvantage"
+      ],
+      "mechanics": {
+        "incapacitating": false,
+        "prevents_movement": false,
+        "prevents_actions": false,
+        "grants_advantage_to_attackers": true,
+        "imposes_disadvantage_on_attacks": true
+      },
+      "implies": [],
+      "grants_immunity_to": []
+    },
+    {
+      "name": "charmed",
+      "display_name": "Charmed",
+      "description": "A charmed creature can't attack the charmer or target the charmer with harmful abilities or magical effects. The charmer has advantage on any ability check to interact socially with the creature.",
+      "effects": [
+        "Can't attack the charmer",
+        "Can't target charmer with harmful effects",
+        "Charmer has advantage on social checks"
+      ],
+      "mechanics": {
+        "incapacitating": false,
+        "prevents_movement": false,
+        "prevents_actions": false,
+        "grants_advantage_to_attackers": false,
+        "imposes_disadvantage_on_attacks": false
+      },
+      "implies": [],
+      "grants_immunity_to": []
+    },
+    {
+      "name": "deafened",
+      "display_name": "Deafened",
+      "description": "A deafened creature can't hear and automatically fails any ability check that requires hearing.",
+      "effects": [
+        "Can't hear",
+        "Auto-fails hearing-based checks"
+      ],
+      "mechanics": {
+        "incapacitating": false,
+        "prevents_movement": false,
+        "prevents_actions": false,
+        "grants_advantage_to_attackers": false,
+        "imposes_disadvantage_on_attacks": false
+      },
+      "implies": [],
+      "grants_immunity_to": []
+    },
+    {
+      "name": "exhaustion",
+      "display_name": "Exhaustion",
+      "description": "Exhaustion is measured in six levels. Effects are cumulative.",
+      "levels": {
+        "1": "Disadvantage on ability checks",
+        "2": "Speed halved",
+        "3": "Disadvantage on attack rolls and saving throws",
+        "4": "Hit point maximum halved",
+        "5": "Speed reduced to 0",
+        "6": "Death"
+      },
+      "mechanics": {
+        "incapacitating": false,
+        "prevents_movement": false,
+        "prevents_actions": false,
+        "grants_advantage_to_attackers": false,
+        "imposes_disadvantage_on_attacks": false
+      },
+      "implies": [],
+      "grants_immunity_to": []
+    },
+    {
+      "name": "frightened",
+      "display_name": "Frightened",
+      "description": "A frightened creature has disadvantage on ability checks and attack rolls while the source of its fear is within line of sight. The creature can't willingly move closer to the source of its fear.",
+      "effects": [
+        "Disadvantage on ability checks (if source visible)",
+        "Disadvantage on attack rolls (if source visible)",
+        "Can't willingly move closer to source"
+      ],
+      "mechanics": {
+        "incapacitating": false,
+        "prevents_movement": false,
+        "prevents_actions": false,
+        "grants_advantage_to_attackers": false,
+        "imposes_disadvantage_on_attacks": true
+      },
+      "implies": [],
+      "grants_immunity_to": []
+    },
+    {
+      "name": "grappled",
+      "display_name": "Grappled",
+      "description": "A grappled creature's speed becomes 0, and it can't benefit from any bonus to its speed. The condition ends if the grappler is incapacitated or if an effect removes the grappled creature from the reach of the grappler.",
+      "effects": [
+        "Speed becomes 0",
+        "Can't benefit from speed bonuses"
+      ],
+      "mechanics": {
+        "incapacitating": false,
+        "prevents_movement": true,
+        "prevents_actions": false,
+        "grants_advantage_to_attackers": false,
+        "imposes_disadvantage_on_attacks": false
+      },
+      "implies": [],
+      "grants_immunity_to": []
+    },
+    {
+      "name": "incapacitated",
+      "display_name": "Incapacitated",
+      "description": "An incapacitated creature can't take actions or reactions.",
+      "effects": [
+        "Can't take actions",
+        "Can't take reactions"
+      ],
+      "mechanics": {
+        "incapacitating": true,
+        "prevents_movement": false,
+        "prevents_actions": true,
+        "grants_advantage_to_attackers": false,
+        "imposes_disadvantage_on_attacks": false
+      },
+      "implies": [],
+      "grants_immunity_to": []
+    },
+    {
+      "name": "invisible",
+      "display_name": "Invisible",
+      "description": "An invisible creature is impossible to see without the aid of magic or a special sense. The creature's location can be detected by noise or tracks. Attack rolls against the creature have disadvantage, and the creature's attack rolls have advantage.",
+      "effects": [
+        "Can't be seen normally",
+        "Attacks against have disadvantage",
+        "Attack rolls have advantage"
+      ],
+      "mechanics": {
+        "incapacitating": false,
+        "prevents_movement": false,
+        "prevents_actions": false,
+        "grants_advantage_to_attackers": false,
+        "imposes_disadvantage_on_attacks": false
+      },
+      "implies": [],
+      "grants_immunity_to": []
+    },
+    {
+      "name": "paralyzed",
+      "display_name": "Paralyzed",
+      "description": "A paralyzed creature is incapacitated and can't move or speak. The creature automatically fails Strength and Dexterity saving throws. Attack rolls against the creature have advantage. Any attack that hits the creature is a critical hit if the attacker is within 5 feet.",
+      "effects": [
+        "Incapacitated",
+        "Can't move or speak",
+        "Auto-fails STR and DEX saves",
+        "Attacks against have advantage",
+        "Melee attacks are auto-crits"
+      ],
+      "mechanics": {
+        "incapacitating": true,
+        "prevents_movement": true,
+        "prevents_actions": true,
+        "grants_advantage_to_attackers": true,
+        "imposes_disadvantage_on_attacks": false
+      },
+      "implies": [
+        "incapacitated"
+      ],
+      "grants_immunity_to": []
+    },
+    {
+      "name": "petrified",
+      "display_name": "Petrified",
+      "description": "A petrified creature is transformed into a solid inanimate substance. It is incapacitated, can't move or speak, and is unaware of its surroundings. It has resistance to all damage and is immune to poison and disease.",
+      "effects": [
+        "Incapacitated",
+        "Can't move or speak",
+        "Unaware of surroundings",
+        "Resistance to all damage",
+        "Immune to poison and disease"
+      ],
+      "mechanics": {
+        "incapacitating": true,
+        "prevents_movement": true,
+        "prevents_actions": true,
+        "grants_advantage_to_attackers": true,
+        "imposes_disadvantage_on_attacks": false
+      },
+      "implies": [
+        "incapacitated"
+      ],
+      "grants_immunity_to": [
+        "poisoned"
+      ]
+    },
+    {
+      "name": "poisoned",
+      "display_name": "Poisoned",
+      "description": "A poisoned creature has disadvantage on attack rolls and ability checks.",
+      "effects": [
+        "Disadvantage on attack rolls",
+        "Disadvantage on ability checks"
+      ],
+      "mechanics": {
+        "incapacitating": false,
+        "prevents_movement": false,
+        "prevents_actions": false,
+        "grants_advantage_to_attackers": false,
+        "imposes_disadvantage_on_attacks": true
+      },
+      "implies": [],
+      "grants_immunity_to": []
+    },
+    {
+      "name": "prone",
+      "display_name": "Prone",
+      "description": "A prone creature's only movement option is to crawl. The creature has disadvantage on attack rolls. An attack roll against the creature has advantage if the attacker is within 5 feet, otherwise disadvantage.",
+      "effects": [
+        "Can only crawl",
+        "Disadvantage on attack rolls",
+        "Melee attacks against have advantage",
+        "Ranged attacks against have disadvantage"
+      ],
+      "mechanics": {
+        "incapacitating": false,
+        "prevents_movement": false,
+        "prevents_actions": false,
+        "grants_advantage_to_attackers": false,
+        "imposes_disadvantage_on_attacks": true
+      },
+      "implies": [],
+      "grants_immunity_to": []
+    },
+    {
+      "name": "restrained",
+      "display_name": "Restrained",
+      "description": "A restrained creature's speed becomes 0. Attack rolls against the creature have advantage, and the creature's attack rolls have disadvantage. The creature has disadvantage on Dexterity saving throws.",
+      "effects": [
+        "Speed becomes 0",
+        "Attacks against have advantage",
+        "Attack rolls have disadvantage",
+        "Disadvantage on DEX saves"
+      ],
+      "mechanics": {
+        "incapacitating": false,
+        "prevents_movement": true,
+        "prevents_actions": false,
+        "grants_advantage_to_attackers": true,
+        "imposes_disadvantage_on_attacks": true
+      },
+      "implies": [],
+      "grants_immunity_to": []
+    },
+    {
+      "name": "stunned",
+      "display_name": "Stunned",
+      "description": "A stunned creature is incapacitated, can't move, and can speak only falteringly. The creature automatically fails Strength and Dexterity saving throws. Attack rolls against the creature have advantage.",
+      "effects": [
+        "Incapacitated",
+        "Can't move",
+        "Can only speak falteringly",
+        "Auto-fails STR and DEX saves",
+        "Attacks against have advantage"
+      ],
+      "mechanics": {
+        "incapacitating": true,
+        "prevents_movement": true,
+        "prevents_actions": true,
+        "grants_advantage_to_attackers": true,
+        "imposes_disadvantage_on_attacks": false
+      },
+      "implies": [
+        "incapacitated"
+      ],
+      "grants_immunity_to": []
+    },
+    {
+      "name": "unconscious",
+      "display_name": "Unconscious",
+      "description": "An unconscious creature is incapacitated, can't move or speak, and is unaware of its surroundings. The creature drops whatever it's holding and falls prone. Attack rolls against the creature have advantage. Any attack that hits is a critical hit if within 5 feet.",
+      "effects": [
+        "Incapacitated",
+        "Can't move or speak",
+        "Unaware of surroundings",
+        "Drops held items",
+        "Falls prone",
+        "Attacks against have advantage",
+        "Melee attacks are auto-crits"
+      ],
+      "mechanics": {
+        "incapacitating": true,
+        "prevents_movement": true,
+        "prevents_actions": true,
+        "grants_advantage_to_attackers": true,
+        "imposes_disadvantage_on_attacks": false
+      },
+      "implies": [
+        "incapacitated",
+        "prone"
+      ],
+      "grants_immunity_to": []
+    }
+  ]
+}

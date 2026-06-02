@@ -11,6 +11,12 @@ breaking changes; these will always be noted here.
 ## [Unreleased]
 
 ### Added
+- **Conditions** (`dndwright.combat.conditions`) — pure rules over the bundled SRD
+  catalog: `condition_effects` (effect text + mechanical flags), `implied_conditions`,
+  `is_immune`, `tick_conditions` (round/turn duration ticking), and `attempt_save`
+  (save-ends). The 14 SRD conditions + exhaustion are bundled **content**
+  (`load_content("conditions")`), not hard-coded enums. Frozen `ConditionEffect` /
+  `ActiveCondition` / `ConditionChange` / `SaveResult` value types.
 - **Initiative** (`dndwright.combat.initiative`) — pure ordering + turn tracking:
   `roll_initiative` (1d20 + modifier), `order_initiative` (total desc, DEX-modifier
   tie-break, stable), and `advance_turn` / `previous_turn` (skip inactive, wrap →

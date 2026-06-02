@@ -129,6 +129,7 @@ and serialisable — not buried in imperative code. `DND_5E_2024_RULESET` is a 1
 | `dndwright.dice` | Typed dice engine: parse/roll 5e expressions, attacks, saves, damage, stat arrays. |
 | `dndwright.combat` | Pure combat rules over a frozen `CombatantState`: damage, temp HP, healing, death saves. |
 | `dndwright.combat.initiative` | Pure initiative: roll, order (DEX tie-break), advance/rewind turns. |
+| `dndwright.combat.conditions` | Pure conditions over the bundled SRD catalog: effects, ticking, saves. |
 | `dndwright.rules.components` | Typed inputs (`ClassMechanics`, `SpeciesMechanics`, …). |
 | `dndwright.rules.lookup_tables` | SRD-derived rules tables (hit dice, spell slots, AC, saves). |
 
