@@ -10,6 +10,8 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+## [0.12.0] — 2026-06-02
+
 ### Added
 - **Gated (conditional) contributions** — a `component` modifier may carry a `condition`
   (a `{op, args}` expression over host nodes) so the contribution applies *only while the
@@ -248,7 +250,8 @@ from a working application.
 Pure (pydantic + stdlib); no application/framework coupling. Rules content derives
 from the SRD 5.2 (CC-BY-4.0); see NOTICE.
 
-[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.11.0...HEAD
+[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.12.0...HEAD
+[0.12.0]: https://github.com/sligara7/dndwright/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/sligara7/dndwright/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/sligara7/dndwright/compare/v0.9.0...v0.10.0
 [0.9.0]: https://github.com/sligara7/dndwright/compare/v0.8.0...v0.9.0
