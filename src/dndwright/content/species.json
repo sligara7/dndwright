@@ -1,110 +1,300 @@
 {
   "metadata": {
-    "source": "dndwright original homebrew",
-    "license": "Original content — not derived from any copyrighted RPG product.",
-    "note": "Sample starter content; generate more with dndwright.content.generate."
+    "source": "D&D System Reference Document 5.2.1 (SRD 5.2)",
+    "license": "CC-BY-4.0 — © Wizards of the Coast. See NOTICE.",
+    "note": "The nine SRD 5.2 player species. Mechanical effects that map onto the character graph carry a `component` (resistances, speed, HP); chosen resistances (Dragonborn ancestry, Tiefling legacy) are templates filled via `choices`."
   },
   "species": [
     {
-      "name": "Kryth-Vaal",
-      "mechanics": {
-        "size": "Medium",
-        "speed": 30,
-        "ability_bonuses": "+2 Strength, +1 Constitution",
-        "traits": [
-          "Crystalline carapace grants natural armor",
-          "Resonant hum creates minor sonic pulses",
-          "Photosynthetic skin heals in sunlight"
-        ]
+      "name": "Dragonborn",
+      "creature_type": "Humanoid",
+      "size": "Medium",
+      "speed": 30,
+      "senses": {
+        "darkvision": 60
       },
-      "narrative": {
-        "description": "Living statues composed of sentient quartz and volcanic glass. They process solar energy into kinetic force.",
-        "flavor": "Born from the heat of the mantle, tempered by the light of the stars."
+      "traits": [
+        {
+          "name": "Draconic Ancestry",
+          "description": "Your lineage stems from a dragon progenitor. Choose a dragon from the Draconic Ancestors table; it sets your Breath Weapon and Damage Resistance damage type."
+        },
+        {
+          "name": "Breath Weapon",
+          "description": "When you take the Attack action, you can replace one attack with an exhalation in a 15-foot Cone or 30-foot Line; creatures make a Dexterity save (DC 8 + Con mod + proficiency) for 1d10 of your ancestry's damage type (half on success), scaling with level. Uses = proficiency bonus per Long Rest."
+        },
+        {
+          "name": "Damage Resistance",
+          "description": "You have Resistance to the damage type determined by your Draconic Ancestry."
+        },
+        {
+          "name": "Darkvision",
+          "description": "You have Darkvision with a range of 60 feet."
+        }
+      ],
+      "description": "The result of draconic forebears, Dragonborn share many traits with dragons, including a damaging breath weapon and resistance to a damage type tied to their ancestry.",
+      "component": [
+        {
+          "target": "resistances",
+          "mode": "union",
+          "amount": [
+            "{ancestry}"
+          ]
+        }
+      ],
+      "choices": {
+        "ancestry": [
+          "acid",
+          "cold",
+          "fire",
+          "lightning",
+          "poison"
+        ]
       }
     },
     {
-      "name": "Orynthian",
-      "mechanics": {
-        "size": "Small",
-        "speed": 30,
-        "ability_bonuses": "+2 Dexterity, +1 Intelligence",
-        "traits": [
-          "Gliding membranes under outstretched arms",
-          "Multi-faceted eyes grant darkvision",
-          "Prehensile quill-tipped tail"
-        ]
+      "name": "Dwarf",
+      "creature_type": "Humanoid",
+      "size": "Medium",
+      "speed": 30,
+      "senses": {
+        "darkvision": 120
       },
-      "narrative": {
-        "description": "Avian-insectoid hybrids with slender frames and iridescent, hive-integrated consciousness. They excel at high-altitude navigation.",
-        "flavor": "The wind is not merely a path, but the language they speak."
-      }
+      "traits": [
+        {
+          "name": "Darkvision",
+          "description": "You have Darkvision with a range of 120 feet."
+        },
+        {
+          "name": "Dwarven Resilience",
+          "description": "You have Resistance to Poison damage and Advantage on saving throws to avoid or end the Poisoned condition."
+        },
+        {
+          "name": "Dwarven Toughness",
+          "description": "Your Hit Point maximum increases by 1, and it increases by 1 again whenever you gain a level."
+        },
+        {
+          "name": "Stonecunning",
+          "description": "As a Bonus Action you gain Tremorsense 60 ft for 10 minutes while on/touching stone; uses = proficiency bonus per Long Rest."
+        }
+      ],
+      "description": "Bold and hardy, dwarves are a tough folk with a deep affinity for stone and an inborn resistance to poison.",
+      "component": [
+        {
+          "target": "resistances",
+          "mode": "union",
+          "amount": [
+            "poison"
+          ]
+        },
+        {
+          "target": "hp_max",
+          "mode": "add",
+          "formula": {
+            "op": "coalesce",
+            "args": [
+              "character_level"
+            ]
+          }
+        }
+      ]
     },
     {
-      "name": "Mire-Strider",
-      "mechanics": {
-        "size": "Medium",
-        "speed": 30,
-        "ability_bonuses": "flexible +2/+1",
-        "traits": [
-          "Amphibious dual-lung system",
-          "Mud-camo grants stealth in foliage",
-          "Enzymatic touch dissolves organic bonds"
-        ]
+      "name": "Elf",
+      "creature_type": "Humanoid",
+      "size": "Medium",
+      "speed": 30,
+      "senses": {
+        "darkvision": 60
       },
-      "narrative": {
-        "description": "Slime-skinned beings with symbiotic fungal colonies living within their porous outer layers. They act as the immune system of the wetlands.",
-        "flavor": "Where the water meets the rot, the Strider finds home."
-      }
+      "traits": [
+        {
+          "name": "Darkvision",
+          "description": "You have Darkvision with a range of 60 feet (120 feet for Drow lineage)."
+        },
+        {
+          "name": "Fey Ancestry",
+          "description": "You have Advantage on saving throws to avoid or end the Charmed condition."
+        },
+        {
+          "name": "Keen Senses",
+          "description": "You have proficiency in the Insight, Perception, or Survival skill."
+        },
+        {
+          "name": "Trance",
+          "description": "You don't need to sleep and can't be put to sleep by magic; you finish a Long Rest in 4 hours of light activity."
+        },
+        {
+          "name": "Elven Lineage",
+          "description": "Choose a lineage (Drow, High Elf, or Wood Elf) granting a cantrip and further benefits as you level."
+        }
+      ],
+      "description": "Elves are a magical people of otherworldly grace, at home in nature and possessed of a keen mind and fey resilience to enchantment.",
+      "component": []
     },
     {
-      "name": "Nebulite",
-      "mechanics": {
-        "size": "Medium",
-        "speed": 30,
-        "ability_bonuses": "+2 Charisma, +1 Wisdom",
-        "traits": [
-          "Incorporeal shimmer avoids opportunity attacks",
-          "Gravitational tether lifts small objects",
-          "Stellar glow illuminates dark spaces"
-        ]
+      "name": "Gnome",
+      "creature_type": "Humanoid",
+      "size": "Small",
+      "speed": 30,
+      "senses": {
+        "darkvision": 60
       },
-      "narrative": {
-        "description": "Sentient gas clouds contained within intricate, self-forged brass shells. They are chroniclers of cosmic anomalies.",
-        "flavor": "A flicker of starlight trapped in a cage of clockwork."
-      }
+      "traits": [
+        {
+          "name": "Darkvision",
+          "description": "You have Darkvision with a range of 60 feet."
+        },
+        {
+          "name": "Gnomish Cunning",
+          "description": "You have Advantage on Intelligence, Wisdom, and Charisma saving throws."
+        },
+        {
+          "name": "Gnomish Lineage",
+          "description": "Choose Forest Gnome (Minor Illusion + speak with Small beasts) or Rock Gnome (Mending, Prestidigitation, tinker devices)."
+        }
+      ],
+      "description": "Small and energetic, gnomes are inventive and curious, with a natural cunning that shields their minds from magic.",
+      "component": []
     },
     {
-      "name": "Thrum-Kin",
-      "mechanics": {
-        "size": "Small",
-        "speed": 30,
-        "ability_bonuses": "+2 Constitution, +1 Charisma",
-        "traits": [
-          "Vibration sense detects movement",
-          "Sonic scream creates minor concussions",
-          "Dense fur absorbs elemental impact"
-        ]
-      },
-      "narrative": {
-        "description": "Subterranean mammals that communicate through rhythmic drumming against cave walls. They possess deep empathy for the tremors of the earth.",
-        "flavor": "They hear the heartbeat of the world before it even begins to pulse."
-      }
+      "name": "Goliath",
+      "creature_type": "Humanoid",
+      "size": "Medium",
+      "speed": 35,
+      "traits": [
+        {
+          "name": "Giant Ancestry",
+          "description": "Choose a supernatural boon from your giant ancestors (Cloud/Fire/Frost/Hill/Stone/Storm Jotun), usable a number of times equal to your proficiency bonus per Long Rest."
+        },
+        {
+          "name": "Large Form",
+          "description": "Starting at character level 5, as a Bonus Action you can become Large for 10 minutes (if room), gaining Advantage on Strength checks and +10 speed; once per Long Rest."
+        },
+        {
+          "name": "Powerful Build",
+          "description": "You have Advantage on saves against being Grappled and count as one size larger for carrying capacity."
+        }
+      ],
+      "description": "Towering descendants of giants, goliaths are powerfully built wanderers whose fast stride and giant boons set them apart.",
+      "component": [
+        {
+          "target": "speed_base",
+          "mode": "override",
+          "amount": 35
+        }
+      ]
     },
     {
-      "name": "Xylosian",
-      "mechanics": {
-        "size": "Medium",
-        "speed": 30,
-        "ability_bonuses": "+2 Intelligence, +1 Wisdom",
-        "traits": [
-          "Root-link telepathy with other Xylosians",
-          "Hardwood skin hardens when stationary",
-          "Chlorophyll stores allow for brief starvation"
-        ]
+      "name": "Halfling",
+      "creature_type": "Humanoid",
+      "size": "Small",
+      "speed": 30,
+      "traits": [
+        {
+          "name": "Brave",
+          "description": "You have Advantage on saving throws to avoid or end the Frightened condition."
+        },
+        {
+          "name": "Halfling Nimbleness",
+          "description": "You can move through the space of any creature that is a size larger than you."
+        },
+        {
+          "name": "Luck",
+          "description": "When you roll a 1 on the d20 of a D20 Test, you can reroll and must use the new roll."
+        },
+        {
+          "name": "Naturally Stealthy",
+          "description": "You can take the Hide action even when obscured only by a creature at least one size larger than you."
+        }
+      ],
+      "description": "Halflings are a cheerful, practical folk, famously lucky and brave out of proportion to their small size.",
+      "component": []
+    },
+    {
+      "name": "Human",
+      "creature_type": "Humanoid",
+      "size": "Medium",
+      "speed": 30,
+      "traits": [
+        {
+          "name": "Resourceful",
+          "description": "You gain Heroic Inspiration whenever you finish a Long Rest."
+        },
+        {
+          "name": "Skillful",
+          "description": "You gain proficiency in one skill of your choice."
+        },
+        {
+          "name": "Versatile",
+          "description": "You gain an Origin feat of your choice."
+        }
+      ],
+      "description": "Humans are the most adaptable and ambitious of the common peoples — innovators, achievers, and pioneers, defined by their versatility.",
+      "component": []
+    },
+    {
+      "name": "Orc",
+      "creature_type": "Humanoid",
+      "size": "Medium",
+      "speed": 30,
+      "senses": {
+        "darkvision": 120
       },
-      "narrative": {
-        "description": "Bipedal plant-folk whose blood is essentially concentrated sap. They spend decades in deep meditation to gain ancestral knowledge.",
-        "flavor": "Growth is slow, but the memory of the forest is eternal."
+      "traits": [
+        {
+          "name": "Adrenaline Rush",
+          "description": "You can take the Dash action as a Bonus Action and gain temporary Hit Points equal to your Proficiency Bonus; uses = proficiency bonus per Short or Long Rest."
+        },
+        {
+          "name": "Darkvision",
+          "description": "You have Darkvision with a range of 120 feet."
+        },
+        {
+          "name": "Relentless Endurance",
+          "description": "When reduced to 0 HP but not killed outright, you can drop to 1 HP instead; once per Long Rest."
+        }
+      ],
+      "description": "Orcs are a tenacious people of furious bursts of speed and stubborn endurance, able to shrug off blows that would fell others.",
+      "component": []
+    },
+    {
+      "name": "Tiefling",
+      "creature_type": "Humanoid",
+      "size": "Medium",
+      "speed": 30,
+      "senses": {
+        "darkvision": 60
+      },
+      "traits": [
+        {
+          "name": "Darkvision",
+          "description": "You have Darkvision with a range of 60 feet."
+        },
+        {
+          "name": "Fiendish Legacy",
+          "description": "Choose a legacy (Abyssal, Chthonic, or Infernal). It grants a thaumaturgy-style cantrip and additional spells as you level, and a damage resistance: Abyssal→Poison, Chthonic→Necrotic, Infernal→Fire."
+        },
+        {
+          "name": "Otherworldly Presence",
+          "description": "You know the Thaumaturgy cantrip, cast with the spellcasting ability of your Fiendish Legacy."
+        }
+      ],
+      "description": "Tieflings carry a fiendish bloodline, marked by horns or other features and an innate resistance tied to their otherworldly legacy.",
+      "component": [
+        {
+          "target": "resistances",
+          "mode": "union",
+          "amount": [
+            "{legacy}"
+          ]
+        }
+      ],
+      "choices": {
+        "legacy": [
+          "poison",
+          "necrotic",
+          "fire"
+        ]
       }
     }
   ]

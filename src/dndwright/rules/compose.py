@@ -226,9 +226,10 @@ def component_from_content(
     ``{"target": "armor_class", "amount": 1, "condition": {"op": "ne", "args": ["armor_type", "none"]}}``
     — the bonus tracks the character's armour as it changes, with no re-compose.
 
-    A ``target`` (or formula/condition arg) may contain a ``{placeholder}`` filled from
-    ``choices`` — so a feat whose benefit is "increase an ability score of *your choice*" is a
-    template::
+    A ``target``, a formula/condition arg, or a member of a list ``amount`` may contain a
+    ``{placeholder}`` filled from ``choices`` — so a feat whose benefit is "increase an ability
+    score of *your choice*", or a species whose resistance type is chosen (Dragonborn ancestry,
+    Tiefling legacy: ``"amount": ["{ancestry}"]``), is a template::
 
         from dndwright import load_content, component_from_content, compose, evaluate
         feats = {f["name"]: f for f in load_content("feats")}
@@ -246,7 +247,12 @@ def component_from_content(
     name = item.get("name", "item")
 
     def fill(ref: Any) -> Any:
-        return ref.format(**choices) if isinstance(ref, str) and "{" in ref else ref
+        if isinstance(ref, str):
+            return ref.format(**choices) if "{" in ref else ref
+        if isinstance(ref, (list, tuple)):
+            # recurse so a {placeholder} inside a union amount (e.g. ["{ancestry}"]) is filled
+            return type(ref)(fill(x) for x in ref)
+        return ref
 
     nodes: dict[str, ComputationNode] = {}
     contribs: list[Contribution] = []

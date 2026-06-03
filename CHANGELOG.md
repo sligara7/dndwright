@@ -10,6 +10,21 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+### Added
+- **The 9 SRD species** as bundled content (`load_content("species")`): Dragonborn, Dwarf,
+  Elf, Gnome, Goliath, Halfling, Human, Orc, Tiefling — with size, speed, senses, traits, and
+  a `component` for the graph-mappable bits: **Dwarf** (poison resistance + Dwarven Toughness
+  `hp_max += level`), **Goliath** (speed 35 via `override`), and **Dragonborn** / **Tiefling**
+  (a chosen damage resistance, a `{placeholder}` filled from `choices`). Replaces the former
+  homebrew sample species; SRD 5.2 (CC-BY) — see NOTICE.
+- **`{placeholder}` substitution now recurses into list `amount`s** in `component_from_content`,
+  so a `union` resistance type can be chosen (`"amount": ["{ancestry}"]` +
+  `choices={"ancestry": "fire"}`) — not just scalar targets/args.
+
+### Changed
+- The bundled `species` catalog is now SRD-derived (was homebrew); `classes` and `creatures`
+  remain homebrew sample content. NOTICE updated to attribute each.
+
 ## [0.14.0] — 2026-06-03
 
 ### Added
