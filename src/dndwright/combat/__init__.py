@@ -1,4 +1,4 @@
-"""Pure D&D 5e combat rules — HP, temp HP, death saves, stabilization.
+"""Pure D&D 5e combat rules — HP, temp HP, death saves, stabilization, weapon attacks.
 
 Identity-free, persistence-free value functions: state is a frozen
 :class:`CombatantState`, and each op is ``(state, input) -> (new_state, explanation)``.
@@ -34,6 +34,7 @@ from .combat import (
     set_temp_hp,
     stabilize,
 )
+from .weapons import WeaponAttack, weapon_attack
 
 __all__ = [
     # state + result value types
@@ -41,6 +42,7 @@ __all__ = [
     "DamageApplication",
     "HPChange",
     "DeathSaveResult",
+    "WeaponAttack",
     # operations (state, input) -> (new_state, explanation)
     "apply_damage",
     "apply_healing",
@@ -52,6 +54,7 @@ __all__ = [
     "damage_multiplier",
     "combatant_defenses",
     "clean_damage_types",
+    "weapon_attack",
     # rule constants
     "DEATH_SAVE_DC",
     "DEATH_SAVES_TO_STABILIZE",

@@ -16,6 +16,7 @@ python examples/quickstart.py
 | [`export_graph.py`](export_graph.py) | Render the computation DAG as Mermaid / Graphviz DOT. |
 | [`dice.py`](dice.py) | Roll 5e dice (expressions, advantage, attacks/saves, crit damage, stat arrays). |
 | [`combat.py`](combat.py) | Resolve a combat round with pure rules: damage, temp HP, death saves, healing. |
+| [`weapon_attack.py`](weapon_attack.py) | Weapon + ability mods + proficiency → to-hit bonus & damage expression, then roll it. |
 | [`initiative.py`](initiative.py) | Roll initiative, order combatants (DEX tie-break), walk the turn tracker. |
 | [`conditions.py`](conditions.py) | Inspect condition effects/flags, tick durations, resolve save-ends. |
 

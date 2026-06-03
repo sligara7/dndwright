@@ -2,7 +2,7 @@
   "metadata": {
     "source": "D&D System Reference Document 5.2.1 (SRD 5.2)",
     "license": "CC-BY-4.0 — © Wizards of the Coast. See NOTICE.",
-    "note": "The 4 SRD 5.2 backgrounds. Each grants ability-score increases (player-allocated per ability_score_rule), an Origin feat (in load_content('feats')), two skill proficiencies, a tool proficiency, and starting equipment."
+    "note": "The 4 SRD 5.2 backgrounds. Each grants ability-score increases (player-allocated per ability_score_rule), an Origin feat (in load_content('feats')), two skill proficiencies, a tool proficiency, and starting equipment. The ability increases are a parameterized `component` (see dndwright.component_from_content): the modal +2/+1 spread, where `choices` fills {plus_two}/{plus_one} from this background's three abilities. The alternative +1/+1/+1 spread is composed as three +1 contributions."
   },
   "backgrounds": [
     {
@@ -19,7 +19,31 @@
       ],
       "tool_proficiency": "Calligrapher’s Supplies",
       "equipment": "Choose A or B: (A) Calligrapher’s Supplies, Book (prayers), Holy Symbol, Parchment (10 sheets), Robe, 8 GP; or (B) 50 GP",
-      "ability_score_rule": "Increase one of these by 2 and another by 1, or increase all three by 1 (max 20)."
+      "ability_score_rule": "Increase one of these by 2 and another by 1, or increase all three by 1 (max 20).",
+      "choices": {
+        "plus_two": [
+          "intelligence",
+          "wisdom",
+          "charisma"
+        ],
+        "plus_one": [
+          "intelligence",
+          "wisdom",
+          "charisma"
+        ]
+      },
+      "component": [
+        {
+          "target": "{plus_two}_score",
+          "amount": 2,
+          "mode": "add"
+        },
+        {
+          "target": "{plus_one}_score",
+          "amount": 1,
+          "mode": "add"
+        }
+      ]
     },
     {
       "name": "Criminal",
@@ -35,7 +59,31 @@
       ],
       "tool_proficiency": "Thieves’ Tools",
       "equipment": "Choose A or B: (A) 2 Daggers, Thieves’ Tools, Crowbar, 2 Pouches, Traveler’s Clothes, 16 GP; or (B) 50 GP",
-      "ability_score_rule": "Increase one of these by 2 and another by 1, or increase all three by 1 (max 20)."
+      "ability_score_rule": "Increase one of these by 2 and another by 1, or increase all three by 1 (max 20).",
+      "choices": {
+        "plus_two": [
+          "dexterity",
+          "constitution",
+          "intelligence"
+        ],
+        "plus_one": [
+          "dexterity",
+          "constitution",
+          "intelligence"
+        ]
+      },
+      "component": [
+        {
+          "target": "{plus_two}_score",
+          "amount": 2,
+          "mode": "add"
+        },
+        {
+          "target": "{plus_one}_score",
+          "amount": 1,
+          "mode": "add"
+        }
+      ]
     },
     {
       "name": "Sage",
@@ -51,7 +99,31 @@
       ],
       "tool_proficiency": "Calligrapher’s Supplies",
       "equipment": "Choose A or B: (A) Quarterstaff, Calligrapher’s Supplies, Book (history), Parchment (8 sheets), Robe, 8 GP; or (B) 50 GP",
-      "ability_score_rule": "Increase one of these by 2 and another by 1, or increase all three by 1 (max 20)."
+      "ability_score_rule": "Increase one of these by 2 and another by 1, or increase all three by 1 (max 20).",
+      "choices": {
+        "plus_two": [
+          "constitution",
+          "intelligence",
+          "wisdom"
+        ],
+        "plus_one": [
+          "constitution",
+          "intelligence",
+          "wisdom"
+        ]
+      },
+      "component": [
+        {
+          "target": "{plus_two}_score",
+          "amount": 2,
+          "mode": "add"
+        },
+        {
+          "target": "{plus_one}_score",
+          "amount": 1,
+          "mode": "add"
+        }
+      ]
     },
     {
       "name": "Soldier",
@@ -67,7 +139,31 @@
       ],
       "tool_proficiency": "Choose one kind of Gaming Set (see “Equipment”)",
       "equipment": "Choose A or B: (A) Spear, Shortbow, 20 Arrows, Gaming Set (same as above), Healer’s Kit, Quiver, Traveler’s Clothes, 14 GP; or (B) 50 GP",
-      "ability_score_rule": "Increase one of these by 2 and another by 1, or increase all three by 1 (max 20)."
+      "ability_score_rule": "Increase one of these by 2 and another by 1, or increase all three by 1 (max 20).",
+      "choices": {
+        "plus_two": [
+          "strength",
+          "dexterity",
+          "constitution"
+        ],
+        "plus_one": [
+          "strength",
+          "dexterity",
+          "constitution"
+        ]
+      },
+      "component": [
+        {
+          "target": "{plus_two}_score",
+          "amount": 2,
+          "mode": "add"
+        },
+        {
+          "target": "{plus_one}_score",
+          "amount": 1,
+          "mode": "add"
+        }
+      ]
     }
   ]
 }

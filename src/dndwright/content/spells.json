@@ -2,7 +2,7 @@
   "metadata": {
     "source": "D&D System Reference Document 5.2.1 (SRD 5.2)",
     "license": "CC-BY-4.0 — © Wizards of the Coast. See NOTICE.",
-    "note": "All 339 SRD 5.2 spells (cantrips through level 9) as reference data. Mechanical `component` specs (spells that snap onto the character graph) are a follow-up.",
+    "note": "All 339 SRD 5.2 spells (cantrips through level 9) as reference data. A curated set whose effect maps onto the character graph carries a `component` (see `dndwright.component_from_content`): Mage Armor (gated +3 AC while unarmored), Shield of Faith (+2 AC), Shield (+5 AC). Spells that need graph nodes dndwright doesn't model yet (a generic attack-roll bonus for Bless, a temp-HP channel for False Life/Heroism, an AC floor for Barkskin) remain reference-only for now.",
     "count": 339
   },
   "spells": [
@@ -2856,7 +2856,21 @@
         "Sorcerer",
         "Wizard"
       ],
-      "description": "You touch a willing creature who isn’t wearing armor. Until the spell ends, the target’s base AC becomes 13 plus its Dexterity modifier. The spell ends early if the target dons armor."
+      "description": "You touch a willing creature who isn’t wearing armor. Until the spell ends, the target’s base AC becomes 13 plus its Dexterity modifier. The spell ends early if the target dons armor.",
+      "component": [
+        {
+          "target": "armor_class",
+          "amount": 3,
+          "mode": "add",
+          "condition": {
+            "op": "eq",
+            "args": [
+              "armor_type",
+              "none"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Mage Hand",
@@ -4027,7 +4041,14 @@
         "Sorcerer",
         "Wizard"
       ],
-      "description": "An imperceptible barrier of magical force protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from Magic Missile."
+      "description": "An imperceptible barrier of magical force protects you. Until the start of your next turn, you have a +5 bonus to AC, including against the triggering attack, and you take no damage from Magic Missile.",
+      "component": [
+        {
+          "target": "armor_class",
+          "amount": 5,
+          "mode": "add"
+        }
+      ]
     },
     {
       "name": "Shield of Faith",
@@ -4041,7 +4062,14 @@
         "Cleric",
         "Paladin"
       ],
-      "description": "A shimmering field surrounds a creature of your choice within range, granting it a +2 bonus to AC for the duration."
+      "description": "A shimmering field surrounds a creature of your choice within range, granting it a +2 bonus to AC for the duration.",
+      "component": [
+        {
+          "target": "armor_class",
+          "amount": 2,
+          "mode": "add"
+        }
+      ]
     },
     {
       "name": "Shillelagh",
