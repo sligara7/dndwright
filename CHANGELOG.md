@@ -10,6 +10,13 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+### Added
+- **The 4 SRD backgrounds** as a new bundled content category (`load_content("backgrounds")`):
+  Acolyte, Criminal, Sage, Soldier — each with its three ability scores (player-allocated per
+  the 2024 rule), the Origin **feat** it grants (which resolves to a bundled feat in
+  `load_content("feats")` — a test pins this), two skill proficiencies, a tool proficiency, and
+  starting equipment. Completes character origins (species + backgrounds). SRD 5.2 (CC-BY).
+
 ## [0.17.0] — 2026-06-03
 
 ### Added

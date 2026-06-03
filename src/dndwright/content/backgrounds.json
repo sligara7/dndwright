@@ -1,0 +1,73 @@
+{
+  "metadata": {
+    "source": "D&D System Reference Document 5.2.1 (SRD 5.2)",
+    "license": "CC-BY-4.0 — © Wizards of the Coast. See NOTICE.",
+    "note": "The 4 SRD 5.2 backgrounds. Each grants ability-score increases (player-allocated per ability_score_rule), an Origin feat (in load_content('feats')), two skill proficiencies, a tool proficiency, and starting equipment."
+  },
+  "backgrounds": [
+    {
+      "name": "Acolyte",
+      "ability_scores": [
+        "Intelligence",
+        "Wisdom",
+        "Charisma"
+      ],
+      "feat": "Magic Initiate (Cleric)",
+      "skill_proficiencies": [
+        "Insight",
+        "Religion"
+      ],
+      "tool_proficiency": "Calligrapher’s Supplies",
+      "equipment": "Choose A or B: (A) Calligrapher’s Supplies, Book (prayers), Holy Symbol, Parchment (10 sheets), Robe, 8 GP; or (B) 50 GP",
+      "ability_score_rule": "Increase one of these by 2 and another by 1, or increase all three by 1 (max 20)."
+    },
+    {
+      "name": "Criminal",
+      "ability_scores": [
+        "Dexterity",
+        "Constitution",
+        "Intelligence"
+      ],
+      "feat": "Alert",
+      "skill_proficiencies": [
+        "Sleight of Hand",
+        "Stealth"
+      ],
+      "tool_proficiency": "Thieves’ Tools",
+      "equipment": "Choose A or B: (A) 2 Daggers, Thieves’ Tools, Crowbar, 2 Pouches, Traveler’s Clothes, 16 GP; or (B) 50 GP",
+      "ability_score_rule": "Increase one of these by 2 and another by 1, or increase all three by 1 (max 20)."
+    },
+    {
+      "name": "Sage",
+      "ability_scores": [
+        "Constitution",
+        "Intelligence",
+        "Wisdom"
+      ],
+      "feat": "Magic Initiate (Wizard)",
+      "skill_proficiencies": [
+        "Arcana",
+        "History"
+      ],
+      "tool_proficiency": "Calligrapher’s Supplies",
+      "equipment": "Choose A or B: (A) Quarterstaff, Calligrapher’s Supplies, Book (history), Parchment (8 sheets), Robe, 8 GP; or (B) 50 GP",
+      "ability_score_rule": "Increase one of these by 2 and another by 1, or increase all three by 1 (max 20)."
+    },
+    {
+      "name": "Soldier",
+      "ability_scores": [
+        "Strength",
+        "Dexterity",
+        "Constitution"
+      ],
+      "feat": "Savage Attacker",
+      "skill_proficiencies": [
+        "Athletics",
+        "Intimidation"
+      ],
+      "tool_proficiency": "Choose one kind of Gaming Set (see “Equipment”)",
+      "equipment": "Choose A or B: (A) Spear, Shortbow, 20 Arrows, Gaming Set (same as above), Healer’s Kit, Quiver, Traveler’s Clothes, 14 GP; or (B) 50 GP",
+      "ability_score_rule": "Increase one of these by 2 and another by 1, or increase all three by 1 (max 20)."
+    }
+  ]
+}
