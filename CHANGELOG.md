@@ -10,6 +10,16 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+### Added
+- **The 12 SRD classes** as bundled content (`load_content("classes")`): Barbarian, Bard,
+  Cleric, Druid, Fighter, Monk, Paladin, Ranger, Rogue, Sorcerer, Warlock, Wizard — each with
+  core traits (hit die, primary ability, saving throws, skill/weapon/armor proficiencies,
+  starting equipment, spellcasting type + ability), the level 1–20 **feature progression**, and
+  the SRD subclass. `hit_die`/`saving_throws`/`spellcasting` mirror the rules lookup tables (a
+  test pins the agreement); a caster's spell list is derivable from `load_content("spells")`.
+  Replaces the former homebrew sample classes; SRD 5.2 (CC-BY) — only `creatures` remains
+  homebrew. NOTICE updated.
+
 ## [0.16.0] — 2026-06-03
 
 ### Added

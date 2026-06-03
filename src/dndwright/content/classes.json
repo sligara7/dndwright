@@ -1,147 +1,977 @@
 {
   "metadata": {
-    "source": "dndwright original homebrew",
-    "license": "Original content — not derived from any copyrighted RPG product.",
-    "note": "Sample starter content; generate more with dndwright.content.generate."
+    "source": "D&D System Reference Document 5.2.1 (SRD 5.2)",
+    "license": "CC-BY-4.0 — © Wizards of the Coast. See NOTICE.",
+    "note": "The 12 SRD 5.2 classes: core traits + level-by-level feature progression + the SRD subclass. hit_die/saving_throws/spellcasting mirror the rules lookup tables; a caster's spell list is derivable from load_content('spells') (the `classes` field)."
   },
   "classes": [
     {
-      "name": "Echo-Binder",
-      "mechanics": {
-        "hit_die": "d8",
-        "primary_ability": "CHA",
-        "saving_throws": [
-          "CHA",
-          "INT"
-        ],
-        "spellcasting_type": "full",
-        "key_features": [
-          "Resonant Tether",
-          "Harmonic Mimicry",
-          "Sonic Feedback",
-          "Shatter-Point Focus"
-        ]
-      },
-      "narrative": {
-        "description": "Echo-Binders capture the lingering vibrations of historical events and reality itself to weave them into offensive spells. They manipulate the soundscapes of combat to disrupt enemies and amplify their own presence.",
-        "role": "Controller/Support",
-        "flavor": "Every silence has a story, and I am the one who makes it scream."
-      }
+      "name": "Barbarian",
+      "description": "A fierce martial warrior who channels a primal Rage for extraordinary might and resilience.",
+      "hit_die": "d12",
+      "primary_ability": "Strength",
+      "saving_throws": [
+        "Strength",
+        "Constitution"
+      ],
+      "skill_proficiencies": "Choose 2: Animal Handling, Athletics, Intimidation, Nature, Perception, or Survival",
+      "weapon_proficiencies": "Simple and Martial weapons",
+      "armor_training": "Light and Medium armor and Shields",
+      "tool_proficiencies": "",
+      "starting_equipment": "Choose A or B: (A) Greataxe, 4 Handaxes, Explorer’s Pack, and 15 GP; or (B) 75 GP",
+      "spellcasting": null,
+      "subclass": "Path of the Berserker",
+      "subclass_level": 3,
+      "features": [
+        {
+          "level": 1,
+          "name": "Rage"
+        },
+        {
+          "level": 1,
+          "name": "Unarmored Defense"
+        },
+        {
+          "level": 1,
+          "name": "Weapon Mastery"
+        },
+        {
+          "level": 2,
+          "name": "Danger Sense"
+        },
+        {
+          "level": 2,
+          "name": "Reckless Attack"
+        },
+        {
+          "level": 3,
+          "name": "Barbarian Subclass"
+        },
+        {
+          "level": 3,
+          "name": "Primal Knowledge"
+        },
+        {
+          "level": 4,
+          "name": "Ability Score Improvement"
+        },
+        {
+          "level": 5,
+          "name": "Extra Attack"
+        },
+        {
+          "level": 5,
+          "name": "Fast Movement"
+        },
+        {
+          "level": 7,
+          "name": "Feral Instinct"
+        },
+        {
+          "level": 7,
+          "name": "Instinctive Pounce"
+        },
+        {
+          "level": 9,
+          "name": "Brutal Strike"
+        },
+        {
+          "level": 11,
+          "name": "Relentless Rage"
+        },
+        {
+          "level": 13,
+          "name": "Improved Brutal Strike"
+        },
+        {
+          "level": 15,
+          "name": "Persistent Rage"
+        },
+        {
+          "level": 17,
+          "name": "Improved Brutal Strike"
+        },
+        {
+          "level": 18,
+          "name": "Indomitable Might"
+        },
+        {
+          "level": 19,
+          "name": "Epic Boon"
+        },
+        {
+          "level": 20,
+          "name": "Primal Champion"
+        }
+      ]
     },
     {
-      "name": "Kinetics-Smith",
-      "mechanics": {
-        "hit_die": "d10",
-        "primary_ability": "STR",
-        "saving_throws": [
-          "STR",
-          "CON"
-        ],
-        "spellcasting_type": "none",
-        "key_features": [
-          "Momentum Storage",
-          "Inertia Plating",
-          "Impact Discharge",
-          "Velocity Strike"
-        ]
+      "name": "Bard",
+      "description": "A versatile full caster who weaves magic through music and lore, inspiring allies and mastering many skills.",
+      "hit_die": "d8",
+      "primary_ability": "Charisma",
+      "saving_throws": [
+        "Dexterity",
+        "Charisma"
+      ],
+      "skill_proficiencies": "Choose any 3 skills (see “Playing the Game”)",
+      "weapon_proficiencies": "Simple weapons",
+      "armor_training": "Light armor",
+      "tool_proficiencies": "Choose 3 Musical Instruments (see “Equipment”)",
+      "starting_equipment": "Choose A or B: (A) Leather Armor, 2 Daggers, Musical Instrument of your choice, Entertainer’s Pack, and 19 GP; or (B) 90 GP",
+      "spellcasting": {
+        "type": "full_caster",
+        "ability": "Charisma",
+        "spell_list_size": 130
       },
-      "narrative": {
-        "description": "These warriors wear heavy, specialized armor designed to absorb and store the kinetic energy of incoming blows. They release this stored force in devastating, explosive counter-attacks that can shatter stone.",
-        "role": "Frontline Tank",
-        "flavor": "Hit me harder; you are only fueling my next strike."
-      }
+      "subclass": "College of Lore",
+      "subclass_level": 3,
+      "features": [
+        {
+          "level": 1,
+          "name": "Bardic Inspiration"
+        },
+        {
+          "level": 1,
+          "name": "Spellcasting"
+        },
+        {
+          "level": 2,
+          "name": "Expertise"
+        },
+        {
+          "level": 2,
+          "name": "Jack of All Trades"
+        },
+        {
+          "level": 3,
+          "name": "Bard Subclass"
+        },
+        {
+          "level": 4,
+          "name": "Ability Score Improvement"
+        },
+        {
+          "level": 5,
+          "name": "Font of Inspiration"
+        },
+        {
+          "level": 7,
+          "name": "Countercharm"
+        },
+        {
+          "level": 10,
+          "name": "Magical Secrets"
+        },
+        {
+          "level": 18,
+          "name": "Superior Inspiration"
+        },
+        {
+          "level": 19,
+          "name": "Epic Boon"
+        },
+        {
+          "level": 20,
+          "name": "Words of Creation"
+        }
+      ]
     },
     {
-      "name": "Vellum-Weaver",
-      "mechanics": {
-        "hit_die": "d6",
-        "primary_ability": "INT",
-        "saving_throws": [
-          "INT",
-          "WIS"
-        ],
-        "spellcasting_type": "full",
-        "key_features": [
-          "Ink-Skin Calligraphy",
-          "Living Manuscript",
-          "Paper-Slide Mobility",
-          "Scripted Reality"
-        ]
+      "name": "Cleric",
+      "description": "A divine full caster who channels the power of a deity to heal, protect, and smite.",
+      "hit_die": "d8",
+      "primary_ability": "Wisdom",
+      "saving_throws": [
+        "Wisdom",
+        "Charisma"
+      ],
+      "skill_proficiencies": "Choose 2: History, Insight, Medicine, Persuasion, or Religion",
+      "weapon_proficiencies": "Simple weapons",
+      "armor_training": "Light and Medium armor and Shields",
+      "tool_proficiencies": "",
+      "starting_equipment": "Choose A or B: (A) Chain Shirt, Shield, Mace, Holy Symbol, Priest’s Pack, and 7 GP; or (B) 110 GP",
+      "spellcasting": {
+        "type": "full_caster",
+        "ability": "Wisdom",
+        "spell_list_size": 109
       },
-      "narrative": {
-        "description": "Vellum-Weavers treat the fabric of the world as a blank page, using enchanted inks to inscribe reality-altering runes directly onto the air or their own skin. They command shifting geometries and constructs birthed from written logic.",
-        "role": "Utility/Blaster",
-        "flavor": "History is not written by the victors, it is written by those who know how to edit."
-      }
+      "subclass": "Life Domain",
+      "subclass_level": 3,
+      "features": [
+        {
+          "level": 1,
+          "name": "Spellcasting"
+        },
+        {
+          "level": 1,
+          "name": "Divine Order"
+        },
+        {
+          "level": 2,
+          "name": "Channel Divinity"
+        },
+        {
+          "level": 3,
+          "name": "Cleric Subclass"
+        },
+        {
+          "level": 4,
+          "name": "Ability Score Improvement"
+        },
+        {
+          "level": 5,
+          "name": "Sear Undead"
+        },
+        {
+          "level": 7,
+          "name": "Blessed Strikes"
+        },
+        {
+          "level": 10,
+          "name": "Divine Intervention"
+        },
+        {
+          "level": 14,
+          "name": "Improved Blessed Strikes"
+        },
+        {
+          "level": 19,
+          "name": "Epic Boon"
+        },
+        {
+          "level": 20,
+          "name": "Greater Divine Intervention"
+        }
+      ]
     },
     {
-      "name": "Soul-Sifter",
-      "mechanics": {
-        "hit_die": "d8",
-        "primary_ability": "WIS",
-        "saving_throws": [
-          "WIS",
-          "CHA"
-        ],
-        "spellcasting_type": "half",
-        "key_features": [
-          "Ethereal Sieve",
-          "Spirit-Dust Extraction",
-          "Vestige Manifestation",
-          "Ancestral Tether"
-        ]
+      "name": "Druid",
+      "description": "A full caster attuned to nature, wielding primal magic and shapeshifting into beasts.",
+      "hit_die": "d8",
+      "primary_ability": "Wisdom",
+      "saving_throws": [
+        "Intelligence",
+        "Wisdom"
+      ],
+      "skill_proficiencies": "Choose 2: Animal Handling, Arcana, Insight, Medicine, Nature, Perception, Religion, or Survival",
+      "weapon_proficiencies": "Simple weapons",
+      "armor_training": "Light armor and Shields",
+      "tool_proficiencies": "Herbalism Kit",
+      "starting_equipment": "Choose A or B: (A) Leather Armor, Shield, Sickle, Druidic Focus (Quarterstaff), Explorer’s Pack, Herbalism Kit, and 9 GP; or (B) 50 GP",
+      "spellcasting": {
+        "type": "full_caster",
+        "ability": "Wisdom",
+        "spell_list_size": 124
       },
-      "narrative": {
-        "description": "Soul-Sifters act as conduits for the residual spiritual energy left behind by the departed. By filtering this energy through a spectral tool, they can briefly manifest the skills or memories of those long gone.",
-        "role": "Utility/Support",
-        "flavor": "The dead have so much to say if you simply know how to filter the noise."
-      }
+      "subclass": "Circle of the Land",
+      "subclass_level": 3,
+      "features": [
+        {
+          "level": 1,
+          "name": "Spellcasting"
+        },
+        {
+          "level": 1,
+          "name": "Druidic"
+        },
+        {
+          "level": 1,
+          "name": "Primal Order"
+        },
+        {
+          "level": 2,
+          "name": "Wild Shape"
+        },
+        {
+          "level": 2,
+          "name": "Wild Companion"
+        },
+        {
+          "level": 3,
+          "name": "Druid Subclass"
+        },
+        {
+          "level": 4,
+          "name": "Ability Score Improvement"
+        },
+        {
+          "level": 5,
+          "name": "Wild Resurgence"
+        },
+        {
+          "level": 7,
+          "name": "Elemental Fury"
+        },
+        {
+          "level": 15,
+          "name": "Improved Elemental Fury"
+        },
+        {
+          "level": 18,
+          "name": "Beast Spells"
+        },
+        {
+          "level": 19,
+          "name": "Epic Boon"
+        },
+        {
+          "level": 20,
+          "name": "Archdruid"
+        }
+      ]
     },
     {
-      "name": "Cinder-Gardener",
-      "mechanics": {
-        "hit_die": "d10",
-        "primary_ability": "CON",
-        "saving_throws": [
-          "CON",
-          "DEX"
-        ],
-        "spellcasting_type": "none",
-        "key_features": [
-          "Ash-Bloom Cultivation",
-          "Emberskin Growth",
-          "Root-Fire Entanglement",
-          "Coal-Heart Resilience"
-        ]
-      },
-      "narrative": {
-        "description": "These survivalists cultivate symbiotic relationships with magical, fire-consuming flora that thrives in arid or destroyed landscapes. They heal themselves and trap foes using blackened thorns and smoldering pollen.",
-        "role": "Defender/Controller",
-        "flavor": "From the ashes of the world, I grow the beauty that will consume you."
-      }
+      "name": "Fighter",
+      "description": "A master of weapons and armor, defined by martial versatility and extra attacks.",
+      "hit_die": "d10",
+      "primary_ability": "Strength or Dexterity",
+      "saving_throws": [
+        "Strength",
+        "Constitution"
+      ],
+      "skill_proficiencies": "Choose 2: Acrobatics, Animal Handling, Athletics, History, Insight, Intimidation, Persuasion, Perception, or Survival",
+      "weapon_proficiencies": "Simple and Martial weapons",
+      "armor_training": "Light, Medium, and Heavy armor and Shields",
+      "tool_proficiencies": "",
+      "starting_equipment": "Choose A, B, or C: (A) Chain Mail, Greatsword, Flail, 8 Javelins, Dungeoneer’s Pack, and 4 GP; (B) Studded Leather Armor, Scimitar, Short­ sword, Longbow, 20 Arrows, Quiver, Dungeoneer’s Pack, and 11 GP; or (C) 155 GP",
+      "spellcasting": null,
+      "subclass": "Champion",
+      "subclass_level": 3,
+      "features": [
+        {
+          "level": 1,
+          "name": "Fighting Style"
+        },
+        {
+          "level": 1,
+          "name": "Second Wind"
+        },
+        {
+          "level": 1,
+          "name": "Weapon Mastery"
+        },
+        {
+          "level": 2,
+          "name": "Action Surge"
+        },
+        {
+          "level": 2,
+          "name": "Tactical Mind"
+        },
+        {
+          "level": 3,
+          "name": "Fighter Subclass"
+        },
+        {
+          "level": 4,
+          "name": "Ability Score Improvement"
+        },
+        {
+          "level": 5,
+          "name": "Extra Attack"
+        },
+        {
+          "level": 5,
+          "name": "Tactical Shift"
+        },
+        {
+          "level": 9,
+          "name": "Indomitable"
+        },
+        {
+          "level": 9,
+          "name": "Tactical Master"
+        },
+        {
+          "level": 11,
+          "name": "Two Extra Attacks"
+        },
+        {
+          "level": 13,
+          "name": "Studied Attacks"
+        },
+        {
+          "level": 19,
+          "name": "Epic Boon"
+        },
+        {
+          "level": 20,
+          "name": "Three Extra Attacks"
+        }
+      ]
     },
     {
-      "name": "Void-Strider",
-      "mechanics": {
-        "hit_die": "d8",
-        "primary_ability": "DEX",
-        "saving_throws": [
-          "DEX",
-          "CHA"
-        ],
-        "spellcasting_type": "pact",
-        "key_features": [
-          "Phase-Shift Step",
-          "Vacuum Edge",
-          "Null-Space Pocket",
-          "Shadow-Stutter"
-        ]
+      "name": "Monk",
+      "description": "A martial artist who harnesses inner Focus (Ki) for swift unarmed strikes and supernatural mobility.",
+      "hit_die": "d8",
+      "primary_ability": "Dexterity and Wisdom",
+      "saving_throws": [
+        "Strength",
+        "Dexterity"
+      ],
+      "skill_proficiencies": "Choose 2: Acrobatics, Athletics, History, Insight, Religion, or Stealth",
+      "weapon_proficiencies": "Simple weapons and Martial weapons that have the Light property",
+      "armor_training": "None",
+      "tool_proficiencies": "Choose one type of Artisan’s Tools or Musical Instrument (see “Equipment”)",
+      "starting_equipment": "Choose A or B: (A) Spear, 5 Daggers, Artisan’s Tools or Musical Instrument chosen for the tool proficiency above, Explorer’s Pack, and 11 GP; or (B) 50 GP",
+      "spellcasting": null,
+      "subclass": "Warrior of the Open Hand",
+      "subclass_level": 3,
+      "features": [
+        {
+          "level": 1,
+          "name": "Martial Arts"
+        },
+        {
+          "level": 1,
+          "name": "Unarmored Defense"
+        },
+        {
+          "level": 2,
+          "name": "Monk’s Focus"
+        },
+        {
+          "level": 2,
+          "name": "Unarmored Movement"
+        },
+        {
+          "level": 2,
+          "name": "Uncanny Metabolism"
+        },
+        {
+          "level": 3,
+          "name": "Deflect Attacks"
+        },
+        {
+          "level": 3,
+          "name": "Monk Subclass"
+        },
+        {
+          "level": 4,
+          "name": "Ability Score Improvement"
+        },
+        {
+          "level": 4,
+          "name": "Slow Fall"
+        },
+        {
+          "level": 5,
+          "name": "Extra Attack"
+        },
+        {
+          "level": 5,
+          "name": "Stunning Strike"
+        },
+        {
+          "level": 6,
+          "name": "Empowered Strikes"
+        },
+        {
+          "level": 7,
+          "name": "Evasion"
+        },
+        {
+          "level": 9,
+          "name": "Acrobatic Movement"
+        },
+        {
+          "level": 10,
+          "name": "Heightened Focus"
+        },
+        {
+          "level": 10,
+          "name": "Self-Restoration"
+        },
+        {
+          "level": 13,
+          "name": "Deflect Energy"
+        },
+        {
+          "level": 14,
+          "name": "Disciplined Survivor"
+        },
+        {
+          "level": 15,
+          "name": "Perfect Focus"
+        },
+        {
+          "level": 18,
+          "name": "Superior Defense"
+        },
+        {
+          "level": 19,
+          "name": "Epic Boon"
+        },
+        {
+          "level": 20,
+          "name": "Body and Mind"
+        }
+      ]
+    },
+    {
+      "name": "Paladin",
+      "description": "A holy warrior bound by an oath, blending martial prowess with divine half-casting and smites.",
+      "hit_die": "d10",
+      "primary_ability": "Strength and Charisma",
+      "saving_throws": [
+        "Wisdom",
+        "Charisma"
+      ],
+      "skill_proficiencies": "Choose 2: Athletics, Insight, Intimidation, Medicine, Persuasion, or Religion",
+      "weapon_proficiencies": "Simple and Martial weapons",
+      "armor_training": "Light, Medium, and Heavy armor and Shields",
+      "tool_proficiencies": "",
+      "starting_equipment": "Choose A or B: (A) Chain Mail, Shield, Longsword, 6 Javelins, Holy Symbol, Priest’s Pack, and 9 GP; or (B) 150 GP",
+      "spellcasting": {
+        "type": "half_caster",
+        "ability": "Charisma",
+        "spell_list_size": 38
       },
-      "narrative": {
-        "description": "Void-Striders navigate the thin, freezing gaps between dimensions, using these shortcuts to teleport and reposition instantly. They wield weapons forged from the absolute cold and silence of the void.",
-        "role": "Striker/Skirmisher",
-        "flavor": "I am not moving; I am simply deciding where the world should keep me."
-      }
+      "subclass": "Oath of Devotion",
+      "subclass_level": 3,
+      "features": [
+        {
+          "level": 1,
+          "name": "Lay On Hands"
+        },
+        {
+          "level": 1,
+          "name": "Spellcasting"
+        },
+        {
+          "level": 1,
+          "name": "Weapon Mastery"
+        },
+        {
+          "level": 2,
+          "name": "Fighting Style"
+        },
+        {
+          "level": 2,
+          "name": "Paladin’s Smite"
+        },
+        {
+          "level": 3,
+          "name": "Channel Divinity"
+        },
+        {
+          "level": 3,
+          "name": "Paladin Subclass"
+        },
+        {
+          "level": 4,
+          "name": "Ability Score Improvement"
+        },
+        {
+          "level": 5,
+          "name": "Extra Attack"
+        },
+        {
+          "level": 5,
+          "name": "Faithful Steed"
+        },
+        {
+          "level": 6,
+          "name": "Aura of Protection"
+        },
+        {
+          "level": 9,
+          "name": "Abjure Foes"
+        },
+        {
+          "level": 10,
+          "name": "Aura of Courage"
+        },
+        {
+          "level": 11,
+          "name": "Radiant Strikes"
+        },
+        {
+          "level": 14,
+          "name": "Restoring Touch"
+        },
+        {
+          "level": 18,
+          "name": "Aura Expansion"
+        },
+        {
+          "level": 19,
+          "name": "Epic Boon"
+        }
+      ]
+    },
+    {
+      "name": "Ranger",
+      "description": "A wilderness warrior and half caster, blending martial skill with primal magic and tracking.",
+      "hit_die": "d10",
+      "primary_ability": "Dexterity and Wisdom",
+      "saving_throws": [
+        "Strength",
+        "Dexterity"
+      ],
+      "skill_proficiencies": "Choose 3: Animal Handling, Athletics, Insight, Investigation, Nature, Perception, Stealth, or Survival",
+      "weapon_proficiencies": "Simple and Martial weapons",
+      "armor_training": "Light and Medium armor and Shields",
+      "tool_proficiencies": "",
+      "starting_equipment": "Choose A or B: (A) Studded Leather Armor, Scimitar, Shortsword, Longbow, 20 Arrows, Quiver, Druidic Focus (sprig of mistletoe), Explorer’s Pack, and 7 GP; or (B) 150 GP",
+      "spellcasting": {
+        "type": "half_caster",
+        "ability": "Wisdom",
+        "spell_list_size": 48
+      },
+      "subclass": "Hunter",
+      "subclass_level": 3,
+      "features": [
+        {
+          "level": 1,
+          "name": "Spellcasting"
+        },
+        {
+          "level": 1,
+          "name": "Favored Enemy"
+        },
+        {
+          "level": 1,
+          "name": "Weapon Mastery"
+        },
+        {
+          "level": 2,
+          "name": "Deft Explorer"
+        },
+        {
+          "level": 2,
+          "name": "Fighting Style"
+        },
+        {
+          "level": 3,
+          "name": "Ranger Subclass"
+        },
+        {
+          "level": 4,
+          "name": "Ability Score Improvement"
+        },
+        {
+          "level": 5,
+          "name": "Extra Attack"
+        },
+        {
+          "level": 6,
+          "name": "Roving"
+        },
+        {
+          "level": 9,
+          "name": "Expertise"
+        },
+        {
+          "level": 10,
+          "name": "Tireless"
+        },
+        {
+          "level": 13,
+          "name": "Relentless Hunter"
+        },
+        {
+          "level": 14,
+          "name": "Nature’s Veil"
+        },
+        {
+          "level": 17,
+          "name": "Precise Hunter"
+        },
+        {
+          "level": 18,
+          "name": "Feral Senses"
+        },
+        {
+          "level": 19,
+          "name": "Epic Boon"
+        },
+        {
+          "level": 20,
+          "name": "Foe Slayer"
+        }
+      ]
+    },
+    {
+      "name": "Rogue",
+      "description": "A skilled, stealthy expert who deals devastating Sneak Attacks and excels at skills.",
+      "hit_die": "d8",
+      "primary_ability": "Dexterity",
+      "saving_throws": [
+        "Dexterity",
+        "Intelligence"
+      ],
+      "skill_proficiencies": "Choose 4: Acrobatics, Athletics, Deception, Insight, Intimidation, Investigation, Perception, Persuasion, Sleight of Hand, or Stealth",
+      "weapon_proficiencies": "Simple weapons and Martial weapons that have the Finesse or Light property",
+      "armor_training": "Light armor",
+      "tool_proficiencies": "Thieves’ Tools",
+      "starting_equipment": "Choose A or B: (A) Leather Armor, 2 Daggers, Short­ sword, Shortbow, 20 Arrows, Quiver, Thieves’ Tools, Burglar’s Pack, and 8 GP; or (B) 100 GP",
+      "spellcasting": null,
+      "subclass": "Thief",
+      "subclass_level": 3,
+      "features": [
+        {
+          "level": 1,
+          "name": "Expertise"
+        },
+        {
+          "level": 1,
+          "name": "Sneak Attack"
+        },
+        {
+          "level": 1,
+          "name": "Thieves’ Cant"
+        },
+        {
+          "level": 1,
+          "name": "Weapon Mastery"
+        },
+        {
+          "level": 2,
+          "name": "Cunning Action"
+        },
+        {
+          "level": 3,
+          "name": "Rogue Subclass"
+        },
+        {
+          "level": 3,
+          "name": "Steady Aim"
+        },
+        {
+          "level": 4,
+          "name": "Ability Score Improvement"
+        },
+        {
+          "level": 5,
+          "name": "Cunning Strike"
+        },
+        {
+          "level": 5,
+          "name": "Uncanny Dodge"
+        },
+        {
+          "level": 7,
+          "name": "Evasion"
+        },
+        {
+          "level": 7,
+          "name": "Reliable Talent"
+        },
+        {
+          "level": 11,
+          "name": "Improved Cunning Strike"
+        },
+        {
+          "level": 14,
+          "name": "Devious Strikes"
+        },
+        {
+          "level": 15,
+          "name": "Slippery Mind"
+        },
+        {
+          "level": 18,
+          "name": "Elusive"
+        },
+        {
+          "level": 19,
+          "name": "Epic Boon"
+        },
+        {
+          "level": 20,
+          "name": "Stroke of Luck"
+        }
+      ]
+    },
+    {
+      "name": "Sorcerer",
+      "description": "An innate full caster who shapes raw magic through Metamagic and a magical bloodline.",
+      "hit_die": "d6",
+      "primary_ability": "Charisma",
+      "saving_throws": [
+        "Constitution",
+        "Charisma"
+      ],
+      "skill_proficiencies": "Choose 2: Arcana, Deception, Insight, Intimidation, Persuasion, or Religion",
+      "weapon_proficiencies": "Simple weapons",
+      "armor_training": "None",
+      "tool_proficiencies": "",
+      "starting_equipment": "Choose A or B: (A) Spear, 2 Daggers, Arcane Focus (crystal), Dungeoneer’s Pack, and 28 GP; or (B) 50 GP",
+      "spellcasting": {
+        "type": "full_caster",
+        "ability": "Charisma",
+        "spell_list_size": 140
+      },
+      "subclass": "Draconic Sorcery",
+      "subclass_level": 3,
+      "features": [
+        {
+          "level": 1,
+          "name": "Spellcasting"
+        },
+        {
+          "level": 1,
+          "name": "Innate Sorcery"
+        },
+        {
+          "level": 2,
+          "name": "Font of Magic"
+        },
+        {
+          "level": 2,
+          "name": "Metamagic"
+        },
+        {
+          "level": 3,
+          "name": "Sorcerer Subclass"
+        },
+        {
+          "level": 4,
+          "name": "Ability Score Improvement"
+        },
+        {
+          "level": 5,
+          "name": "Sorcerous Restoration"
+        },
+        {
+          "level": 7,
+          "name": "Sorcery Incarnate"
+        },
+        {
+          "level": 19,
+          "name": "Epic Boon"
+        },
+        {
+          "level": 20,
+          "name": "Arcane Apotheosis"
+        }
+      ]
+    },
+    {
+      "name": "Warlock",
+      "description": "A caster who draws Pact Magic and Eldritch Invocations from a supernatural patron.",
+      "hit_die": "d8",
+      "primary_ability": "Charisma",
+      "saving_throws": [
+        "Wisdom",
+        "Charisma"
+      ],
+      "skill_proficiencies": "Choose 2: Arcana, Deception, History, Intimidation, Investigation, Nature, or Religion",
+      "weapon_proficiencies": "Simple weapons",
+      "armor_training": "Light armor",
+      "tool_proficiencies": "",
+      "starting_equipment": "Choose A or B: (A) Leather Armor, Sickle, 2 Daggers, Arcane Focus (orb), Book (occult lore), Scholar’s Pack, and 15 GP; or (B) 100 GP",
+      "spellcasting": {
+        "type": "pact_caster",
+        "ability": "Charisma",
+        "spell_list_size": 72
+      },
+      "subclass": "Fiend Patron",
+      "subclass_level": 3,
+      "features": [
+        {
+          "level": 1,
+          "name": "Eldritch Invocations"
+        },
+        {
+          "level": 1,
+          "name": "Pact Magic"
+        },
+        {
+          "level": 2,
+          "name": "Magical Cunning"
+        },
+        {
+          "level": 3,
+          "name": "Warlock Subclass"
+        },
+        {
+          "level": 4,
+          "name": "Ability Score Improvement"
+        },
+        {
+          "level": 9,
+          "name": "Contact Patron"
+        },
+        {
+          "level": 11,
+          "name": "Mystic Arcanum"
+        },
+        {
+          "level": 19,
+          "name": "Epic Boon"
+        },
+        {
+          "level": 20,
+          "name": "Eldritch Master"
+        }
+      ]
+    },
+    {
+      "name": "Wizard",
+      "description": "A scholarly full caster who masters spells through study and a spellbook.",
+      "hit_die": "d6",
+      "primary_ability": "Intelligence",
+      "saving_throws": [
+        "Intelligence",
+        "Wisdom"
+      ],
+      "skill_proficiencies": "Choose 2: Arcana, History, Insight, Investigation, Medicine, Nature, or Religion",
+      "weapon_proficiencies": "Simple weapons",
+      "armor_training": "None",
+      "tool_proficiencies": "",
+      "starting_equipment": "Choose A or B: (A) 2 Daggers, Arcane Focus (Quarterstaff), Robe, Spellbook, Scholar’s Pack, and 5 GP; or (B) 55 GP",
+      "spellcasting": {
+        "type": "full_caster",
+        "ability": "Intelligence",
+        "spell_list_size": 218
+      },
+      "subclass": "Evoker",
+      "subclass_level": 3,
+      "features": [
+        {
+          "level": 1,
+          "name": "Spellcasting"
+        },
+        {
+          "level": 1,
+          "name": "Ritual Adept"
+        },
+        {
+          "level": 1,
+          "name": "Arcane Recovery"
+        },
+        {
+          "level": 2,
+          "name": "Scholar"
+        },
+        {
+          "level": 3,
+          "name": "Wizard Subclass"
+        },
+        {
+          "level": 4,
+          "name": "Ability Score Improvement"
+        },
+        {
+          "level": 5,
+          "name": "Memorize Spell"
+        },
+        {
+          "level": 18,
+          "name": "Spell Mastery"
+        },
+        {
+          "level": 19,
+          "name": "Epic Boon"
+        },
+        {
+          "level": 20,
+          "name": "Signature Spells"
+        }
+      ]
     }
   ]
 }
