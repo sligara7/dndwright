@@ -195,8 +195,16 @@ def component_from_content(
     * ``"formula"`` — ``{"op", "args"}`` whose args may reference *host* nodes, for effects
       that scale (e.g. Alert → ``initiative`` += ``proficiency_bonus``).
 
-    A ``target`` (or formula arg) may contain a ``{placeholder}`` filled from ``choices`` —
-    so a feat whose benefit is "increase an ability score of *your choice*" is a template::
+    A modifier may also carry a ``"condition"`` — a ``{"op", "args"}`` over host nodes that
+    evaluates to a bool — to make the contribution *gated*: it applies only while the
+    condition holds, contributing the off-identity (``0``, or ``()`` for union) otherwise.
+    So the Defense fighting style (+1 AC *while wearing armor*) is
+    ``{"target": "armor_class", "amount": 1, "condition": {"op": "ne", "args": ["armor_type", "none"]}}``
+    — the bonus tracks the character's armour as it changes, with no re-compose.
+
+    A ``target`` (or formula/condition arg) may contain a ``{placeholder}`` filled from
+    ``choices`` — so a feat whose benefit is "increase an ability score of *your choice*" is a
+    template::
 
         from dndwright import load_content, component_from_content, compose, evaluate
         feats = {f["name"]: f for f in load_content("feats")}
@@ -218,19 +226,37 @@ def component_from_content(
 
     nodes: dict[str, ComputationNode] = {}
     contribs: list[Contribution] = []
-    for i, mod in enumerate(spec):
-        src = f"v{i}"
-        if "formula" in mod:
-            f = mod["formula"]
-            formula = FormulaSpec(op=f["op"], args=[fill(a) for a in f["args"]])
+    counter = [0]
+
+    def build(expr: Any) -> Any:
+        """Compile an expression (literal, host-node ref, or nested ``{op, args}``) into the
+        component's sub-graph, returning the arg to reference it (a value or a node id)."""
+        if isinstance(expr, dict) and "op" in expr:
+            nid = f"n{counter[0]}"
+            counter[0] += 1
+            nodes[nid] = ComputationNode(
+                id=nid, node_type=NodeType.FORMULA, label=name,
+                formula=FormulaSpec(op=expr["op"], args=[build(a) for a in expr["args"]]),
+            )
+            return nid
+        return fill(expr)
+
+    for mod in spec:
+        mode = mod.get("mode", "add")
+        # the value contributed while active: a formula node ref, or a literal amount
+        active = build(mod["formula"]) if "formula" in mod else mod["amount"]
+
+        if "condition" in mod:
+            # gate: contribute `active` while the condition holds, else the off-identity
+            off: Any = [] if mode == "union" else 0
+            src = build({"op": "if_then_else",
+                         "args": [mod["condition"], active, off]})
+        elif "formula" in mod:
+            src = active  # the formula node is the source directly
         else:
-            formula = FormulaSpec(op="const", args=[mod["amount"]])
-        nodes[src] = ComputationNode(
-            id=src, node_type=NodeType.FORMULA, label=name, formula=formula,
-        )
-        contribs.append(
-            Contribution(target=fill(mod["target"]), source=src, mode=mod.get("mode", "add"))
-        )
+            src = build({"op": "const", "args": [active]})
+
+        contribs.append(Contribution(target=fill(mod["target"]), source=src, mode=mode))
 
     cid = _slug(name)
     if choices:  # keep distinct components (e.g. ASI:str vs ASI:dex) from colliding on compose

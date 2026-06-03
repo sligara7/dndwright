@@ -259,7 +259,32 @@
       "rarity": "rare",
       "attunement_required": true,
       "type_line": "Wondrous Item, Rare (Requires Attunement)",
-      "description": "While wearing these bracers, you gain a +2 bonus to Armor Class if you are wearing no armor and using no Shield."
+      "description": "While wearing these bracers, you gain a +2 bonus to Armor Class if you are wearing no armor and using no Shield.",
+      "component": [
+        {
+          "target": "armor_class",
+          "amount": 2,
+          "mode": "add",
+          "condition": {
+            "op": "all_true",
+            "args": [
+              {
+                "op": "eq",
+                "args": [
+                  "armor_type",
+                  "none"
+                ]
+              },
+              {
+                "op": "not",
+                "args": [
+                  "has_shield"
+                ]
+              }
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Brazier of Commanding Fire Elementals",

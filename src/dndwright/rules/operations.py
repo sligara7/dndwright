@@ -308,6 +308,16 @@ def op_not(args: list[Any], _tables: dict) -> bool:
     return not args[0]
 
 
+def op_ne(args: list[Any], _tables: dict) -> bool:
+    """args[0] != args[1] (e.g. a gate: ``ne(armor_type, "none")`` → wearing armor)."""
+    return args[0] != args[1]
+
+
+def op_all_true(args: list[Any], _tables: dict) -> bool:
+    """Logical AND over all args — a compound gate condition (``all_true(a, b, …)``)."""
+    return all(args)
+
+
 # ---------------------------------------------------------------------------
 # Utility
 # ---------------------------------------------------------------------------
@@ -418,10 +428,12 @@ OPERATIONS: dict[str, Operation] = {
     # Logic
     "if_then_else": op_if_then_else,
     "eq": op_eq,
+    "ne": op_ne,
     "gt": op_gt,
     "gte": op_gte,
     "in_set": op_in_set,
     "not": op_not,
+    "all_true": op_all_true,
     # Utility
     "lookup": op_lookup,
     "format_mod": op_format_mod,

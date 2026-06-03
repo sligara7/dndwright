@@ -10,6 +10,20 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+### Added
+- **Gated (conditional) contributions** — a `component` modifier may carry a `condition`
+  (a `{op, args}` expression over host nodes) so the contribution applies *only while the
+  condition holds*, otherwise contributing the off-identity (`0`, or `()` for union). The
+  bonus then tracks host state: compose once and it re-evaluates as the character changes,
+  no re-compose. Bundled examples: the **Defense** fighting style (+1 AC while wearing armor)
+  and **Bracers of Defense** (+2 AC while unarmored *and* shieldless — a compound gate).
+- `component_from_content` now compiles a modifier's value/condition as a recursive
+  expression tree — nested `{op, args}` are flattened into the component's sub-graph — so an
+  arbitrarily complex gate (e.g. `all_true(eq(armor_type, "none"), not(has_shield))`) is just
+  data.
+- New formula ops `ne` (not-equal) and `all_true` (logical AND over its args) for writing
+  gate conditions.
+
 ## [0.11.0] — 2026-06-02
 
 ### Added

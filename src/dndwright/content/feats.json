@@ -96,7 +96,21 @@
       "category": "Fighting Style",
       "prerequisite": "Fighting Style Feature",
       "repeatable": false,
-      "description": "While you’re wearing Light, Medium, or Heavy armor, you gain a +1 bonus to Armor Class."
+      "description": "While you’re wearing Light, Medium, or Heavy armor, you gain a +1 bonus to Armor Class.",
+      "component": [
+        {
+          "target": "armor_class",
+          "amount": 1,
+          "mode": "add",
+          "condition": {
+            "op": "ne",
+            "args": [
+              "armor_type",
+              "none"
+            ]
+          }
+        }
+      ]
     },
     {
       "name": "Great Weapon Fighting",
