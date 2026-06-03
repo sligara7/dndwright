@@ -10,6 +10,8 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+## [0.16.0] — 2026-06-03
+
 ### Added
 - **The full SRD spell catalog** — all **339** SRD 5.2 spells (cantrips through level 9) as
   bundled content (`load_content("spells")`): name, level, school, casting time, range,
@@ -306,7 +308,8 @@ from a working application.
 Pure (pydantic + stdlib); no application/framework coupling. Rules content derives
 from the SRD 5.2 (CC-BY-4.0); see NOTICE.
 
-[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.15.0...HEAD
+[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.16.0...HEAD
+[0.16.0]: https://github.com/sligara7/dndwright/compare/v0.15.0...v0.16.0
 [0.15.0]: https://github.com/sligara7/dndwright/compare/v0.14.0...v0.15.0
 [0.14.0]: https://github.com/sligara7/dndwright/compare/v0.13.0...v0.14.0
 [0.13.0]: https://github.com/sligara7/dndwright/compare/v0.12.0...v0.13.0
