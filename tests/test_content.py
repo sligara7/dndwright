@@ -10,12 +10,13 @@ class TestBundledContent:
     def test_categories(self):
         assert set(categories()) == {
             "classes", "species", "creatures", "magic_items", "conditions", "feats",
-            "spells", "backgrounds",
+            "spells", "backgrounds", "weapons", "armor",
         }
 
     @pytest.mark.parametrize("category,min_count", [
         ("classes", 12), ("species", 9), ("creatures", 12), ("magic_items", 100),
         ("conditions", 15), ("feats", 16), ("spells", 339), ("backgrounds", 4),
+        ("weapons", 38), ("armor", 13),
     ])
     def test_load_content(self, category, min_count):
         items = load_content(category)

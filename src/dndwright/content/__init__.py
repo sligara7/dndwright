@@ -6,7 +6,7 @@
 
 The bundled ``creatures`` are original homebrew (no official content);
 ``magic_items`` / ``conditions`` / ``feats`` / ``species`` / ``spells`` /
-``classes`` / ``backgrounds`` are SRD 5.2 (CC-BY) — see NOTICE. Many ``magic_items`` and ``feats`` carry a ``component``
+``classes`` / ``backgrounds`` / ``weapons`` / ``armor`` are SRD 5.2 (CC-BY) — see NOTICE. Many ``magic_items`` and ``feats`` carry a ``component``
 (see :func:`dndwright.component_from_content`) that snaps onto a character graph.
 Grow the library with :func:`generate_library` (you supply the LLM).
 """
@@ -34,6 +34,8 @@ _CONTENT = {
     "feats": ("feats.json", "feats"),
     "spells": ("spells.json", "spells"),
     "backgrounds": ("backgrounds.json", "backgrounds"),
+    "weapons": ("weapons.json", "weapons"),
+    "armor": ("armor.json", "armor"),
 }
 
 

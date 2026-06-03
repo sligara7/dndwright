@@ -10,6 +10,14 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+### Added
+- **The SRD weapon + armor tables** as two new content categories. `load_content("weapons")` —
+  all 38 SRD weapons (category Simple/Martial, kind Melee/Ranged, damage dice + type, properties,
+  mastery, weight, cost). `load_content("armor")` — the 12 armors + Shield (category, base AC,
+  dex cap, strength requirement, stealth disadvantage, weight, cost; a Shield carries `ac_bonus`).
+  Both **agree with the rules lookup tables** (`weapon_mastery_map`, `armor_base_ac`) — tests pin
+  zero drift. SRD 5.2 (CC-BY).
+
 ## [0.18.0] — 2026-06-03
 
 ### Added

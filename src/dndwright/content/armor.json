@@ -1,0 +1,153 @@
+{
+  "metadata": {
+    "source": "D&D System Reference Document 5.2.1 (SRD 5.2)",
+    "license": "CC-BY-4.0 — © Wizards of the Coast. See NOTICE.",
+    "note": "The SRD 5.2 armor table (12 armors + Shield): category, base_ac (mirrors armor_base_ac), dex_cap, strength_requirement, stealth_disadvantage, weight, cost. A Shield carries ac_bonus (+2) instead of base_ac."
+  },
+  "armor": [
+    {
+      "name": "Padded Armor",
+      "category": "Light",
+      "base_ac": 11,
+      "adds_dex": true,
+      "dex_cap": "none",
+      "strength_requirement": null,
+      "stealth_disadvantage": true,
+      "weight": "8 lb.",
+      "cost": "5 GP"
+    },
+    {
+      "name": "Leather Armor",
+      "category": "Light",
+      "base_ac": 11,
+      "adds_dex": true,
+      "dex_cap": "none",
+      "strength_requirement": null,
+      "stealth_disadvantage": false,
+      "weight": "10 lb.",
+      "cost": "10 GP"
+    },
+    {
+      "name": "Studded Leather Armor",
+      "category": "Light",
+      "base_ac": 12,
+      "adds_dex": true,
+      "dex_cap": "none",
+      "strength_requirement": null,
+      "stealth_disadvantage": false,
+      "weight": "13 lb.",
+      "cost": "45 GP"
+    },
+    {
+      "name": "Hide Armor",
+      "category": "Medium",
+      "base_ac": 12,
+      "adds_dex": true,
+      "dex_cap": 2,
+      "strength_requirement": null,
+      "stealth_disadvantage": false,
+      "weight": "12 lb.",
+      "cost": "10 GP"
+    },
+    {
+      "name": "Chain Shirt",
+      "category": "Medium",
+      "base_ac": 13,
+      "adds_dex": true,
+      "dex_cap": 2,
+      "strength_requirement": null,
+      "stealth_disadvantage": false,
+      "weight": "20 lb.",
+      "cost": "50 GP"
+    },
+    {
+      "name": "Scale Mail",
+      "category": "Medium",
+      "base_ac": 14,
+      "adds_dex": true,
+      "dex_cap": 2,
+      "strength_requirement": null,
+      "stealth_disadvantage": true,
+      "weight": "45 lb.",
+      "cost": "50 GP"
+    },
+    {
+      "name": "Breastplate",
+      "category": "Medium",
+      "base_ac": 14,
+      "adds_dex": true,
+      "dex_cap": 2,
+      "strength_requirement": null,
+      "stealth_disadvantage": false,
+      "weight": "20 lb.",
+      "cost": "400 GP"
+    },
+    {
+      "name": "Half Plate Armor",
+      "category": "Medium",
+      "base_ac": 15,
+      "adds_dex": true,
+      "dex_cap": 2,
+      "strength_requirement": null,
+      "stealth_disadvantage": true,
+      "weight": "40 lb.",
+      "cost": "750 GP"
+    },
+    {
+      "name": "Ring Mail",
+      "category": "Heavy",
+      "base_ac": 14,
+      "adds_dex": false,
+      "dex_cap": null,
+      "strength_requirement": null,
+      "stealth_disadvantage": true,
+      "weight": "40 lb.",
+      "cost": "30 GP"
+    },
+    {
+      "name": "Chain Mail",
+      "category": "Heavy",
+      "base_ac": 16,
+      "adds_dex": false,
+      "dex_cap": null,
+      "strength_requirement": 13,
+      "stealth_disadvantage": true,
+      "weight": "55 lb.",
+      "cost": "75 GP"
+    },
+    {
+      "name": "Splint Armor",
+      "category": "Heavy",
+      "base_ac": 17,
+      "adds_dex": false,
+      "dex_cap": null,
+      "strength_requirement": 15,
+      "stealth_disadvantage": true,
+      "weight": "60 lb.",
+      "cost": "200 GP"
+    },
+    {
+      "name": "Plate Armor",
+      "category": "Heavy",
+      "base_ac": 18,
+      "adds_dex": false,
+      "dex_cap": null,
+      "strength_requirement": 15,
+      "stealth_disadvantage": true,
+      "weight": "65 lb.",
+      "cost": "1,500 GP"
+    },
+    {
+      "name": "Shield",
+      "category": "Shield",
+      "base_ac": null,
+      "adds_dex": false,
+      "dex_cap": null,
+      "strength_requirement": null,
+      "stealth_disadvantage": false,
+      "weight": "6 lb.",
+      "cost": "10 GP",
+      "ac_bonus": 2
+    }
+  ]
+}
