@@ -10,6 +10,8 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+## [0.19.0] — 2026-06-03
+
 ### Added
 - **The SRD weapon + armor tables** as two new content categories. `load_content("weapons")` —
   all 38 SRD weapons (category Simple/Martial, kind Melee/Ranged, damage dice + type, properties,
@@ -337,7 +339,8 @@ from a working application.
 Pure (pydantic + stdlib); no application/framework coupling. Rules content derives
 from the SRD 5.2 (CC-BY-4.0); see NOTICE.
 
-[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.18.0...HEAD
+[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.19.0...HEAD
+[0.19.0]: https://github.com/sligara7/dndwright/compare/v0.18.0...v0.19.0
 [0.18.0]: https://github.com/sligara7/dndwright/compare/v0.17.0...v0.18.0
 [0.17.0]: https://github.com/sligara7/dndwright/compare/v0.16.0...v0.17.0
 [0.16.0]: https://github.com/sligara7/dndwright/compare/v0.15.0...v0.16.0
