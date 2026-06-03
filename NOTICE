@@ -11,15 +11,20 @@ armor base AC, save proficiencies, class spellcasting abilities, etc.) encode
 game *mechanics* — facts about how D&D 5e (2024) characters are computed. Where
 those facts come from published game content, they derive from the:
 
-    Dungeons & Dragons System Reference Document 5.2 (SRD 5.2)
+    Dungeons & Dragons System Reference Document 5.2.1 (SRD 5.2)
+    English edition, published May 1, 2025.
     © Wizards of the Coast LLC, licensed under
     Creative Commons Attribution 4.0 International (CC-BY-4.0).
     https://creativecommons.org/licenses/by/4.0/
 
+    Source document:
+    https://media.dndbeyond.com/compendium-images/srd/5.2/SRD_CC_v5.2.1.pdf
+
 Bundled content (dndwright.content): the magic_items, conditions, feats, species,
-spells, classes, backgrounds, weapons, and armor catalogs are derived from the
-SRD 5.2 (CC-BY-4.0, attributed above). The creatures catalog is original homebrew
-sample content (not derived from any copyrighted source) — see each file's metadata.
+spells, classes, backgrounds, weapons, armor, and creatures (the Monsters A–Z
+bestiary) catalogs are derived from the SRD 5.2 (CC-BY-4.0, attributed above) —
+see each file's metadata. (The content generator produces original homebrew, not
+derived from any copyrighted source.)
 
 This project is not affiliated with, endorsed, or sponsored by Wizards of the
 Coast. It contains no content from the Player's Handbook, Dungeon Master's

@@ -10,6 +10,43 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+## [0.20.0] — 2026-06-03
+
+### Added
+- **`weapon_attack()`** (`dndwright.combat`) — composes a weapon (from the bundled SRD
+  table) with an attacker's `strength_mod`/`dexterity_mod`, `proficiency_bonus`, and any
+  magic/feature bonuses into a `WeaponAttack`: the to-hit `attack_bonus` and a rollable
+  `damage` expression (e.g. `"1d8 + 3"`). It applies the rules' ability selection (Ranged →
+  Dex, Finesse melee → better of Str/Dex, else Str), the Versatile two-handed die, and the
+  weapon's mastery (name + effect text, plus the Topple save DC). Pure — feed the result to
+  `DiceEngine.roll_attack` / `roll_damage`. New `examples/weapon_attack.py`.
+- **Spell `component` specs** for the curated graph-mappable spells: `load_content("spells")`
+  entries for **Mage Armor** (gated +3 AC while unarmored), **Shield of Faith** (+2 AC), and
+  **Shield** (+5 AC) now carry a `component` that snaps onto a character's graph via
+  `component_from_content` — the same content-as-data contract magic items use. Spells needing
+  graph nodes dndwright doesn't model yet (a generic attack-roll bonus, a temp-HP channel, an
+  AC floor) stay reference-only.
+- **Background ability increases as parameterized `component`s.** Each `load_content("backgrounds")`
+  entry gains `choices` + a `component` template (`{plus_two}_score` +2, `{plus_one}_score` +1)
+  filled at compose time from the background's three abilities — mirroring the Ability Score
+  Improvement feat. The `+1/+1/+1` alternative spread is documented in the file metadata.
+- **Class features now carry SRD prose, plus subclass progressions.** Every `load_content("classes")`
+  feature gains a `description` (the full SRD feature text), and each class gains
+  `subclass_features` — the SRD subclass's own level-by-level features (name + level +
+  description). 232 feature descriptions across the 12 classes + subclasses, extracted from the
+  SRD (font-segmented so the interleaved progression/spell-slot tables and option catalogs are
+  filtered out, not folded into the prose).
+
+### Changed
+- **`load_content("creatures")` is now the full SRD 5.2 Monsters A–Z bestiary** (330 stat blocks),
+  replacing the 12 homebrew sample creatures. Each entry is structured data: the six ability
+  scores + saving-throw proficiencies, skills, senses (darkvision/blindsight/tremorsense/truesight
+  + passive Perception), damage resistances/immunities/vulnerabilities, condition immunities,
+  languages, CR/XP (incl. lair XP)/proficiency bonus, speeds, and `traits`/`actions`/`bonus_actions`/
+  `reactions`/`legendary_actions` — with attack bonus, reach/range, damage (dice + type), save DC,
+  and recharge parsed out of each action. SRD 5.2 (CC-BY); the homebrew-creature *generator*
+  (`generate_creatures`) is unchanged. NOTICE updated (creatures is now SRD-derived).
+
 ## [0.19.0] — 2026-06-03
 
 ### Added
@@ -339,7 +376,8 @@ from a working application.
 Pure (pydantic + stdlib); no application/framework coupling. Rules content derives
 from the SRD 5.2 (CC-BY-4.0); see NOTICE.
 
-[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.19.0...HEAD
+[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.20.0...HEAD
+[0.20.0]: https://github.com/sligara7/dndwright/compare/v0.19.0...v0.20.0
 [0.19.0]: https://github.com/sligara7/dndwright/compare/v0.18.0...v0.19.0
 [0.18.0]: https://github.com/sligara7/dndwright/compare/v0.17.0...v0.18.0
 [0.17.0]: https://github.com/sligara7/dndwright/compare/v0.16.0...v0.17.0
