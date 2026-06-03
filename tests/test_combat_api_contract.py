@@ -15,6 +15,7 @@ EXPECTED_COMBAT_PUBLIC = {
     "reset_death_saves",
     "calculate_damage_application",
     "damage_multiplier",
+    "combatant_defenses",
     "DEATH_SAVE_DC",
     "DEATH_SAVES_TO_STABILIZE",
     "DEATH_SAVES_TO_DIE",

@@ -44,13 +44,22 @@ from .rules.character_evaluator import (
     validate_character_data,
 )
 from .rules.compose import (
+    COMPONENT_SCHEMA_VERSION,
     Component,
     Contribution,
     component_from_content,
+    component_from_dict,
+    component_to_dict,
     compose,
     modifier,
 )
-from .rules.dnd_5e_2024 import DND_5E_2024_RULESET
+from .rules.dnd_5e_2024 import (
+    DAMAGE_CHANNELS,
+    DND_5E_2024_RULESET,
+    IMMUNITIES_NODE,
+    RESISTANCES_NODE,
+    VULNERABILITIES_NODE,
+)
 from .rules.evaluator import (
     evaluate,
     get_downstream_nodes,
@@ -76,7 +85,7 @@ from .rules.validation import (
     validate_ruleset,
 )
 
-__version__ = "0.12.0"
+__version__ = "0.13.0"
 
 __all__ = [
     # high-level (dict in -> computed sheet out)
@@ -103,6 +112,15 @@ __all__ = [
     "component_from_content",
     "Component",
     "Contribution",
+    # component (de)serialisation — persist a Component as data + rebuild it
+    "component_to_dict",
+    "component_from_dict",
+    "COMPONENT_SCHEMA_VERSION",
+    # damage-defence channels (union nodes on the ruleset; feed combatant_defenses)
+    "RESISTANCES_NODE",
+    "IMMUNITIES_NODE",
+    "VULNERABILITIES_NODE",
+    "DAMAGE_CHANNELS",
     # neutral adapters
     "character_data_to_inputs",
     "computed_values_to_sheet",

@@ -122,7 +122,7 @@ never see a database.
 Derived character values form a dependency DAG: ability scores → modifiers → proficiency →
 save DCs / spell slots / AC / HP. dndwright represents that DAG explicitly and stores the
 formulas as **data** (`FormulaSpec`: an op + args), so the rules are inspectable, testable,
-and serialisable — not buried in imperative code. `DND_5E_2024_RULESET` is a 135-node graph.
+and serialisable — not buried in imperative code. `DND_5E_2024_RULESET` is a 138-node graph (incl. damage-defence channels).
 
 <p align="center">
   <img alt="The dndwright computation graph: ability scores, level, class and equipment flow through ability modifiers and proficiency bonus to saves, skills, spell DC/attack, spell slots, HP, AC and initiative" width="760" src="https://raw.githubusercontent.com/sligara7/dndwright/main/assets/computation-graph.svg">
@@ -133,7 +133,7 @@ and serialisable — not buried in imperative code. `DND_5E_2024_RULESET` is a 1
 | Component | What it does |
 |-----------|--------------|
 | `evaluate_character` | One call: character data dict → fully computed sheet. |
-| `DND_5E_2024_RULESET` | The 135-node 5e-2024 computation DAG (formulas as data). |
+| `DND_5E_2024_RULESET` | The 138-node 5e-2024 computation DAG (formulas as data). |
 | `evaluate` / `assemble_character_inputs` / `apply_modifiers` | The lower-level engine. |
 | `Ruleset` / `ComputationNode` / `FormulaSpec` / `NodeType` | The DAG schema. |
 | `validate_ruleset` / `assert_valid_ruleset` | Static integrity check for a ruleset (unknown ops, cycles, dangling refs) — catch authoring errors before evaluation. |

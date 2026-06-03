@@ -21,8 +21,9 @@ running success/failure tallies, so there is a single source of truth.
 
 from __future__ import annotations
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 from dataclasses import dataclass, replace
+from typing import Any
 
 from ..dice import DiceEngine
 
@@ -66,6 +67,32 @@ def damage_multiplier(
     if dt in {t.lower() for t in vulnerabilities}:
         mult *= 2.0
     return mult
+
+
+def combatant_defenses(computed: Mapping[str, Any]) -> dict[str, frozenset[str]]:
+    """Pull the damage-defence channels out of an evaluated character graph.
+
+    ``computed`` is the raw dict from :func:`dndwright.evaluate` (whose ``resistances`` /
+    ``immunities`` / ``vulnerabilities`` nodes — see ``DAMAGE_CHANNELS`` — are unions of the
+    composed components' contributions). Returns exactly the kwargs :class:`CombatantState`
+    wants::
+
+        computed = evaluate(compose(DND_5E_2024_RULESET, *components), inputs)
+        state = CombatantState(current_hp=hp, max_hp=hp, **combatant_defenses(computed))
+
+    Members are lower-cased and intersected with :data:`DAMAGE_TYPES`, so narrative junk
+    (e.g. ``"Fire Resistance"``) can't slip in and silently break multiplier matching.
+    """
+    def clean(value: Any) -> frozenset[str]:
+        if not value:
+            return frozenset()
+        return frozenset(str(v).lower() for v in value) & DAMAGE_TYPES
+
+    return {
+        "resistances": clean(computed.get("resistances")),
+        "immunities": clean(computed.get("immunities")),
+        "vulnerabilities": clean(computed.get("vulnerabilities")),
+    }
 
 
 @dataclass(frozen=True)

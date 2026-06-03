@@ -37,6 +37,11 @@ from .schema import ComputationNode, FormulaSpec, NodeType, Ruleset
 
 _MODES = ("add", "set", "union")
 
+#: Bumped on any breaking change to the serialised :class:`Component` shape. Stamped into
+#: :func:`component_to_dict` output so a persisted spec can be migrated on load.
+COMPONENT_SCHEMA_VERSION = 1
+_SCHEMA_VERSION_KEY = "_schema_version"
+
 
 class Contribution(BaseModel):
     """One attachment: a node inside a component feeds a node in the host graph.
@@ -265,3 +270,27 @@ def component_from_content(
         id=cid, name=name, nodes=nodes, contributions=contribs,
         metadata={k: item.get(k) for k in ("rarity", "attunement_required", "category")},
     )
+
+
+def component_to_dict(component: Component) -> dict[str, Any]:
+    """Serialise a :class:`Component` to a plain JSON-able dict for persistence.
+
+    A stable public wrapper over ``Component.model_dump(mode="json")`` that stamps the
+    :data:`COMPONENT_SCHEMA_VERSION`, so a component stored as data (e.g. a dynograph node
+    property, a JSON column) can be rebuilt later via :func:`component_from_dict` and migrated
+    if the shape ever changes. Pairs with :func:`component_from_dict`.
+    """
+    data = component.model_dump(mode="json")
+    data[_SCHEMA_VERSION_KEY] = COMPONENT_SCHEMA_VERSION
+    return data
+
+
+def component_from_dict(data: dict[str, Any]) -> Component:
+    """Rebuild a :class:`Component` from :func:`component_to_dict` output (or a raw spec).
+
+    Tolerant of a missing or older ``_schema_version`` (the migration seam — there is only
+    version 1 today, so the key is simply stripped before validation).
+    """
+    if _SCHEMA_VERSION_KEY in data:
+        data = {k: v for k, v in data.items() if k != _SCHEMA_VERSION_KEY}
+    return Component.model_validate(data)

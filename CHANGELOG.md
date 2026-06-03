@@ -10,6 +10,22 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+### Added
+- **Portable Component (de)serialisation** — `component_to_dict(component)` /
+  `component_from_dict(data)` (+ `COMPONENT_SCHEMA_VERSION`): stable public wrappers over
+  pydantic that stamp a schema version, so a `Component` can be persisted as data (a DB column,
+  a graph-node property) and rebuilt later. The seam external graph stores use to keep
+  components as first-class graph content.
+- **Damage-defence channels on the ruleset** — `DND_5E_2024_RULESET` now bundles three empty
+  `union` nodes `resistances` / `immunities` / `vulnerabilities` (ids exported as
+  `RESISTANCES_NODE` / `IMMUNITIES_NODE` / `VULNERABILITIES_NODE` / `DAMAGE_CHANNELS`). A
+  component (a Ring of Resistance, a species trait) contributes damage types via a `union`
+  contribution, and the evaluated sheet exposes the composed sets (empty `()` by default — no
+  existence-branching needed). Node count 135 → 138.
+- **`combatant_defenses(computed)`** (in `dndwright.combat`) — pulls those channels out of an
+  evaluated graph into the exact kwargs `CombatantState` wants (lower-cased, intersected with
+  `DAMAGE_TYPES` so narrative junk is dropped), closing the loop to `apply_damage(..., damage_type=...)`.
+
 ## [0.12.0] — 2026-06-02
 
 ### Added

@@ -16,6 +16,15 @@ from .schema import ComputationNode, FormulaSpec, NodeType, Ruleset
 
 ABILITIES = ["strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma"]
 
+# Damage-defence channels. These are bundled as empty ``union`` nodes (see _build_nodes) so an
+# evaluated sheet always exposes them (as ``()``), and a component — a Ring of Resistance, a
+# species trait — contributes damage types into them via a ``union``-mode contribution. Feed the
+# evaluated sets to a CombatantState via dndwright.combat.combatant_defenses().
+RESISTANCES_NODE = "resistances"
+IMMUNITIES_NODE = "immunities"
+VULNERABILITIES_NODE = "vulnerabilities"
+DAMAGE_CHANNELS = (RESISTANCES_NODE, IMMUNITIES_NODE, VULNERABILITIES_NODE)
+
 SKILLS = {
     "acrobatics": "dexterity",
     "animal_handling": "wisdom",
@@ -580,6 +589,26 @@ def _build_nodes() -> dict[str, ComputationNode]:
                 group="skills",
                 formula=FormulaSpec(op="format_mod", args=[f"skill.{skill}.bonus"]),
                 inputs=[f"skill.{skill}.bonus"],
+            )
+        )
+
+    # =================================================================
+    # Damage-defence channels — empty union aggregates, populated by
+    # composed components (resistances/immunities/vulnerabilities).
+    # =================================================================
+    for channel, label in (
+        (RESISTANCES_NODE, "Damage Resistances"),
+        (IMMUNITIES_NODE, "Damage Immunities"),
+        (VULNERABILITIES_NODE, "Damage Vulnerabilities"),
+    ):
+        add(
+            ComputationNode(
+                id=channel,
+                node_type=NodeType.AGGREGATE,
+                label=label,
+                layer=2,
+                group="defenses",
+                formula=FormulaSpec(op="union", args=[]),
             )
         )
 
