@@ -1,5 +1,7 @@
 """The bundled SRD class catalog — 12 classes with traits, feature progression, subclass."""
 
+import re
+
 import pytest
 
 from dndwright import load_content
@@ -27,6 +29,36 @@ def test_every_class_well_formed(cls):
     # no leftover line-break hyphen artifacts in the parsed box values
     for field in ("skill_proficiencies", "starting_equipment", "armor_training"):
         assert "- " not in cls[field]
+
+
+def _feature_entries(cls):
+    return cls["features"] + cls["subclass_features"]
+
+
+@pytest.mark.parametrize("cls", CLASSES, ids=lambda c: c["name"])
+def test_features_and_subclass_features_have_clean_descriptions(cls):
+    # every class feature now carries SRD prose, and the SRD subclass has its own progression
+    assert cls["subclass_features"]
+    for f in cls["subclass_features"]:
+        assert 1 <= f["level"] <= 20 and f["name"]
+    for f in _feature_entries(cls):
+        desc = f.get("description", "")
+        assert len(desc) >= 15, f"{cls['name']} {f['name']}: missing/short description"
+        # no extraction artifacts: page footer, interleaved table cells, broken hyphenation
+        assert "System Reference" not in desc
+        assert not re.search(r"\b\d+ \+\d+ \d+\b", desc), f"{cls['name']} {f['name']}: table cells"
+        assert "  " not in desc and "- " not in desc
+
+
+def test_feature_prose_spot_checks():
+    rage = next(f for f in BY_NAME["Barbarian"]["features"] if f["name"] == "Rage")
+    assert "Resistance to Bludgeoning, Piercing, and Slashing" in rage["description"]
+    champion = next(f for f in BY_NAME["Fighter"]["subclass_features"]
+                    if f["name"] == "Improved Critical")
+    assert "Critical Hit on a roll of 19 or 20" in champion["description"]
+    # the option-catalog over-capture is trimmed, not absorbed into the last feature
+    assert len(next(f for f in BY_NAME["Warlock"]["features"]
+                    if f["name"] == "Eldritch Master")["description"]) < 300
 
 
 def test_mechanics_match_lookup_tables():

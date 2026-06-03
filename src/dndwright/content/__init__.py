@@ -1,14 +1,16 @@
 """Bundled starter content + a generator for original homebrew.
 
     from dndwright.content import load_content, categories
-    load_content("creatures")   # list of creature dicts (bundled samples)
+    load_content("creatures")   # list of creature stat-block dicts
     categories()                # ["classes", "conditions", "creatures", "feats", ...]
 
-The bundled ``creatures`` are original homebrew (no official content);
+All bundled catalogs — ``creatures`` (the full Monsters A–Z bestiary),
 ``magic_items`` / ``conditions`` / ``feats`` / ``species`` / ``spells`` /
-``classes`` / ``backgrounds`` / ``weapons`` / ``armor`` are SRD 5.2 (CC-BY) — see NOTICE. Many ``magic_items`` and ``feats`` carry a ``component``
+``classes`` / ``backgrounds`` / ``weapons`` / ``armor`` — are SRD 5.2 (CC-BY) — see
+NOTICE. Many ``magic_items`` and ``feats`` carry a ``component``
 (see :func:`dndwright.component_from_content`) that snaps onto a character graph.
-Grow the library with :func:`generate_library` (you supply the LLM).
+Generate *original* homebrew creatures/classes/species with
+:func:`generate_library` (you supply the LLM).
 """
 
 from __future__ import annotations
