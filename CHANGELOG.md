@@ -10,6 +10,8 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+## [0.11.0] — 2026-06-02
+
 ### Added
 - **SRD feats as bundled content + composable components.** New `feats` content category:
   all 16 SRD 5.2.1 feats (Origin / General / Fighting Style / Epic Boon) with category,
@@ -232,7 +234,8 @@ from a working application.
 Pure (pydantic + stdlib); no application/framework coupling. Rules content derives
 from the SRD 5.2 (CC-BY-4.0); see NOTICE.
 
-[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.10.0...HEAD
+[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.11.0...HEAD
+[0.11.0]: https://github.com/sligara7/dndwright/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/sligara7/dndwright/compare/v0.9.0...v0.10.0
 [0.9.0]: https://github.com/sligara7/dndwright/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/sligara7/dndwright/compare/v0.7.0...v0.8.0
