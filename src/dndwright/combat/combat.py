@@ -21,6 +21,7 @@ running success/failure tallies, so there is a single source of truth.
 
 from __future__ import annotations
 
+from collections.abc import Iterable
 from dataclasses import dataclass, replace
 
 from ..dice import DiceEngine
@@ -28,6 +29,43 @@ from ..dice import DiceEngine
 DEATH_SAVE_DC = 10
 DEATH_SAVES_TO_STABILIZE = 3
 DEATH_SAVES_TO_DIE = 3
+
+# The 13 SRD 5.2 damage types. A combatant's resistances/immunities/vulnerabilities are
+# subsets of these, stored as plain data — composable (union contributions from species,
+# items, conditions, …) so they can be built up "lego" style.
+DAMAGE_TYPES = frozenset({
+    "acid", "bludgeoning", "cold", "fire", "force", "lightning", "necrotic",
+    "piercing", "poison", "psychic", "radiant", "slashing", "thunder",
+})
+
+
+def damage_multiplier(
+    damage_type: str | None,
+    *,
+    resistances: Iterable[str] = (),
+    immunities: Iterable[str] = (),
+    vulnerabilities: Iterable[str] = (),
+) -> float:
+    """The 5e damage multiplier for a typed hit, from the target's defense sets.
+
+    ``0.0`` if immune, ``0.5`` if resistant, ``2.0`` if vulnerable, ``1.0`` otherwise.
+    Resistance and vulnerability to the *same* type cancel (``0.5 × 2 = 1.0``), per 5e;
+    immunity wins outright. An untyped hit (``damage_type=None``) is always ``1.0``.
+
+    Driven entirely by data (set membership) — no hard-coded damage-type lists — so the
+    defense sets can be composed from any number of sources. Matching is case-insensitive.
+    """
+    if damage_type is None:
+        return 1.0
+    dt = damage_type.lower()
+    if dt in {t.lower() for t in immunities}:
+        return 0.0
+    mult = 1.0
+    if dt in {t.lower() for t in resistances}:
+        mult *= 0.5
+    if dt in {t.lower() for t in vulnerabilities}:
+        mult *= 2.0
+    return mult
 
 
 @dataclass(frozen=True)
@@ -43,6 +81,12 @@ class CombatantState:
     temp_hp: int = 0
     death_save_successes: int = 0
     death_save_failures: int = 0
+    # Defenses as plain, composable data (subsets of DAMAGE_TYPES). frozensets keep the
+    # state immutable + hashable; build them up by unioning contributions from species,
+    # items, conditions, etc. Drive apply_damage's damage-type multiplier.
+    resistances: frozenset[str] = frozenset()
+    immunities: frozenset[str] = frozenset()
+    vulnerabilities: frozenset[str] = frozenset()
 
     @property
     def is_dead(self) -> bool:
@@ -64,13 +108,15 @@ class CombatantState:
 
 @dataclass(frozen=True)
 class DamageApplication:
-    """How a hit was absorbed: temp HP first, then HP, with any overkill."""
+    """How a hit was absorbed: resistance multiplier, then temp HP, then HP, then overkill."""
 
-    total_damage: int
+    total_damage: int  # effective damage after the resistance/vulnerability/immunity multiplier
     absorbed_by_temp_hp: int
     damage_to_hp: int
     overkill: int  # damage beyond 0 HP
     is_massive_damage: bool  # overkill >= max HP → instant death (5e)
+    raw_damage: int = 0  # the pre-multiplier damage rolled
+    multiplier: float = 1.0  # 0 immune / 0.5 resist / 1 normal / 2 vulnerable
 
 
 @dataclass(frozen=True)
@@ -118,19 +164,39 @@ def calculate_damage_application(
         damage_to_hp=damage_to_hp,
         overkill=overkill,
         is_massive_damage=overkill >= max_hp,
+        raw_damage=damage,
+        multiplier=1.0,
     )
 
 
 def apply_damage(
-    state: CombatantState, amount: int, *, instant_death_on_massive: bool = True
+    state: CombatantState,
+    amount: int,
+    *,
+    damage_type: str | None = None,
+    instant_death_on_massive: bool = True,
 ) -> tuple[CombatantState, DamageApplication]:
-    """Apply ``amount`` damage. Temp HP absorbs first; HP floors at 0.
+    """Apply ``amount`` damage. Resistance/vulnerability/immunity first (by ``damage_type``
+    against the state's defense sets), then temp HP absorbs, then HP floors at 0.
+
+    A typed hit is scaled by :func:`damage_multiplier` (immune → 0, resistant → halved
+    rounded down, vulnerable → doubled) using ``state.resistances`` / ``immunities`` /
+    ``vulnerabilities`` before anything else, per 5e. Pass ``damage_type=None`` for an
+    untyped hit (no scaling).
 
     If the leftover damage past 0 HP is at least the creature's max HP it is *massive
     damage* — instant death (5e). ``instant_death_on_massive`` gates that rule: pass
     ``False`` for creatures that don't make death saves (most monsters just drop to 0).
     """
-    app = calculate_damage_application(state.current_hp, state.max_hp, state.temp_hp, amount)
+    mult = damage_multiplier(
+        damage_type,
+        resistances=state.resistances,
+        immunities=state.immunities,
+        vulnerabilities=state.vulnerabilities,
+    )
+    effective = int(amount * mult)  # int() floors the 0.5 case, per 5e round-down
+    app = calculate_damage_application(state.current_hp, state.max_hp, state.temp_hp, effective)
+    app = replace(app, raw_damage=amount, multiplier=mult)
     new_temp = max(0, state.temp_hp - app.absorbed_by_temp_hp)
     new_hp = max(0, state.current_hp - app.damage_to_hp)
     failures = state.death_save_failures

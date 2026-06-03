@@ -15,6 +15,7 @@ Depends on :mod:`dndwright.dice` (``roll_death_save`` takes a ``DiceEngine``).
 
 from . import conditions, initiative
 from .combat import (
+    DAMAGE_TYPES,
     DEATH_SAVE_DC,
     DEATH_SAVES_TO_DIE,
     DEATH_SAVES_TO_STABILIZE,
@@ -25,6 +26,7 @@ from .combat import (
     apply_damage,
     apply_healing,
     calculate_damage_application,
+    damage_multiplier,
     reset_death_saves,
     roll_death_save,
     set_temp_hp,
@@ -45,10 +47,12 @@ __all__ = [
     "stabilize",
     "reset_death_saves",
     "calculate_damage_application",
+    "damage_multiplier",
     # rule constants
     "DEATH_SAVE_DC",
     "DEATH_SAVES_TO_STABILIZE",
     "DEATH_SAVES_TO_DIE",
+    "DAMAGE_TYPES",
     # submodules: initiative ordering + turn advancement; conditions tick/save
     "initiative",
     "conditions",

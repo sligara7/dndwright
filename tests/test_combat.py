@@ -212,3 +212,70 @@ class TestPurity:
         apply_healing(original, 5)
         set_temp_hp(original, 99)
         assert original == CombatantState(current_hp=30, max_hp=30, temp_hp=5)
+
+
+class TestDamageResistance:
+    """Damage-type resistance / immunity / vulnerability (the multiplier, data-driven)."""
+
+    def test_resistance_halves_rounding_down(self):
+        s = CombatantState(current_hp=30, max_hp=30, resistances=frozenset({"fire"}))
+        state, app = apply_damage(s, 9, damage_type="fire")
+        assert app.raw_damage == 9 and app.multiplier == 0.5
+        assert app.total_damage == 4  # floor(9 * 0.5)
+        assert state.current_hp == 26
+
+    def test_immunity_zeroes_damage(self):
+        s = CombatantState(current_hp=30, max_hp=30, immunities=frozenset({"poison"}))
+        state, app = apply_damage(s, 12, damage_type="poison")
+        assert app.multiplier == 0.0 and app.total_damage == 0
+        assert state.current_hp == 30
+
+    def test_vulnerability_doubles(self):
+        s = CombatantState(current_hp=30, max_hp=30, vulnerabilities=frozenset({"cold"}))
+        state, app = apply_damage(s, 7, damage_type="cold")
+        assert app.multiplier == 2.0 and app.total_damage == 14
+        assert state.current_hp == 16
+
+    def test_untyped_hit_is_unscaled(self):
+        s = CombatantState(current_hp=30, max_hp=30, resistances=frozenset({"fire"}))
+        _, app = apply_damage(s, 10)  # no damage_type
+        assert app.multiplier == 1.0 and app.total_damage == 10
+
+    def test_wrong_type_not_resisted(self):
+        s = CombatantState(current_hp=30, max_hp=30, resistances=frozenset({"fire"}))
+        _, app = apply_damage(s, 10, damage_type="cold")
+        assert app.multiplier == 1.0 and app.total_damage == 10
+
+    def test_resistance_and_vulnerability_cancel(self):
+        s = CombatantState(current_hp=30, max_hp=30,
+                           resistances=frozenset({"fire"}), vulnerabilities=frozenset({"fire"}))
+        _, app = apply_damage(s, 10, damage_type="fire")
+        assert app.multiplier == 1.0 and app.total_damage == 10
+
+    def test_immunity_beats_vulnerability(self):
+        s = CombatantState(current_hp=30, max_hp=30,
+                           immunities=frozenset({"fire"}), vulnerabilities=frozenset({"fire"}))
+        _, app = apply_damage(s, 10, damage_type="fire")
+        assert app.multiplier == 0.0
+
+    def test_case_insensitive(self):
+        s = CombatantState(current_hp=30, max_hp=30, resistances=frozenset({"Fire"}))
+        _, app = apply_damage(s, 8, damage_type="FIRE")
+        assert app.multiplier == 0.5
+
+    def test_resistance_applied_before_temp_hp(self):
+        # 20 fire vs 10 temp HP + fire resistance: 20 -> 10 effective, temp HP absorbs all
+        s = CombatantState(current_hp=30, max_hp=30, temp_hp=10, resistances=frozenset({"fire"}))
+        state, app = apply_damage(s, 20, damage_type="fire")
+        assert app.total_damage == 10 and app.absorbed_by_temp_hp == 10 and app.damage_to_hp == 0
+        assert state.current_hp == 30 and state.temp_hp == 0
+
+    def test_damage_multiplier_function_directly(self):
+        from dndwright.combat import DAMAGE_TYPES, damage_multiplier
+        assert "fire" in DAMAGE_TYPES and len(DAMAGE_TYPES) == 13
+        assert damage_multiplier("fire", resistances={"fire"}) == 0.5
+        assert damage_multiplier(None, immunities={"fire"}) == 1.0  # untyped never scales
+
+    def test_defenses_keep_state_frozen_and_hashable(self):
+        s = CombatantState(10, 30, resistances=frozenset({"fire"}))
+        assert isinstance(hash(s), int)  # frozensets keep it hashable

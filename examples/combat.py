@@ -18,8 +18,13 @@ from dndwright.dice import DiceEngine
 
 eng = DiceEngine(seed=7)  # reproducible
 
-hero = CombatantState(current_hp=12, max_hp=12)
-print(f"start:        {hero.current_hp}/{hero.max_hp} HP")
+# Defenses are plain, composable data — frozensets of damage types.
+hero = CombatantState(current_hp=12, max_hp=12, resistances=frozenset({"fire"}))
+print(f"start:        {hero.current_hp}/{hero.max_hp} HP (resists fire)")
+
+# A typed hit is scaled by resistance/immunity/vulnerability before temp HP / HP.
+_, fire = apply_damage(hero, 10, damage_type="fire")
+print(f"10 fire:      x{fire.multiplier} resistance → {fire.total_damage} effective")
 
 hero = set_temp_hp(hero, 5)
 print(f"+5 temp HP:   {hero.current_hp}/{hero.max_hp} (+{hero.temp_hp} temp)")

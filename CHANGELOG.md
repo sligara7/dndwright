@@ -10,6 +10,15 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+### Added
+- **Damage-type resistance / immunity / vulnerability** in `dndwright.combat`. `CombatantState`
+  gains `resistances` / `immunities` / `vulnerabilities` (frozensets of damage types — plain,
+  composable data), and `apply_damage(state, amount, *, damage_type=...)` now scales the hit
+  by `damage_multiplier()` (0 immune / 0.5 resist rounded down / 2 vulnerable, resist+vuln
+  cancel) before temp HP / HP, per 5e. `DamageApplication` reports `raw_damage` + `multiplier`.
+  New public `damage_multiplier()` (data-driven, no hard-coded type lists) + `DAMAGE_TYPES`
+  (the 13 SRD types). Fixes a real gap — typed damage was previously unscaled.
+
 ## [0.7.0] — 2026-06-02
 
 ### Added
