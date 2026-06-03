@@ -10,6 +10,8 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+## [0.17.0] — 2026-06-03
+
 ### Added
 - **The 12 SRD classes** as bundled content (`load_content("classes")`): Barbarian, Bard,
   Cleric, Druid, Fighter, Monk, Paladin, Ranger, Rogue, Sorcerer, Warlock, Wizard — each with
@@ -318,7 +320,8 @@ from a working application.
 Pure (pydantic + stdlib); no application/framework coupling. Rules content derives
 from the SRD 5.2 (CC-BY-4.0); see NOTICE.
 
-[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.16.0...HEAD
+[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.17.0...HEAD
+[0.17.0]: https://github.com/sligara7/dndwright/compare/v0.16.0...v0.17.0
 [0.16.0]: https://github.com/sligara7/dndwright/compare/v0.15.0...v0.16.0
 [0.15.0]: https://github.com/sligara7/dndwright/compare/v0.14.0...v0.15.0
 [0.14.0]: https://github.com/sligara7/dndwright/compare/v0.13.0...v0.14.0
