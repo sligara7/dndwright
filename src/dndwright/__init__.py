@@ -43,7 +43,13 @@ from .rules.character_evaluator import (
     evaluate_character,
     validate_character_data,
 )
-from .rules.compose import Component, Contribution, compose, modifier
+from .rules.compose import (
+    Component,
+    Contribution,
+    component_from_content,
+    compose,
+    modifier,
+)
 from .rules.dnd_5e_2024 import DND_5E_2024_RULESET
 from .rules.evaluator import (
     evaluate,
@@ -94,6 +100,7 @@ __all__ = [
     # graph composition — snap mini-graphs (items/feats/traits) onto a ruleset
     "compose",
     "modifier",
+    "component_from_content",
     "Component",
     "Contribution",
     # neutral adapters

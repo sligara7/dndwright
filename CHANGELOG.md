@@ -10,6 +10,15 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+### Added
+- **Magic items as composable content** — bundled `magic_items` entries can now carry their
+  mechanical effect *as data*: a `component` field (a list of `{target, amount, mode}`
+  modifiers). `component_from_content(item)` expands it into a `Component` you can `compose`
+  onto a character graph, so equipping an item cascades through derived stats. Curated SRD
+  set bundled: Gauntlets of Ogre Power & Amulet of Health & Headband of Intellect (set an
+  ability score), Cloak of Protection & Ring of Protection (+1 AC and all saves), Belt of
+  Dwarvenkind (+2 CON). Items with no mechanical effect return `None`.
+
 ## [0.9.0] — 2026-06-02
 
 ### Added

@@ -26,6 +26,7 @@ EXPECTED_PUBLIC = {
     "get_all_lookup_tables",
     "compose",
     "modifier",
+    "component_from_content",
     "Component",
     "Contribution",
     "character_data_to_inputs",

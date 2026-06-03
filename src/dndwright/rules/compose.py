@@ -28,6 +28,7 @@ target).
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 from pydantic import BaseModel, Field
@@ -173,4 +174,50 @@ def modifier(
     return Component(
         id=id, name=name or id, nodes={"value": src},
         contributions=[Contribution(target=target, source="value", mode=mode)],
+    )
+
+
+def _slug(name: str) -> str:
+    """A safe component id (no dots — those namespace component-local node ids)."""
+    return re.sub(r"\W+", "_", name.strip().lower()).strip("_") or "item"
+
+
+def component_from_content(item: dict[str, Any]) -> Component | None:
+    """Build a :class:`Component` from a content entry's ``component`` field, or ``None``.
+
+    Bundled content (e.g. ``magic_items.json``) carries an item's mechanical effect *as
+    data*: a ``component`` list of ``{"target", "amount", "mode"}`` modifiers. This expands
+    each into a constant source node and a :class:`Contribution`, so the item can snap onto a
+    character graph::
+
+        from dndwright import load_content, component_from_content, compose, evaluate
+        items = {i["name"]: i for i in load_content("magic_items")}
+        gauntlets = component_from_content(items["Gauntlets of Ogre Power"])
+        sheet = evaluate(compose(DND_5E_2024_RULESET, gauntlets), inputs)
+
+    Returns ``None`` for items with no ``component`` (most are narrative). The item's
+    ``rarity``/``attunement_required`` are carried onto ``Component.metadata``.
+    """
+    spec = item.get("component")
+    if not spec:
+        return None
+    name = item.get("name", "item")
+    nodes: dict[str, ComputationNode] = {}
+    contribs: list[Contribution] = []
+    for i, mod in enumerate(spec):
+        src = f"v{i}"
+        nodes[src] = ComputationNode(
+            id=src, node_type=NodeType.FORMULA, label=name,
+            formula=FormulaSpec(op="const", args=[mod["amount"]]),
+        )
+        contribs.append(
+            Contribution(target=mod["target"], source=src, mode=mod.get("mode", "add"))
+        )
+    return Component(
+        id=_slug(name), name=name, nodes=nodes, contributions=contribs,
+        metadata={
+            "rarity": item.get("rarity"),
+            "attunement_required": item.get("attunement_required"),
+            "source": "srd_magic_item",
+        },
     )

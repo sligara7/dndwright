@@ -53,7 +53,14 @@
       "rarity": "rare",
       "attunement_required": true,
       "type_line": "Wondrous Item, Rare (Requires Attunement)",
-      "description": "Your Constitution is 19 while you wear this amulet. It has no effect on you if your Constitution is 19 or higher without it."
+      "description": "Your Constitution is 19 while you wear this amulet. It has no effect on you if your Constitution is 19 or higher without it.",
+      "component": [
+        {
+          "target": "constitution_score",
+          "amount": 19,
+          "mode": "set"
+        }
+      ]
     },
     {
       "name": "Amulet of Proof against Detection and Location",
@@ -173,7 +180,14 @@
       "rarity": "rare",
       "attunement_required": true,
       "type_line": "Wondrous Item, Rare (Requires Attunement)",
-      "description": "While wearing this belt, you gain the following benefits: Dwarvish. You know Dwarvish. Friend of Dwarvenkind. You have Advantage on Charisma (Persuasion) checks made to interact with dwarves and duergar. Toughness. Your Constitution increases by 2, to a maximum of 20. In addition, while attuned to the belt, you have a 50 percent chance each day at dawn of growing a full beard if you can grow one, or a thicker beard if you already have one. If you aren’t a dwarf or duergar, you gain the following additional benefits while wearing the belt: Darkvision. You have Darkvision with a range of 60 feet. Resilience. You have Resistance to Poison damage. You also have Advantage on saving throws you make to avoid or end the Poisoned condition. Belt of Giant Strength Wondrous Item, Rarity Varies (Requires Attunement) While wearing this belt, your Strength changes to a score granted by the belt. The type of giant determines the score (see the table below). The item has no effect on you if your Strength without the belt is equal to or greater than the belt’s score. Belt Str. Rarity Belt of Giant Strength (hill) 21 Rare Belt of Giant Strength (frost or 23 Very Rare stone) Belt of Giant Strength (fire) 25 Very Rare Belt of Giant Strength (cloud) 27 Legendary Belt of Giant Strength (storm) 29 Legendary"
+      "description": "While wearing this belt, you gain the following benefits: Dwarvish. You know Dwarvish. Friend of Dwarvenkind. You have Advantage on Charisma (Persuasion) checks made to interact with dwarves and duergar. Toughness. Your Constitution increases by 2, to a maximum of 20. In addition, while attuned to the belt, you have a 50 percent chance each day at dawn of growing a full beard if you can grow one, or a thicker beard if you already have one. If you aren’t a dwarf or duergar, you gain the following additional benefits while wearing the belt: Darkvision. You have Darkvision with a range of 60 feet. Resilience. You have Resistance to Poison damage. You also have Advantage on saving throws you make to avoid or end the Poisoned condition. Belt of Giant Strength Wondrous Item, Rarity Varies (Requires Attunement) While wearing this belt, your Strength changes to a score granted by the belt. The type of giant determines the score (see the table below). The item has no effect on you if your Strength without the belt is equal to or greater than the belt’s score. Belt Str. Rarity Belt of Giant Strength (hill) 21 Rare Belt of Giant Strength (frost or 23 Very Rare stone) Belt of Giant Strength (fire) 25 Very Rare Belt of Giant Strength (cloud) 27 Legendary Belt of Giant Strength (storm) 29 Legendary",
+      "component": [
+        {
+          "target": "constitution_score",
+          "amount": 2,
+          "mode": "add"
+        }
+      ]
     },
     {
       "name": "Berserker Axe",
@@ -349,7 +363,44 @@
       "rarity": "uncommon",
       "attunement_required": true,
       "type_line": "Wondrous Item, Uncommon (Requires Attunement)",
-      "description": "You gain a +1 bonus to Armor Class and saving throws while you wear this cloak."
+      "description": "You gain a +1 bonus to Armor Class and saving throws while you wear this cloak.",
+      "component": [
+        {
+          "target": "armor_class",
+          "amount": 1,
+          "mode": "add"
+        },
+        {
+          "target": "save.strength.bonus",
+          "amount": 1,
+          "mode": "add"
+        },
+        {
+          "target": "save.dexterity.bonus",
+          "amount": 1,
+          "mode": "add"
+        },
+        {
+          "target": "save.constitution.bonus",
+          "amount": 1,
+          "mode": "add"
+        },
+        {
+          "target": "save.intelligence.bonus",
+          "amount": 1,
+          "mode": "add"
+        },
+        {
+          "target": "save.wisdom.bonus",
+          "amount": 1,
+          "mode": "add"
+        },
+        {
+          "target": "save.charisma.bonus",
+          "amount": 1,
+          "mode": "add"
+        }
+      ]
     },
     {
       "name": "Cloak of the Bat",
@@ -629,7 +680,14 @@
       "rarity": "uncommon",
       "attunement_required": true,
       "type_line": "Wondrous Item, Uncommon (Requires Attunement)",
-      "description": "Your Strength is 19 while you wear these gauntlets. They have no effect on you if your Strength is 19 or higher without them."
+      "description": "Your Strength is 19 while you wear these gauntlets. They have no effect on you if your Strength is 19 or higher without them.",
+      "component": [
+        {
+          "target": "strength_score",
+          "amount": 19,
+          "mode": "set"
+        }
+      ]
     },
     {
       "name": "Gem of Brightness",
@@ -717,7 +775,14 @@
       "rarity": "uncommon",
       "attunement_required": true,
       "type_line": "Wondrous Item, Uncommon (Requires Attunement)",
-      "description": "Your Intelligence is 19 while you wear this headband. It has no effect on you if your Intelligence is 19 or higher without it."
+      "description": "Your Intelligence is 19 while you wear this headband. It has no effect on you if your Intelligence is 19 or higher without it.",
+      "component": [
+        {
+          "target": "intelligence_score",
+          "amount": 19,
+          "mode": "set"
+        }
+      ]
     },
     {
       "name": "Helm of Brilliance",
@@ -1277,7 +1342,44 @@
       "rarity": "rare",
       "attunement_required": true,
       "type_line": "Ring, Rare (Requires Attunement)",
-      "description": "You gain a +1 bonus to Armor Class and saving throws while wearing this ring."
+      "description": "You gain a +1 bonus to Armor Class and saving throws while wearing this ring.",
+      "component": [
+        {
+          "target": "armor_class",
+          "amount": 1,
+          "mode": "add"
+        },
+        {
+          "target": "save.strength.bonus",
+          "amount": 1,
+          "mode": "add"
+        },
+        {
+          "target": "save.dexterity.bonus",
+          "amount": 1,
+          "mode": "add"
+        },
+        {
+          "target": "save.constitution.bonus",
+          "amount": 1,
+          "mode": "add"
+        },
+        {
+          "target": "save.intelligence.bonus",
+          "amount": 1,
+          "mode": "add"
+        },
+        {
+          "target": "save.wisdom.bonus",
+          "amount": 1,
+          "mode": "add"
+        },
+        {
+          "target": "save.charisma.bonus",
+          "amount": 1,
+          "mode": "add"
+        }
+      ]
     },
     {
       "name": "Ring of Regeneration",
