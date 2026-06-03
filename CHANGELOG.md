@@ -10,6 +10,14 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+### Added
+- **The full SRD spell catalog** — all **339** SRD 5.2 spells (cantrips through level 9) as
+  bundled content (`load_content("spells")`): name, level, school, casting time, range,
+  components, duration, class lists, and the full description. The biggest content gap, now a
+  complete reference. Data-only for now — mechanical `component` specs (spells that snap onto
+  the character graph, e.g. *Mage Armor*, *Shield of Faith*, *Bless*) are a follow-up. SRD 5.2
+  (CC-BY) — see NOTICE.
+
 ## [0.15.0] — 2026-06-03
 
 ### Added

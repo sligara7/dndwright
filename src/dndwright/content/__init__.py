@@ -4,9 +4,9 @@
     load_content("creatures")   # list of creature dicts (bundled samples)
     categories()                # ["classes", "conditions", "creatures", "feats", ...]
 
-The bundled ``classes`` / ``species`` / ``creatures`` are original homebrew (no
-official content); ``magic_items`` / ``conditions`` / ``feats`` are SRD 5.2
-(CC-BY) — see NOTICE. Many ``magic_items`` and ``feats`` carry a ``component``
+The bundled ``classes`` / ``creatures`` are original homebrew (no official
+content); ``magic_items`` / ``conditions`` / ``feats`` / ``species`` / ``spells``
+are SRD 5.2 (CC-BY) — see NOTICE. Many ``magic_items`` and ``feats`` carry a ``component``
 (see :func:`dndwright.component_from_content`) that snaps onto a character graph.
 Grow the library with :func:`generate_library` (you supply the LLM).
 """
@@ -32,6 +32,7 @@ _CONTENT = {
     "magic_items": ("magic_items.json", "magic_items"),
     "conditions": ("conditions.json", "conditions"),
     "feats": ("feats.json", "feats"),
+    "spells": ("spells.json", "spells"),
 }
 
 
