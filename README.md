@@ -157,6 +157,8 @@ every change recorded in `CHANGELOG.md`. Maintainers: the release process is doc
 
 ## Credits & license
 
-MIT licensed (see `LICENSE`). The rules tables encode game *mechanics* derived from the
-**D&D System Reference Document 5.2** (© Wizards of the Coast, **CC-BY-4.0**); see `NOTICE`.
-Not affiliated with or endorsed by Wizards of the Coast. Contains no PHB/DMG/MM content.
+MIT licensed (see `LICENSE`). The bundled content and rules tables encode game *mechanics*
+derived from the **D&D System Reference Document 5.2.1** (English, published May 1, 2025;
+© Wizards of the Coast, **CC-BY-4.0**) — source PDF:
+[`SRD_CC_v5.2.1.pdf`](https://media.dndbeyond.com/compendium-images/srd/5.2/SRD_CC_v5.2.1.pdf).
+See `NOTICE`. Not affiliated with or endorsed by Wizards of the Coast. Contains no PHB/DMG/MM content.
