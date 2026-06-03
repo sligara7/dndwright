@@ -146,8 +146,9 @@ def evaluate(
         node = nodes[nid]
 
         if node.node_type == NodeType.INPUT:
-            # Use provided value, fall back to default
-            value = input_values.get(nid, node.default_value)
+            # Use provided value (under input_key, defaulting to the node id), else default.
+            key = node.input_key if node.input_key is not None else nid
+            value = input_values.get(key, node.default_value)
             computed[nid] = value
             continue
 

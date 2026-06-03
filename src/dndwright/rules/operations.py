@@ -42,6 +42,22 @@ def op_mul(args: list[Any], _tables: dict) -> int | float:
     return result
 
 
+def op_union(args: list[Any], _tables: dict) -> tuple:
+    """Union of all args into a sorted, de-duplicated tuple.
+
+    Each arg may be a set/list/tuple (its members are unioned in) or a scalar (added
+    as one member). ``None`` args are skipped. Used for composing set-valued channels
+    (e.g. damage resistances contributed by several items/traits).
+    """
+    out: set[Any] = set()
+    for a in args:
+        if isinstance(a, (set, frozenset, list, tuple)):
+            out |= set(a)
+        elif a is not None:
+            out.add(a)
+    return tuple(sorted(out))
+
+
 def op_floor_div(args: list[Any], _tables: dict) -> int:
     """Integer division: args[0] // args[1]."""
     return int(args[0]) // int(args[1])
@@ -384,6 +400,7 @@ OPERATIONS: dict[str, Operation] = {
     "add": op_add,
     "sub": op_sub,
     "mul": op_mul,
+    "union": op_union,
     "floor_div": op_floor_div,
     "max_val": op_max_val,
     "min_val": op_min_val,

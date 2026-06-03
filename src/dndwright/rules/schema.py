@@ -44,6 +44,8 @@ class ComputationNode(BaseModel):
     id: str  # Unique ID: "str_mod", "hp_max", "skill.perception"
     node_type: NodeType
     label: str  # Human-readable: "Strength Modifier"
+    input_key: str | None = None  # INPUT nodes: read this key from input_values (default: id).
+    # Lets a node be renamed (e.g. composition's `{id}.__base__`) while still binding the input.
     layer: int = 0  # 0=input, 1=simple derived, 2=complex derived
     group: str = ""  # "ability_scores", "combat", "skills", "spellcasting"
     formula: FormulaSpec | None = None  # How to compute this node

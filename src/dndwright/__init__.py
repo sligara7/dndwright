@@ -43,6 +43,7 @@ from .rules.character_evaluator import (
     evaluate_character,
     validate_character_data,
 )
+from .rules.compose import Component, Contribution, compose, modifier
 from .rules.dnd_5e_2024 import DND_5E_2024_RULESET
 from .rules.evaluator import (
     evaluate,
@@ -90,6 +91,11 @@ __all__ = [
     "get_graph_edges",
     # SRD reference tables (hit dice, spell slots, AC, rarity, XP, …)
     "get_all_lookup_tables",
+    # graph composition — snap mini-graphs (items/feats/traits) onto a ruleset
+    "compose",
+    "modifier",
+    "Component",
+    "Contribution",
     # neutral adapters
     "character_data_to_inputs",
     "computed_values_to_sheet",

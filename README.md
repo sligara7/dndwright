@@ -137,6 +137,7 @@ and serialisable — not buried in imperative code. `DND_5E_2024_RULESET` is a 1
 | `evaluate` / `assemble_character_inputs` / `apply_modifiers` | The lower-level engine. |
 | `Ruleset` / `ComputationNode` / `FormulaSpec` / `NodeType` | The DAG schema. |
 | `validate_ruleset` / `assert_valid_ruleset` | Static integrity check for a ruleset (unknown ops, cycles, dangling refs) — catch authoring errors before evaluation. |
+| `compose` / `modifier` / `Component` | Snap mini-graphs (items/feats/traits) onto a ruleset; downstream values cascade. |
 | `to_mermaid` / `to_dot` | Render the computation DAG as Mermaid or Graphviz DOT — *see* the dependency graph. |
 | `dndwright.dice` | Typed dice engine: parse/roll 5e expressions, attacks, saves, damage, stat arrays. |
 | `dndwright.combat` | Pure combat rules over a frozen `CombatantState`: damage, temp HP, healing, death saves. |

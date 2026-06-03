@@ -10,6 +10,18 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+### Added
+- **Graph composition — the "lego" engine** (`dndwright.compose` → top-level `compose`,
+  `modifier`, `Component`, `Contribution`). A `Component` is a mini-graph (a magic item, feat,
+  trait) plus declarations of how it attaches; `compose(base, *components)` merges them into a
+  new `Ruleset` that evaluates normally. The attach trick: a contribution's target node **keeps
+  its id** and becomes an AGGREGATE of the original (moved to `{id}.__base__`) plus the
+  contributions — so every downstream value recomputes automatically with no re-wiring. Snap a
+  Gauntlets of Ogre Power (set STR→19) onto a character and its modifier, saves and skills
+  cascade. Modes: `add` (sum), `set` (max), `union` (set channels, e.g. resistances). Pure and
+  stackable. `ComputationNode` gains an optional `input_key` so a renamed INPUT still binds its
+  value; new `union` formula op.
+
 ## [0.8.0] — 2026-06-02
 
 ### Added
