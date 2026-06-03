@@ -16,9 +16,12 @@ no re-wiring — and the evaluator's normal topological recompute cascades the c
     sheet = evaluate(compose(DND_5E_2024_RULESET, gauntlets), character_inputs)
 
 Modes (how a contribution combines with the target's base + siblings):
-  * ``add``   — summed in (numeric bonuses).
-  * ``set``   — ``max`` with the base/sum (5e "your score becomes X" takes the highest).
-  * ``union`` — set union (e.g. damage-resistance types contributed by several sources).
+  * ``add``      — summed in (numeric bonuses).
+  * ``set``      — ``max`` with the base/sum (5e "your score becomes X" takes the highest).
+  * ``union``    — set union (e.g. damage-resistance types contributed by several sources).
+  * ``override`` — *replaces* the base value (last wins), then add/set/union stack on top — for
+    an authoritative value that must hold even below the input default (a creature stat block's
+    "STR is 8", not "STR becomes at least 8").
 
 Composition is pure (the base is untouched) and order-independent for add/union/set, so
 components stack like legos. Run :func:`dndwright.validate_ruleset` on the result to catch
@@ -35,7 +38,7 @@ from pydantic import BaseModel, Field
 
 from .schema import ComputationNode, FormulaSpec, NodeType, Ruleset
 
-_MODES = ("add", "set", "union")
+_MODES = ("add", "set", "union", "override")
 
 #: Bumped on any breaking change to the serialised :class:`Component` shape. Stamped into
 #: :func:`component_to_dict` output so a persisted spec can be migrated on load.
@@ -92,11 +95,27 @@ def _aggregate_nodes(
     adds = [s for s, m in contribs if m == "add"]
     sets = [s for s, m in contribs if m == "set"]
     unions = [s for s, m in contribs if m == "union"]
+    overrides = [s for s, m in contribs if m == "override"]
     base = [base_id] if base_id is not None else []
     label = proto.label if proto is not None else target
     group = proto.group if proto is not None else ""
     layer = proto.layer if proto is not None else 0
     out: dict[str, ComputationNode] = {}
+
+    if overrides:
+        # An authoritative value *replaces* the original base (last override wins, via
+        # coalesce on the reversed list) — e.g. a creature stat block's "STR is 8", which
+        # must hold even below the input default. add/set/union then stack on top of it.
+        if len(overrides) == 1:
+            base = [overrides[0]]
+        else:
+            ov_id = f"{target}.__override__"
+            out[ov_id] = ComputationNode(
+                id=ov_id, node_type=NodeType.AGGREGATE, label=f"{label} (override)",
+                group=group, layer=layer,
+                formula=FormulaSpec(op="coalesce", args=list(reversed(overrides))),
+            )
+            base = [ov_id]
 
     if unions:
         formula = FormulaSpec(op="union", args=base + unions)

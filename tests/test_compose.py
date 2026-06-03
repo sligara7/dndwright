@@ -134,3 +134,40 @@ class TestComponentSurface:
         }, contributions=[Contribution(target="a", source="v", mode="add")])
         composed = compose(rs, comp)
         assert any(i.code == "cycle" for i in validate_ruleset(composed))
+
+
+# --- override mode (0.14.0): authoritative value that holds below the input default ---
+
+def test_override_holds_below_input_default():
+    from dndwright import DND_5E_2024_RULESET as R, modifier, compose, evaluate
+    # strength_score INPUT defaults to 10; a creature's authoritative STR 8 must win.
+    sheet = evaluate(compose(R, modifier("sb", target="strength_score", amount=8, mode="override")), {})
+    assert sheet["strength_score"] == 8
+    assert sheet["strength_mod"] == -1
+
+
+def test_set_mode_clamps_but_override_does_not():
+    from dndwright import DND_5E_2024_RULESET as R, modifier, compose, evaluate
+    assert evaluate(compose(R, modifier("a", target="strength_score", amount=6, mode="set")), {})["strength_score"] == 10
+    assert evaluate(compose(R, modifier("b", target="strength_score", amount=6, mode="override")), {})["strength_score"] == 6
+
+
+def test_override_then_add_stacks():
+    from dndwright import DND_5E_2024_RULESET as R, modifier, compose, evaluate
+    composed = compose(
+        R,
+        modifier("sb", target="strength_score", amount=8, mode="override"),
+        modifier("belt", target="strength_score", amount=2, mode="add"),
+    )
+    assert evaluate(composed, {})["strength_score"] == 10  # override 8, then +2
+
+
+def test_multiple_overrides_last_wins():
+    from dndwright import DND_5E_2024_RULESET as R, modifier, compose, evaluate, validate_ruleset
+    composed = compose(
+        R,
+        modifier("a", target="strength_score", amount=5, mode="override"),
+        modifier("b", target="strength_score", amount=7, mode="override"),
+    )
+    assert validate_ruleset(composed) == []
+    assert evaluate(composed, {})["strength_score"] == 7  # last override wins

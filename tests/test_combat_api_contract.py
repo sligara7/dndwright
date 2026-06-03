@@ -16,6 +16,7 @@ EXPECTED_COMBAT_PUBLIC = {
     "calculate_damage_application",
     "damage_multiplier",
     "combatant_defenses",
+    "clean_damage_types",
     "DEATH_SAVE_DC",
     "DEATH_SAVES_TO_STABILIZE",
     "DEATH_SAVES_TO_DIE",

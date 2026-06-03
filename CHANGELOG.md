@@ -10,6 +10,17 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+### Added
+- **`override` contribution mode** for `compose` — *replaces* a target's base value (last wins),
+  then add/set/union stack on top. Unlike `set` (which is `max`, so it can't lower a value below
+  the input default), `override` makes an authoritative value hold even below the default — e.g.
+  a creature stat block's "STR **is** 8", not "STR becomes at least 8". `set` STR 6 → 10 (clamped);
+  `override` STR 6 → 6.
+- **`clean_damage_types(values)`** (in `dndwright.combat`) — the single source of truth for
+  normalising damage-type strings (lower-case, de-dupe, drop anything not in `DAMAGE_TYPES`).
+  `combatant_defenses` now delegates to it; external callers building resistance contributions
+  should use it too rather than re-implementing the filter.
+
 ## [0.13.0] — 2026-06-02
 
 ### Added

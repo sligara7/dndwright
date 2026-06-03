@@ -108,3 +108,14 @@ def test_empty_defenses_on_plain_character():
     assert combatant_defenses(evaluate(R, _inputs())) == {
         "resistances": frozenset(), "immunities": frozenset(), "vulnerabilities": frozenset(),
     }
+
+
+def test_clean_damage_types_normalises_and_filters():
+    from dndwright.combat import clean_damage_types
+    assert clean_damage_types(["Fire", "POISON", "fire", "nonmagical piercing"]) == ("fire", "poison")
+    assert clean_damage_types([]) == ()
+    assert clean_damage_types(None) == ()
+    # combatant_defenses delegates to it
+    from dndwright.combat import combatant_defenses
+    d = combatant_defenses({"resistances": ["Fire", "junk"], "immunities": ["poison"]})
+    assert d["resistances"] == frozenset({"fire"}) and d["immunities"] == frozenset({"poison"})

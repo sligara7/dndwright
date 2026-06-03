@@ -69,29 +69,36 @@ def damage_multiplier(
     return mult
 
 
-def combatant_defenses(computed: Mapping[str, Any]) -> dict[str, frozenset[str]]:
-    """Pull the damage-defence channels out of an evaluated character graph.
+def clean_damage_types(values: Any) -> tuple[str, ...]:
+    """Normalise a collection of damage-type strings: lower-cased, de-duplicated, sorted, and
+    intersected with :data:`DAMAGE_TYPES` so narrative junk (``"Fire Resistance"``, prose like
+    ``"nonmagical piercing"``) is dropped. The single source of truth for damage-type cleaning —
+    used by :func:`combatant_defenses` and by callers that build resistance contributions.
+    """
+    if not values:
+        return ()
+    return tuple(sorted({str(v).lower() for v in values} & DAMAGE_TYPES))
 
-    ``computed`` is the raw dict from :func:`dndwright.evaluate` (whose ``resistances`` /
-    ``immunities`` / ``vulnerabilities`` nodes — see ``DAMAGE_CHANNELS`` — are unions of the
-    composed components' contributions). Returns exactly the kwargs :class:`CombatantState`
-    wants::
+
+def combatant_defenses(computed: Mapping[str, Any]) -> dict[str, frozenset[str]]:
+    """Pull the damage-defence channels out of an evaluated character graph (or a plain
+    ``{"resistances": [...], "immunities": [...], "vulnerabilities": [...]}`` snapshot).
+
+    ``computed`` is typically the raw dict from :func:`dndwright.evaluate` (whose ``resistances``
+    / ``immunities`` / ``vulnerabilities`` nodes — see ``DAMAGE_CHANNELS`` — are unions of the
+    composed components' contributions), but any mapping with those keys works. Returns exactly
+    the kwargs :class:`CombatantState` wants::
 
         computed = evaluate(compose(DND_5E_2024_RULESET, *components), inputs)
         state = CombatantState(current_hp=hp, max_hp=hp, **combatant_defenses(computed))
 
-    Members are lower-cased and intersected with :data:`DAMAGE_TYPES`, so narrative junk
-    (e.g. ``"Fire Resistance"``) can't slip in and silently break multiplier matching.
+    Members are cleaned via :func:`clean_damage_types` (lower-cased, intersected with
+    :data:`DAMAGE_TYPES`), so junk can't slip in and silently break multiplier matching.
     """
-    def clean(value: Any) -> frozenset[str]:
-        if not value:
-            return frozenset()
-        return frozenset(str(v).lower() for v in value) & DAMAGE_TYPES
-
     return {
-        "resistances": clean(computed.get("resistances")),
-        "immunities": clean(computed.get("immunities")),
-        "vulnerabilities": clean(computed.get("vulnerabilities")),
+        "resistances": frozenset(clean_damage_types(computed.get("resistances"))),
+        "immunities": frozenset(clean_damage_types(computed.get("immunities"))),
+        "vulnerabilities": frozenset(clean_damage_types(computed.get("vulnerabilities"))),
     }
 
 

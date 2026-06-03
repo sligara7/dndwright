@@ -26,6 +26,7 @@ from .combat import (
     apply_damage,
     apply_healing,
     calculate_damage_application,
+    clean_damage_types,
     combatant_defenses,
     damage_multiplier,
     reset_death_saves,
@@ -50,6 +51,7 @@ __all__ = [
     "calculate_damage_application",
     "damage_multiplier",
     "combatant_defenses",
+    "clean_damage_types",
     # rule constants
     "DEATH_SAVE_DC",
     "DEATH_SAVES_TO_STABILIZE",
