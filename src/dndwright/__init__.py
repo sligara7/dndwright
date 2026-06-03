@@ -70,7 +70,7 @@ from .rules.validation import (
     validate_ruleset,
 )
 
-__version__ = "0.8.0"
+__version__ = "0.9.0"
 
 __all__ = [
     # high-level (dict in -> computed sheet out)

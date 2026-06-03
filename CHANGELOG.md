@@ -10,6 +10,8 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+## [0.9.0] — 2026-06-02
+
 ### Added
 - **Graph composition — the "lego" engine** (`dndwright.compose` → top-level `compose`,
   `modifier`, `Component`, `Contribution`). A `Component` is a mini-graph (a magic item, feat,
@@ -202,7 +204,8 @@ from a working application.
 Pure (pydantic + stdlib); no application/framework coupling. Rules content derives
 from the SRD 5.2 (CC-BY-4.0); see NOTICE.
 
-[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/sligara7/dndwright/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/sligara7/dndwright/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/sligara7/dndwright/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/sligara7/dndwright/compare/v0.5.1...v0.6.0
