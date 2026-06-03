@@ -10,6 +10,23 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+### Added
+- **SRD feats as bundled content + composable components.** New `feats` content category:
+  all 16 SRD 5.2.1 feats (Origin / General / Fighting Style / Epic Boon) with category,
+  prerequisite, repeatable flag and description. The graph-mappable ones carry a `component`:
+  **Alert** (Initiative += proficiency bonus), **Grappler** and **Ability Score Improvement**
+  (+score). Feats drove two `component_from_content` extensions, both pure data:
+  - **dynamic sources** — a modifier may give a `formula` (`{op, args}` over *host* nodes)
+    instead of a constant `amount`, so an effect can scale (Alert tracks proficiency bonus).
+  - **`{placeholder}` choices** — a `target`/arg may contain a placeholder filled from a
+    `choices=` argument, so "increase an ability score of *your choice*" is a template you
+    realise at compose time (`component_from_content(asi, choices={"ability": "strength"})`).
+
+### Changed
+- `Component.metadata` from `component_from_content` now carries `category` (alongside
+  `rarity`/`attunement_required`) instead of a fixed `source` key, since it serves both items
+  and feats.
+
 ## [0.10.0] — 2026-06-02
 
 ### Added

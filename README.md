@@ -138,7 +138,7 @@ and serialisable — not buried in imperative code. `DND_5E_2024_RULESET` is a 1
 | `Ruleset` / `ComputationNode` / `FormulaSpec` / `NodeType` | The DAG schema. |
 | `validate_ruleset` / `assert_valid_ruleset` | Static integrity check for a ruleset (unknown ops, cycles, dangling refs) — catch authoring errors before evaluation. |
 | `compose` / `modifier` / `Component` | Snap mini-graphs (items/feats/traits) onto a ruleset; downstream values cascade. |
-| `component_from_content` | Build a `Component` from a bundled item's `component` field — magic items as data that snap onto a character. |
+| `component_from_content` | Build a `Component` from a bundled item/feat's `component` field — magic items & feats as data that snap onto a character (constant, dynamic, or player-chosen effects). |
 | `to_mermaid` / `to_dot` | Render the computation DAG as Mermaid or Graphviz DOT — *see* the dependency graph. |
 | `dndwright.dice` | Typed dice engine: parse/roll 5e expressions, attacks, saves, damage, stat arrays. |
 | `dndwright.combat` | Pure combat rules over a frozen `CombatantState`: damage, temp HP, healing, death saves. |
@@ -146,6 +146,7 @@ and serialisable — not buried in imperative code. `DND_5E_2024_RULESET` is a 1
 | `dndwright.combat.conditions` | Pure conditions over the bundled SRD catalog: effects, ticking, saves. |
 | `dndwright.rules.components` | Typed inputs (`ClassMechanics`, `SpeciesMechanics`, …). |
 | `dndwright.rules.lookup_tables` | SRD-derived rules tables (hit dice, spell slots, AC, saves). |
+| `load_content("feats")` / `load_content("magic_items")` | Bundled SRD feats & magic items as data — many carry a composable `component`. |
 
 ## API stability
 

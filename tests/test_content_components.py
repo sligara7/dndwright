@@ -97,4 +97,3 @@ def test_belt_of_dwarvenkind_adds_constitution():
 def test_component_metadata_carries_rarity():
     comp = component_from_content(ITEMS["Gauntlets of Ogre Power"])
     assert comp.metadata["rarity"] == ITEMS["Gauntlets of Ogre Power"]["rarity"]
-    assert comp.metadata["source"] == "srd_magic_item"

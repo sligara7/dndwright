@@ -182,42 +182,60 @@ def _slug(name: str) -> str:
     return re.sub(r"\W+", "_", name.strip().lower()).strip("_") or "item"
 
 
-def component_from_content(item: dict[str, Any]) -> Component | None:
+def component_from_content(
+    item: dict[str, Any], *, choices: dict[str, str] | None = None
+) -> Component | None:
     """Build a :class:`Component` from a content entry's ``component`` field, or ``None``.
 
-    Bundled content (e.g. ``magic_items.json``) carries an item's mechanical effect *as
-    data*: a ``component`` list of ``{"target", "amount", "mode"}`` modifiers. This expands
-    each into a constant source node and a :class:`Contribution`, so the item can snap onto a
-    character graph::
+    Bundled content carries an item/feat's mechanical effect *as data*: a ``component`` list
+    of modifiers, each a dict with a ``target`` host node, a ``mode`` (``add``/``set``/
+    ``union``), and a value given as either:
+
+    * ``"amount"`` — a constant (e.g. Gauntlets of Ogre Power → ``strength_score`` set 19), or
+    * ``"formula"`` — ``{"op", "args"}`` whose args may reference *host* nodes, for effects
+      that scale (e.g. Alert → ``initiative`` += ``proficiency_bonus``).
+
+    A ``target`` (or formula arg) may contain a ``{placeholder}`` filled from ``choices`` —
+    so a feat whose benefit is "increase an ability score of *your choice*" is a template::
 
         from dndwright import load_content, component_from_content, compose, evaluate
-        items = {i["name"]: i for i in load_content("magic_items")}
-        gauntlets = component_from_content(items["Gauntlets of Ogre Power"])
-        sheet = evaluate(compose(DND_5E_2024_RULESET, gauntlets), inputs)
+        feats = {f["name"]: f for f in load_content("feats")}
+        asi = component_from_content(feats["Ability Score Improvement"], choices={"ability": "strength"})
+        sheet = evaluate(compose(DND_5E_2024_RULESET, asi), inputs)
 
-    Returns ``None`` for items with no ``component`` (most are narrative). The item's
-    ``rarity``/``attunement_required`` are carried onto ``Component.metadata``.
+    Returns ``None`` for entries with no ``component`` (most are narrative). Raises
+    ``KeyError`` if a ``{placeholder}`` has no matching entry in ``choices``. Item rarity /
+    attunement (or feat category) are carried onto ``Component.metadata``.
     """
     spec = item.get("component")
     if not spec:
         return None
+    choices = choices or {}
     name = item.get("name", "item")
+
+    def fill(ref: Any) -> Any:
+        return ref.format(**choices) if isinstance(ref, str) and "{" in ref else ref
+
     nodes: dict[str, ComputationNode] = {}
     contribs: list[Contribution] = []
     for i, mod in enumerate(spec):
         src = f"v{i}"
+        if "formula" in mod:
+            f = mod["formula"]
+            formula = FormulaSpec(op=f["op"], args=[fill(a) for a in f["args"]])
+        else:
+            formula = FormulaSpec(op="const", args=[mod["amount"]])
         nodes[src] = ComputationNode(
-            id=src, node_type=NodeType.FORMULA, label=name,
-            formula=FormulaSpec(op="const", args=[mod["amount"]]),
+            id=src, node_type=NodeType.FORMULA, label=name, formula=formula,
         )
         contribs.append(
-            Contribution(target=mod["target"], source=src, mode=mod.get("mode", "add"))
+            Contribution(target=fill(mod["target"]), source=src, mode=mod.get("mode", "add"))
         )
+
+    cid = _slug(name)
+    if choices:  # keep distinct components (e.g. ASI:str vs ASI:dex) from colliding on compose
+        cid += "_" + "_".join(_slug(str(v)) for v in choices.values())
     return Component(
-        id=_slug(name), name=name, nodes=nodes, contributions=contribs,
-        metadata={
-            "rarity": item.get("rarity"),
-            "attunement_required": item.get("attunement_required"),
-            "source": "srd_magic_item",
-        },
+        id=cid, name=name, nodes=nodes, contributions=contribs,
+        metadata={k: item.get(k) for k in ("rarity", "attunement_required", "category")},
     )
