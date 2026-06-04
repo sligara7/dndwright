@@ -32,6 +32,20 @@ game mechanics derived from the **D&D SRD 5.2 (CC-BY-4.0)** — see NOTICE.
 """
 
 from .content import categories, generate_library, load_content
+from .content.models import (
+    CONTENT_MODELS,
+    Armor,
+    Background,
+    CharClass,
+    Condition,
+    Creature,
+    Feat,
+    MagicItem,
+    Modifier,
+    Species,
+    Spell,
+    Weapon,
+)
 from .dice import DiceEngine
 from .ontology import Ontology, load_ontology
 from .rules.adapters import character_data_to_inputs, computed_values_to_sheet
@@ -85,7 +99,7 @@ from .rules.validation import (
     validate_ruleset,
 )
 
-__version__ = "0.20.0"
+__version__ = "0.21.0"
 
 __all__ = [
     # high-level (dict in -> computed sheet out)
@@ -154,6 +168,21 @@ __all__ = [
     "load_content",
     "categories",
     "generate_library",
+    # content structure contract — canonical Pydantic models per category.
+    # Consumers (e.g. generation_plus homebrew) conform to / subclass these so
+    # generated content is structurally identical to official SRD content.
+    "CONTENT_MODELS",
+    "Creature",
+    "CharClass",
+    "Species",
+    "Spell",
+    "MagicItem",
+    "Background",
+    "Feat",
+    "Weapon",
+    "Armor",
+    "Condition",
+    "Modifier",
     # dice engine (full typed surface in dndwright.dice)
     "DiceEngine",
 ]

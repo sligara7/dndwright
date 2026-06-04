@@ -61,6 +61,18 @@ EXPECTED_PUBLIC = {
     "load_content",
     "categories",
     "generate_library",
+    "CONTENT_MODELS",
+    "Creature",
+    "CharClass",
+    "Species",
+    "Spell",
+    "MagicItem",
+    "Background",
+    "Feat",
+    "Weapon",
+    "Armor",
+    "Condition",
+    "Modifier",
     "DiceEngine",
 }
 
