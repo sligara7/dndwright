@@ -118,6 +118,14 @@ def _aggregate_nodes(
             base = [ov_id]
 
     if unions:
+        if adds or sets:
+            # union is for set-valued channels (resistances, languages); add/set are
+            # numeric. Mixing them on one target is a modelling error — fail loudly
+            # rather than silently dropping the add/set contributions.
+            raise ValueError(
+                f"target {target!r} mixes union with add/set contributions; "
+                "a target must be either set-valued or numeric, not both"
+            )
         formula = FormulaSpec(op="union", args=base + unions)
     elif adds and sets:
         sum_id = f"{target}.__sum__"

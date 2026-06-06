@@ -140,6 +140,22 @@ class TestSpecialRolls:
         assert "4d6" in str(crit.roll.dice_results[0].dice_group)
         assert crit.original_expression == "2d6+3"
 
+    def test_damage_critical_preserves_dice_modifiers(self):
+        # A crit must double the dice count without dropping per-group modifiers
+        # like exploding or reroll (regression: these were silently lost).
+        eng = DiceEngine(seed=42)
+        crit = eng.roll_damage("1d6!+2", is_critical=True)
+        group = crit.roll.dice_results[0].dice_group
+        assert group.count == 2 and group.exploding is True
+        ro = eng.roll_damage("2d8ro1+1", is_critical=True)
+        ro_group = ro.roll.dice_results[0].dice_group
+        assert ro_group.count == 4 and ro_group.reroll_once is True and ro_group.reroll_on == (1,)
+
+    def test_dice_group_str_round_trips_reroll_once(self):
+        eng = DiceEngine()
+        parsed = eng.parse_expression(str(eng.parse_expression("2d6ro3").dice_groups[0]))
+        assert parsed.dice_groups[0].reroll_once is True
+
     def test_initiative(self):
         r = DiceEngine().roll_initiative(modifier=3)
         assert isinstance(r, ExpressionResult)
