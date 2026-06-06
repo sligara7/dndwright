@@ -10,6 +10,33 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+## [0.22.0] — 2026-06-05
+
+### Added
+- **`apply_theme_scaling(ruleset, layer)`** (`dndwright`) — folds a `ThemeScalingLayer`'s
+  mechanical overrides onto a ruleset so the same computation graph yields
+  setting-appropriate values (modern warfare, sci-fi, steampunk, …). `lookup_overrides`
+  deep-merge into the ruleset's lookup tables (creating tables/keys, preserving the rest);
+  `input_overrides` re-baseline a node's `default_value` (eval precedence stays *explicit
+  input > themed default > original default*, so a theme sets the world's baseline without
+  clobbering a value a character explicitly carries). `flavor_renames` are display-only and
+  ignored here. Pure (the base ruleset is untouched) and composes with `compose()`. Raises
+  `KeyError` on an `input_overrides` id that names no node, to catch authored-layer typos.
+  This makes the previously inert `ThemeScalingLayer` / `PREDEFINED_THEME_SCALING` data a
+  working feature. New `tests/test_theme_scaling.py`.
+
+## [0.21.0] — 2026-06-04
+
+### Added
+- **Exported Pydantic content models** (`dndwright.content.models`) — canonical, strict
+  (`extra="forbid"`) models for all 11 content categories (`Creature`, `CharClass`,
+  `Species`, `Spell`, `MagicItem`, `Background`, `Feat`, `Weapon`, `Armor`, `Condition`)
+  plus nested sub-models and the `Modifier` (component) spec, formalizing the content
+  structure that previously lived implicitly in the JSON assets. All 1012 bundled assets
+  validate against their models. Exported via `__all__` so downstream services conform to /
+  subclass these models, making generated content structurally identical to bundled SRD
+  content.
+
 ## [0.20.0] — 2026-06-03
 
 ### Added
@@ -376,7 +403,9 @@ from a working application.
 Pure (pydantic + stdlib); no application/framework coupling. Rules content derives
 from the SRD 5.2 (CC-BY-4.0); see NOTICE.
 
-[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.20.0...HEAD
+[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.22.0...HEAD
+[0.22.0]: https://github.com/sligara7/dndwright/compare/v0.21.0...v0.22.0
+[0.21.0]: https://github.com/sligara7/dndwright/compare/v0.20.0...v0.21.0
 [0.20.0]: https://github.com/sligara7/dndwright/compare/v0.19.0...v0.20.0
 [0.19.0]: https://github.com/sligara7/dndwright/compare/v0.18.0...v0.19.0
 [0.18.0]: https://github.com/sligara7/dndwright/compare/v0.17.0...v0.18.0

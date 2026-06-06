@@ -14,6 +14,8 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 
+from .schema import Ruleset
+
 
 class ThemeScalingLayer(BaseModel):
     """Theme-specific overrides for computation graph input values."""
@@ -187,6 +189,52 @@ PREDEFINED_THEME_SCALING: dict[str, ThemeScalingLayer] = {
         ],
     ),
 }
+
+
+def apply_theme_scaling(ruleset: Ruleset, layer: ThemeScalingLayer) -> Ruleset:
+    """Return a new :class:`Ruleset` with ``layer``'s mechanical overrides folded in.
+
+    Pure — ``ruleset`` is untouched (mirrors :func:`dndwright.compose`). Two kinds of
+    override are applied so the same computation graph yields setting-appropriate values:
+
+    * ``input_overrides`` (node id -> value) re-baselines a node's ``default_value`` — the
+      themed default :func:`dndwright.evaluate` uses when no explicit value is supplied.
+      Eval-time precedence stays **explicit input_values > themed default > original
+      default**, so a theme sets the *world's* baseline (a default mount speed, a base
+      range) without clobbering a value a character explicitly carries.
+    * ``lookup_overrides`` (table name -> ``{key: value}``) deep-merges into the ruleset's
+      lookup tables, creating tables or keys that don't yet exist — so
+      ``weapon_ranges["longbow"] = 600`` re-themes a table the graph already reads via the
+      ``lookup`` op. Existing keys not named in the override are preserved.
+
+    ``flavor_renames`` are display-only (they never change a computed value) and are ignored
+    here — apply them in the presentation layer.
+
+    Composes cleanly with :func:`dndwright.compose`: theme-scale first, then snap on
+    character components (or vice-versa) — both just return a fresh ``Ruleset``.
+
+    Raises ``KeyError`` if an ``input_overrides`` id names a node absent from the ruleset
+    (catches typos in an authored or generated theme layer before they fail silently).
+    """
+    nodes = dict(ruleset.nodes)
+    for nid, value in layer.input_overrides.items():
+        node = nodes.get(nid)
+        if node is None:
+            raise KeyError(
+                f"input_overrides references unknown node {nid!r} (theme {layer.theme!r})"
+            )
+        nodes[nid] = node.model_copy(update={"default_value": value})
+
+    tables: dict[str, Any] = {
+        name: dict(t) if isinstance(t, dict) else t
+        for name, t in ruleset.lookup_tables.items()
+    }
+    for table_name, entries in layer.lookup_overrides.items():
+        merged = dict(tables.get(table_name, {}))
+        merged.update(entries)
+        tables[table_name] = merged
+
+    return ruleset.model_copy(update={"nodes": nodes, "lookup_tables": tables})
 
 
 def get_theme_scaling(theme: str) -> ThemeScalingLayer | None:

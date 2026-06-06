@@ -87,6 +87,7 @@ from .rules.operations import Operation, describe_operations, register_operation
 from .rules.theme_scaling import (
     PREDEFINED_THEME_SCALING,
     ThemeScalingLayer,
+    apply_theme_scaling,
     get_theme_scaling,
     list_predefined_themes,
 )
@@ -99,7 +100,7 @@ from .rules.validation import (
     validate_ruleset,
 )
 
-__version__ = "0.21.0"
+__version__ = "0.22.0"
 
 __all__ = [
     # high-level (dict in -> computed sheet out)
@@ -154,6 +155,7 @@ __all__ = [
     "Operation",
     "describe_operations",
     # theme scaling (mechanical profiles per setting theme)
+    "apply_theme_scaling",
     "get_theme_scaling",
     "list_predefined_themes",
     "PREDEFINED_THEME_SCALING",

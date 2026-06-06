@@ -50,6 +50,7 @@ EXPECTED_PUBLIC = {
     "register_operation",
     "Operation",
     "describe_operations",
+    "apply_theme_scaling",
     "get_theme_scaling",
     "list_predefined_themes",
     "PREDEFINED_THEME_SCALING",
