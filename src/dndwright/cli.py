@@ -23,7 +23,11 @@ from . import __version__
 
 def _read_json(path: str) -> Any:
     """Load JSON from ``path`` ('-' = stdin)."""
-    text = sys.stdin.read() if path == "-" else open(path, encoding="utf-8").read()
+    if path == "-":
+        text = sys.stdin.read()
+    else:
+        with open(path, encoding="utf-8") as f:
+            text = f.read()
     return json.loads(text)
 
 
@@ -59,11 +63,12 @@ def _cmd_graph(args: argparse.Namespace) -> int:
 def _cmd_content(args: argparse.Namespace) -> int:
     from .content import categories, load_content
 
+    cats = categories()
     if not args.category:
-        print("\n".join(categories()))
+        print("\n".join(cats))
         return 0
-    if args.category not in categories():
-        print(f"unknown category {args.category!r}; choose from {categories()}",
+    if args.category not in cats:
+        print(f"unknown category {args.category!r}; choose from {cats}",
               file=sys.stderr)
         return 2
     items = load_content(args.category)

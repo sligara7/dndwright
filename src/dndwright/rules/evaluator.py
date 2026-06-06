@@ -10,6 +10,7 @@ No I/O, no side effects, trivially testable.
 
 from __future__ import annotations
 
+import heapq
 import weakref
 from typing import Any
 
@@ -59,19 +60,20 @@ def _topological_sort(nodes: dict[str, ComputationNode]) -> list[str]:
             if dep in dependents:
                 dependents[dep].append(nid)
 
-    # Start with nodes that have no dependencies
+    # Start with nodes that have no dependencies. A min-heap keeps the pop order
+    # deterministic (always the lexicographically smallest ready node) in O(log n)
+    # per step, instead of re-sorting the whole queue on every iteration.
     queue = [nid for nid, deg in in_degree.items() if deg == 0]
+    heapq.heapify(queue)
     order: list[str] = []
 
     while queue:
-        # Sort for deterministic order
-        queue.sort()
-        nid = queue.pop(0)
+        nid = heapq.heappop(queue)
         order.append(nid)
         for dep_nid in dependents[nid]:
             in_degree[dep_nid] -= 1
             if in_degree[dep_nid] == 0:
-                queue.append(dep_nid)
+                heapq.heappush(queue, dep_nid)
 
     if len(order) != len(nodes):
         missing = set(nodes.keys()) - set(order)

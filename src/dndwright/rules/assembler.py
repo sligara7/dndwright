@@ -67,7 +67,8 @@ def assemble_character_inputs(
         Dict keyed by computation node IDs, ready for evaluate().
     """
     inputs: dict[str, Any] = {}
-    scores = ability_scores or {
+    # Copy once up front so the caller's dict is never mutated by the increases below.
+    scores = dict(ability_scores) if ability_scores else {
         "strength": 10, "dexterity": 10, "constitution": 10,
         "intelligence": 10, "wisdom": 10, "charisma": 10,
     }
@@ -78,7 +79,6 @@ def assemble_character_inputs(
     if background_mechanics:
         for ability, increase in background_mechanics.ability_score_increases.items():
             if ability in scores:
-                scores = dict(scores)  # copy to avoid mutating original
                 scores[ability] = scores[ability] + increase
 
     # ------------------------------------------------------------------
@@ -88,7 +88,6 @@ def assemble_character_inputs(
         for feat in feats:
             for ability, increase in feat.grants_ability_increase.items():
                 if ability in scores:
-                    scores = dict(scores)
                     scores[ability] = scores[ability] + increase
 
     # ------------------------------------------------------------------

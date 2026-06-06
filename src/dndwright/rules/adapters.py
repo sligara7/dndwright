@@ -496,7 +496,7 @@ def _build_species_traits(species_data: dict) -> list[dict]:
         for c in sp_immunities.get("conditions", []):
             result.append({"name": f"{c} Immunity", "category": "immunity"})
         for d in sp_immunities.get("damage", []):
-            result.append({"name": f"{d} Immunity", "category": "resistance"})
+            result.append({"name": f"{d} Immunity", "category": "immunity"})
     elif isinstance(sp_immunities, list):
         for im in sp_immunities:
             result.append({"name": f"{im} Immunity", "category": "immunity"})

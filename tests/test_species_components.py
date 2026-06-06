@@ -82,3 +82,15 @@ def test_dragonborn_without_choice_raises():
 def test_narrative_species_have_no_component():
     for name in ("Elf", "Gnome", "Halfling", "Human", "Orc"):
         assert component_from_content(SPECIES[name]) is None
+
+
+def test_species_damage_immunity_categorised_as_immunity():
+    # Regression: damage immunities were tagged "resistance" instead of "immunity".
+    from dndwright.rules.adapters import _build_species_traits
+
+    traits = _build_species_traits(
+        {"immunities": {"damage": ["fire"], "conditions": ["poisoned"]}}
+    )
+    by_name = {t["name"]: t["category"] for t in traits}
+    assert by_name["fire Immunity"] == "immunity"
+    assert by_name["poisoned Immunity"] == "immunity"

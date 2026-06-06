@@ -10,6 +10,34 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+## [0.23.1] — 2026-06-06
+
+### Fixed
+- **Critical damage preserves dice modifiers** — `DiceEngine.roll_damage(expr, is_critical=True)`
+  doubled die counts by rebuilding the expression as bare `XdY`, silently dropping per-group
+  `keep`/`drop`/`reroll`/`exploding` flags. A crit on `1d6!+2` now stays exploding (`2d6!+2`)
+  instead of becoming a plain `2d6+2`. As part of the fix, `str(DiceGroup)` now serialises
+  reroll-once as `ro` (was `r`), so the spec round-trips through `parse_expression`.
+- **Species damage immunities mis-categorised** — `_build_species_traits` tagged damage
+  immunities with `category: "resistance"` (condition immunities were already correct); they
+  are now `category: "immunity"`.
+
+### Changed
+- **`compose()` fails loudly on contradictory contributions** — a target that receives both a
+  `union` (set-valued) and an `add`/`set` (numeric) contribution now raises `ValueError` instead
+  of silently dropping the numeric ones.
+
+### Performance
+- **Topological sort** uses a binary heap (`heapq`) instead of re-sorting the ready-queue every
+  iteration — same deterministic order, `O(V·log V + E)` instead of `O(V²·log V)`. (Result is
+  still cached per ruleset, so this only matters the first time a large graph is evaluated.)
+
+### Internal
+- `cli._read_json` closes the file it opens (was leaked); `cli` content lookup calls
+  `categories()` once instead of twice.
+- `assembler.assemble_inputs` copies the ability-score dict once up front rather than on each
+  increase.
+
 ## [0.23.0] — 2026-06-05
 
 ### Added
@@ -413,7 +441,8 @@ from a working application.
 Pure (pydantic + stdlib); no application/framework coupling. Rules content derives
 from the SRD 5.2 (CC-BY-4.0); see NOTICE.
 
-[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.23.0...HEAD
+[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.23.1...HEAD
+[0.23.1]: https://github.com/sligara7/dndwright/compare/v0.23.0...v0.23.1
 [0.23.0]: https://github.com/sligara7/dndwright/compare/v0.22.0...v0.23.0
 [0.22.0]: https://github.com/sligara7/dndwright/compare/v0.21.0...v0.22.0
 [0.21.0]: https://github.com/sligara7/dndwright/compare/v0.20.0...v0.21.0

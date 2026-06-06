@@ -25,7 +25,7 @@ from __future__ import annotations
 
 import random
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Protocol
 
 # Hard safety bound on reroll/explode loops so a pathological group (e.g. a die
@@ -64,7 +64,7 @@ class DiceGroup:
         if self.drop_lowest:
             s += f"dl{self.drop_lowest}"
         if self.reroll_on:
-            s += f"r{','.join(map(str, self.reroll_on))}"
+            s += f"{'ro' if self.reroll_once else 'r'}{','.join(map(str, self.reroll_on))}"
         if self.exploding:
             s += "!"
         return s
@@ -476,7 +476,12 @@ class DiceEngine:
         """Roll damage; on a crit, double the dice counts (the flat modifier is unchanged)."""
         if is_critical:
             parsed = self.parse_expression(expression)
-            doubled_groups = [f"{g.count * 2}d{g.sides}" for g in parsed.dice_groups]
+            # Double each group's die count while preserving its keep/drop/reroll/explode
+            # flags — str(DiceGroup) is the canonical, round-trippable serialization, so a
+            # crit on e.g. "1d6!+2" stays exploding ("2d6!+2") instead of silently dropping it.
+            doubled_groups = [
+                str(replace(g, count=g.count * 2)) for g in parsed.dice_groups
+            ]
             if doubled_groups:
                 doubled_expr = "+".join(doubled_groups)
                 if parsed.modifier:
