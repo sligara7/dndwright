@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrowT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#2dd4bf"/>
+    </marker>
+    <style>
+      .lbl   { fill:#e2e8f0; font-size:13px; }
+      .sub   { fill:#94a3b8; font-size:11px; }
+      .node  { fill:#1e293b; stroke-width:1.5; }
+      .layer { fill:#94a3b8; font-size:12px; letter-spacing:.14em; text-transform:uppercase; }
+      .edge  { stroke:#475569; stroke-width:1.5; fill:none; }
+      .casc  { stroke:#2dd4bf; stroke-width:1.8; fill:none; }
+      .mono  { font-size:11.5px; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .res   { fill:#7dd3fc; font-size:11px; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="900" height="480" rx="16" fill="url(#bg)"/>
+
+  <text x="36" y="46" fill="#f8fafc" font-size="26" font-weight="700">dndwright</text>
+  <text x="36" y="72" fill="#94a3b8" font-size="15">One graph, any setting — a <tspan fill="#38bdf8">ThemeScalingLayer</tspan> re-baselines values &amp; lookup tables, and re-flavors names.</text>
+
+  <!-- column captions -->
+  <text class="layer" x="140" y="116" text-anchor="middle">Base ruleset</text>
+  <text class="layer" x="430" y="116" text-anchor="middle">ThemeScalingLayer</text>
+  <text class="layer" x="751" y="116" text-anchor="middle">Same graph, per theme</text>
+
+  <!-- ============ edges ============ -->
+  <!-- base -> lens -->
+  <path class="edge" marker-end="url(#arrow)" d="M240 250 C268 250 272 250 296 250"/>
+  <!-- lens -> per-theme results (cascade) -->
+  <path class="casc" marker-end="url(#arrowT)" d="M560 250 C590 250 592 151 616 151"/>
+  <path class="casc" marker-end="url(#arrowT)" d="M560 250 C590 250 592 211 616 211"/>
+  <path class="casc" marker-end="url(#arrowT)" d="M560 250 C590 250 592 271 616 271"/>
+  <path class="casc" marker-end="url(#arrowT)" d="M560 250 C590 250 592 331 616 331"/>
+
+  <!-- ============ base ruleset ============ -->
+  <g>
+    <rect class="node" rx="9" x="40" y="178" width="200" height="52" stroke="#f59e0b"/>
+    <text class="lbl" x="58" y="202">armor_base_ac (lookup)</text>
+    <text class="res" x="58" y="220">plate = 18</text>
+
+    <path class="edge" marker-end="url(#arrow)" d="M140 230 L140 268"/>
+
+    <rect class="node" rx="9" x="40" y="270" width="200" height="44" stroke="#a78bfa"/>
+    <text class="lbl" x="58" y="297">Armor Class</text>
+
+    <text class="sub" x="140" y="338" text-anchor="middle">138-node DAG · formulas as data</text>
+  </g>
+
+  <!-- ============ ThemeScalingLayer (lens) ============ -->
+  <g>
+    <rect class="node" rx="12" x="296" y="150" width="264" height="212" stroke="#38bdf8"/>
+
+    <circle cx="318" cy="181" r="4" fill="#2dd4bf"/>
+    <text class="mono" x="332" y="185" fill="#7dd3fc">input_overrides</text>
+    <text class="sub"  x="332" y="200">re-baseline a node's default value</text>
+
+    <circle cx="318" cy="227" r="4" fill="#2dd4bf"/>
+    <text class="mono" x="332" y="231" fill="#7dd3fc">lookup_overrides</text>
+    <text class="sub"  x="332" y="246">merge tables: armor AC, weapon ranges</text>
+
+    <circle cx="318" cy="273" r="4" fill="#64748b"/>
+    <text class="mono" x="332" y="277" fill="#7dd3fc">flavor_renames</text>
+    <text class="sub"  x="332" y="292">display label only — never changes math</text>
+
+    <line x1="316" y1="312" x2="540" y2="312" stroke="#334155" stroke-width="1"/>
+    <text class="mono" x="316" y="332" fill="#38bdf8">apply_theme_scaling(rs, layer)</text>
+    <text class="sub"  x="316" y="350">pure — the base graph is untouched</text>
+  </g>
+
+  <!-- ============ per-theme results ============ -->
+  <g>
+    <!-- traditional -->
+    <rect class="node" rx="9" x="616" y="128" width="266" height="46" stroke="#475569"/>
+    <circle cx="634" cy="151" r="4" fill="#94a3b8"/>
+    <text class="lbl" x="648" y="148" fill="#94a3b8">Traditional D&amp;D</text>
+    <text class="res" x="648" y="165" fill="#cbd5e1">plate · AC 18</text>
+
+    <!-- modern warfare -->
+    <rect class="node" rx="9" x="616" y="188" width="266" height="46" stroke="#f59e0b"/>
+    <circle cx="634" cy="211" r="4" fill="#f59e0b"/>
+    <text class="lbl" x="648" y="208" fill="#f59e0b">Modern warfare</text>
+    <text class="res" x="648" y="225" fill="#cbd5e1">tactical body armor · AC 18</text>
+
+    <!-- sci-fi -->
+    <rect class="node" rx="9" x="616" y="248" width="266" height="46" stroke="#38bdf8"/>
+    <circle cx="634" cy="271" r="4" fill="#38bdf8"/>
+    <text class="lbl" x="648" y="268" fill="#38bdf8">Sci-fi</text>
+    <text class="res" x="648" y="285" fill="#cbd5e1">power armor · AC <tspan fill="#2dd4bf" font-weight="700">19</tspan></text>
+
+    <!-- steampunk -->
+    <rect class="node" rx="9" x="616" y="308" width="266" height="46" stroke="#fb7185"/>
+    <circle cx="634" cy="331" r="4" fill="#fb7185"/>
+    <text class="lbl" x="648" y="328" fill="#fb7185">Steampunk</text>
+    <text class="res" x="648" y="345" fill="#cbd5e1">clockwork full-plate · AC <tspan fill="#2dd4bf" font-weight="700">19</tspan></text>
+  </g>
+
+  <text x="36" y="462" fill="#64748b" font-size="12">precedence: explicit input &gt; themed default &gt; original · flavor_renames never change a value · composes with compose()</text>
+</svg>

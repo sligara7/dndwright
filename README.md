@@ -128,6 +128,43 @@ and serialisable — not buried in imperative code. `DND_5E_2024_RULESET` is a 1
   <img alt="The dndwright computation graph: ability scores, level, class and equipment flow through ability modifiers and proficiency bonus to saves, skills, spell DC/attack, spell slots, HP, AC and initiative" width="760" src="https://raw.githubusercontent.com/sligara7/dndwright/main/assets/computation-graph.svg">
 </p>
 
+### Composable — snap mini-graphs onto the ruleset
+
+Items, feats and species traits are themselves tiny graphs. `compose()` merges a
+`Component`'s nodes and contributions onto a base ruleset and returns a new, larger
+`Ruleset` — the base is never mutated. Because each contribution keeps its target node's
+**id**, every existing edge downstream re-derives for free: a `set`/`add`/`union` on one
+node ripples out to every modifier, save, skill and attack that depends on it.
+
+<p align="center">
+  <img alt="Components are lego-style mini-graphs that snap onto the dndwright ruleset: a Belt of Giant Strength sets the Strength score, a Ring of Protection adds to Armor Class, and Dwarven Resilience unions in poison resistance — compose() merges them and one snap-in recomputes the whole downstream subtree (strength modifier to athletics, saving throws and melee attack)" width="760" src="https://raw.githubusercontent.com/sligara7/dndwright/main/assets/compose.svg">
+</p>
+
+```python
+from dndwright import DND_5E_2024_RULESET, compose, modifier
+ring = modifier("ring_of_protection", target="armor_class", amount=1)
+rs = compose(DND_5E_2024_RULESET, ring)   # base untouched; AC now aggregates the +1
+```
+
+### Re-skin for any setting — theme scaling
+
+The same engine runs sci-fi, modern-warfare, steampunk or cosmic-horror. A `ThemeScalingLayer`
+folds three kinds of override onto a ruleset via `apply_theme_scaling()` (pure, like `compose`):
+`input_overrides` re-baseline a node's default value, `lookup_overrides` deep-merge into the
+lookup tables (so `plate` armour can read AC 19 instead of 18), and `flavor_renames` relabel
+terms for display **without ever changing a computed value**. The graph's shape never changes —
+only its numbers and names.
+
+<p align="center">
+  <img alt="dndwright theme scaling: one computation graph re-skinned per setting. A ThemeScalingLayer applies input_overrides (re-baseline node defaults), lookup_overrides (merge tables like armor AC and weapon ranges) and flavor_renames (display labels only). The same plate armor node emerges as 'plate AC 18' in traditional D&D, 'tactical body armor AC 18' in modern warfare, 'power armor AC 19' in sci-fi, and 'clockwork full-plate AC 19' in steampunk" width="760" src="https://raw.githubusercontent.com/sligara7/dndwright/main/assets/theme-scaling.svg">
+</p>
+
+```python
+from dndwright import DND_5E_2024_RULESET, apply_theme_scaling, get_theme_scaling
+rs = apply_theme_scaling(DND_5E_2024_RULESET, get_theme_scaling("sci_fi"))
+rs.lookup_tables["armor_base_ac"]["plate"]   # 19 (base is still 18, untouched)
+```
+
 ## What's inside
 
 | Component | What it does |
@@ -139,6 +176,7 @@ and serialisable — not buried in imperative code. `DND_5E_2024_RULESET` is a 1
 | `validate_ruleset` / `assert_valid_ruleset` | Static integrity check for a ruleset (unknown ops, cycles, dangling refs) — catch authoring errors before evaluation. |
 | `compose` / `modifier` / `Component` | Snap mini-graphs (items/feats/traits) onto a ruleset; downstream values cascade. |
 | `component_from_content` | Build a `Component` from a bundled item/feat's `component` field — magic items & feats as data that snap onto a character (constant, dynamic, player-chosen, or *conditional* effects). |
+| `apply_theme_scaling` / `ThemeScalingLayer` / `get_theme_scaling` | Re-skin the ruleset for any setting (sci-fi, modern, steampunk, …): override node defaults & lookup tables and re-flavor names, same graph shape. `PREDEFINED_THEME_SCALING` ships ready-made themes. |
 | `to_mermaid` / `to_dot` | Render the computation DAG as Mermaid or Graphviz DOT — *see* the dependency graph. |
 | `dndwright.dice` | Typed dice engine: parse/roll 5e expressions, attacks, saves, damage, stat arrays. |
 | `dndwright.combat` | Pure combat rules over a frozen `CombatantState`: damage, temp HP, healing, death saves. |
