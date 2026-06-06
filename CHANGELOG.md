@@ -10,6 +10,19 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+## [0.23.2] — 2026-06-06
+
+### Documentation
+- **Two new README/PyPI diagrams.** `assets/compose.svg` shows lego-style components snapping
+  onto the ruleset — typed `set`/`add`/`union` contributions that keep the target node's id, so
+  one snap-in recomputes the whole downstream subtree. `assets/theme-scaling.svg` shows one
+  computation graph re-skinned per setting via `ThemeScalingLayer`: the same `plate` node emerges
+  as AC 18 (traditional / modern, re-flavored) or AC 19 (sci-fi / steampunk) through
+  `input_overrides`, `lookup_overrides`, and display-only `flavor_renames`.
+- **New README sections** — "Composable — snap mini-graphs onto the ruleset" and "Re-skin for
+  any setting — theme scaling" (theme scaling was previously undocumented in the README), plus a
+  `apply_theme_scaling` / `ThemeScalingLayer` row in the feature table. Docs-only; no code change.
+
 ## [0.23.1] — 2026-06-06
 
 ### Fixed
@@ -441,7 +454,8 @@ from a working application.
 Pure (pydantic + stdlib); no application/framework coupling. Rules content derives
 from the SRD 5.2 (CC-BY-4.0); see NOTICE.
 
-[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.23.1...HEAD
+[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.23.2...HEAD
+[0.23.2]: https://github.com/sligara7/dndwright/compare/v0.23.1...v0.23.2
 [0.23.1]: https://github.com/sligara7/dndwright/compare/v0.23.0...v0.23.1
 [0.23.0]: https://github.com/sligara7/dndwright/compare/v0.22.0...v0.23.0
 [0.22.0]: https://github.com/sligara7/dndwright/compare/v0.21.0...v0.22.0

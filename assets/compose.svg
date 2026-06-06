@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#64748b"/>
+    </marker>
+    <marker id="arrowT" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#2dd4bf"/>
+    </marker>
+    <style>
+      .lbl    { fill:#e2e8f0; font-size:13px; }
+      .sub    { fill:#94a3b8; font-size:11px; }
+      .node   { fill:#1e293b; stroke-width:1.5; }
+      .brick  { fill:#1e293b; stroke-width:1.6; }
+      .layer  { fill:#94a3b8; font-size:12px; letter-spacing:.14em; text-transform:uppercase; }
+      .edge   { stroke:#475569; stroke-width:1.5; fill:none; }
+      .casc   { stroke:#2dd4bf; stroke-width:1.8; fill:none; }
+      .mode   { fill:#7dd3fc; font-size:11px; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .pill   { fill:#0b1220; }
+      .note   { fill:#2dd4bf; font-size:11.5px; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="900" height="480" rx="16" fill="url(#bg)"/>
+
+  <text x="36" y="46" fill="#f8fafc" font-size="26" font-weight="700">dndwright</text>
+  <text x="36" y="72" fill="#94a3b8" font-size="15">Components are mini-graphs that snap onto the ruleset — <tspan fill="#7dd3fc" font-family="ui-monospace, Menlo, monospace">compose()</tspan> merges them and downstream values recompute.</text>
+
+  <!-- column captions -->
+  <text class="layer" x="140" y="112" text-anchor="middle">Components</text>
+  <text class="layer" x="418" y="112" text-anchor="middle">Base graph · targets</text>
+  <text class="layer" x="788" y="112" text-anchor="middle">Cascades to</text>
+
+  <!-- ============ edges (behind nodes) ============ -->
+  <!-- component -> target (snap-in) -->
+  <path class="edge" marker-end="url(#arrow)" d="M240 168 C290 168 296 168 330 168"/>
+  <path class="edge" marker-end="url(#arrow)" d="M240 276 C290 276 296 276 330 276"/>
+  <path class="edge" marker-end="url(#arrow)" d="M240 384 C290 384 296 384 330 384"/>
+  <!-- strength score -> strength mod -> outputs (cascade) -->
+  <path class="casc" marker-end="url(#arrowT)" d="M500 168 C528 168 532 175 552 175"/>
+  <path class="casc" marker-end="url(#arrowT)" d="M708 175 C730 175 726 130 744 130"/>
+  <path class="casc" marker-end="url(#arrowT)" d="M708 175 C730 175 730 175 744 175"/>
+  <path class="casc" marker-end="url(#arrowT)" d="M708 175 C730 175 726 220 744 220"/>
+
+  <!-- mode labels on snap-in edges -->
+  <g>
+    <rect class="pill" x="270" y="150" width="34" height="17" rx="5"/>
+    <text class="mode" x="277" y="162">set</text>
+    <rect class="pill" x="268" y="258" width="40" height="17" rx="5"/>
+    <text class="mode" x="275" y="270">add</text>
+    <rect class="pill" x="262" y="366" width="52" height="17" rx="5"/>
+    <text class="mode" x="269" y="378">union</text>
+  </g>
+
+  <!-- ============ component bricks (lego) ============ -->
+  <!-- Belt of Giant Strength (amber) -->
+  <g>
+    <rect x="56"  y="135" width="16" height="11" rx="4" fill="#f59e0b"/>
+    <rect x="96"  y="135" width="16" height="11" rx="4" fill="#f59e0b"/>
+    <rect x="136" y="135" width="16" height="11" rx="4" fill="#f59e0b"/>
+    <rect x="176" y="135" width="16" height="11" rx="4" fill="#f59e0b"/>
+    <rect class="brick" rx="10" x="40" y="140" width="200" height="56" stroke="#f59e0b"/>
+    <text class="lbl" x="58" y="166">Belt of Giant Strength</text>
+    <text class="sub" x="58" y="184">Strength score = 25</text>
+  </g>
+  <!-- Ring of Protection (rose) -->
+  <g>
+    <rect x="56"  y="243" width="16" height="11" rx="4" fill="#fb7185"/>
+    <rect x="96"  y="243" width="16" height="11" rx="4" fill="#fb7185"/>
+    <rect x="136" y="243" width="16" height="11" rx="4" fill="#fb7185"/>
+    <rect x="176" y="243" width="16" height="11" rx="4" fill="#fb7185"/>
+    <rect class="brick" rx="10" x="40" y="248" width="200" height="56" stroke="#fb7185"/>
+    <text class="lbl" x="58" y="274">Ring of Protection</text>
+    <text class="sub" x="58" y="292">+1 Armor Class</text>
+  </g>
+  <!-- Dwarven Resilience (teal) -->
+  <g>
+    <rect x="56"  y="351" width="16" height="11" rx="4" fill="#2dd4bf"/>
+    <rect x="96"  y="351" width="16" height="11" rx="4" fill="#2dd4bf"/>
+    <rect x="136" y="351" width="16" height="11" rx="4" fill="#2dd4bf"/>
+    <rect x="176" y="351" width="16" height="11" rx="4" fill="#2dd4bf"/>
+    <rect class="brick" rx="10" x="40" y="356" width="200" height="56" stroke="#2dd4bf"/>
+    <text class="lbl" x="58" y="382">Dwarven Resilience</text>
+    <text class="sub" x="58" y="400">+ poison resistance</text>
+  </g>
+
+  <!-- ============ base-graph target nodes ============ -->
+  <g>
+    <!-- Strength score (input, becomes an aggregate) -->
+    <rect class="node" rx="9" x="330" y="150" width="170" height="36" stroke="#f59e0b"/>
+    <text class="lbl" x="346" y="166">Strength score</text>
+    <text class="sub" x="346" y="180">now an aggregate node</text>
+
+    <rect class="node" rx="9" x="330" y="259" width="170" height="34" stroke="#a78bfa"/>
+    <text class="lbl" x="346" y="281">Armor Class</text>
+
+    <rect class="node" rx="9" x="330" y="367" width="170" height="34" stroke="#a78bfa"/>
+    <text class="lbl" x="346" y="389">Resistances</text>
+  </g>
+
+  <!-- ============ derived + cascade outputs ============ -->
+  <g>
+    <rect class="node" rx="9" x="552" y="157" width="156" height="36" stroke="#2dd4bf"/>
+    <text class="lbl" x="568" y="179">Strength modifier</text>
+
+    <rect class="node" rx="9" x="744" y="113" width="140" height="34" stroke="#a78bfa"/>
+    <text class="lbl" x="760" y="135">Athletics</text>
+    <rect class="node" rx="9" x="744" y="158" width="140" height="34" stroke="#a78bfa"/>
+    <text class="lbl" x="760" y="180">STR saving throw</text>
+    <rect class="node" rx="9" x="744" y="203" width="140" height="34" stroke="#a78bfa"/>
+    <text class="lbl" x="760" y="225">Melee attack</text>
+  </g>
+
+  <text class="note" x="552" y="250">One snap-in recomputes the</text>
+  <text class="note" x="552" y="266">whole downstream subtree.</text>
+
+  <text x="36" y="462" fill="#64748b" font-size="12">compose(base, *components) -&gt; a larger Ruleset · pure (the base graph is never mutated) · the target id is kept, so existing edges cascade</text>
+</svg>
