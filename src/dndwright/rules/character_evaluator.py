@@ -19,8 +19,21 @@ from .adapters import character_data_to_inputs, computed_values_to_sheet
 from .assembler import apply_modifiers
 from .dnd_5e_2024 import DND_5E_2024_RULESET
 from .evaluator import evaluate
+from .theme_scaling import ThemeScalingLayer, apply_theme_scaling
 
 logger = logging.getLogger(__name__)
+
+
+def _ruleset_for(scaling: ThemeScalingLayer | None):
+    """Base ruleset, theme-scaled when a ``scaling`` layer is supplied.
+
+    ``None`` returns ``DND_5E_2024_RULESET`` unchanged (the default path), so existing
+    callers are unaffected; a layer returns a fresh themed ``Ruleset`` via
+    :func:`apply_theme_scaling`.
+    """
+    if scaling is None:
+        return DND_5E_2024_RULESET
+    return apply_theme_scaling(DND_5E_2024_RULESET, scaling)
 
 _ABILITIES = ("strength", "dexterity", "constitution", "intelligence", "wisdom", "charisma")
 
@@ -160,7 +173,12 @@ def _extract_session_fields(data: dict) -> dict:
     }
 
 
-def evaluate_character(session_data: dict, *, strict: bool = False) -> dict:
+def evaluate_character(
+    session_data: dict,
+    *,
+    strict: bool = False,
+    scaling: ThemeScalingLayer | None = None,
+) -> dict:
     """Evaluate a character from session data → full computed character sheet.
 
     This is the single entry point that replaces derive_character_sheet().
@@ -171,6 +189,10 @@ def evaluate_character(session_data: dict, *, strict: bool = False) -> dict:
         strict: If True, raise :class:`CharacterInputError` when the input is malformed
             (see :func:`validate_character_data`) instead of silently coercing it into a
             plausible-but-wrong sheet. Default False preserves the lenient behaviour.
+        scaling: Optional :class:`ThemeScalingLayer` (e.g. ``get_theme_scaling("sci_fi")``
+            or an LLM-generated layer). When given, the sheet is computed against the
+            theme-scaled ruleset (re-baselined input defaults + merged lookup tables) so
+            mechanical values fit the setting. ``None`` (default) uses the stock 5e ruleset.
 
     Returns:
         Complete character sheet dict matching the old derive_character_sheet() shape.
@@ -196,8 +218,8 @@ def evaluate_character(session_data: dict, *, strict: bool = False) -> dict:
         equipment=fields["equipment"],
     )
 
-    # Evaluate the computation graph
-    computed = evaluate(DND_5E_2024_RULESET, inputs)
+    # Evaluate the computation graph (theme-scaled when a scaling layer is supplied)
+    computed = evaluate(_ruleset_for(scaling), inputs)
 
     # Apply NodeModifiers from feats, class features, etc.
     computed = apply_modifiers(computed, inputs)
@@ -225,6 +247,8 @@ def evaluate_character(session_data: dict, *, strict: bool = False) -> dict:
 def compute_stat_diff(
     before_data: dict,
     after_data: dict,
+    *,
+    scaling: ThemeScalingLayer | None = None,
 ) -> dict[str, dict[str, Any]]:
     """Compute before/after stat changes between two session states.
 
@@ -234,10 +258,13 @@ def compute_stat_diff(
     Args:
         before_data: Session data before the change.
         after_data: Session data after the change.
+        scaling: Optional :class:`ThemeScalingLayer`; both states are evaluated against
+            the same theme-scaled ruleset so the deltas reflect the campaign's setting.
 
     Returns:
         Dict of changed stats with before/after/delta/label.
     """
+    ruleset = _ruleset_for(scaling)
     before_fields = _extract_session_fields(before_data)
     after_fields = _extract_session_fields(after_data)
 
@@ -261,12 +288,12 @@ def compute_stat_diff(
         equipment=after_fields["equipment"],
     )
 
-    # Evaluate both
+    # Evaluate both (against the same themed ruleset when scaling is supplied)
     before_computed = apply_modifiers(
-        evaluate(DND_5E_2024_RULESET, before_inputs), before_inputs
+        evaluate(ruleset, before_inputs), before_inputs
     )
     after_computed = apply_modifiers(
-        evaluate(DND_5E_2024_RULESET, after_inputs), after_inputs
+        evaluate(ruleset, after_inputs), after_inputs
     )
 
     # Build diff for key stats only
@@ -293,11 +320,18 @@ def compute_stat_diff(
     return diff
 
 
-def compute_key_stats(session_data: dict) -> dict[str, Any]:
+def compute_key_stats(
+    session_data: dict, *, scaling: ThemeScalingLayer | None = None
+) -> dict[str, Any]:
     """Compute key stats from session data for display purposes.
 
     Returns a flat dict of node_id → value for KEY_STAT_NODES only.
     Useful for showing baseline stats in advancement options.
+
+    Args:
+        session_data: Session data dict (full session or inner data sub-dict).
+        scaling: Optional :class:`ThemeScalingLayer` to compute against a theme-scaled
+            ruleset (defaults to the stock 5e ruleset).
     """
     fields = _extract_session_fields(session_data)
 
@@ -312,7 +346,7 @@ def compute_key_stats(session_data: dict) -> dict[str, Any]:
     )
 
     computed = apply_modifiers(
-        evaluate(DND_5E_2024_RULESET, inputs), inputs
+        evaluate(_ruleset_for(scaling), inputs), inputs
     )
 
     return {

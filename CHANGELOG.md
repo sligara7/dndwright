@@ -10,6 +10,16 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+## [0.23.0] — 2026-06-05
+
+### Added
+- **`evaluate_character(..., scaling=...)`** — `evaluate_character`, `compute_key_stats`, and
+  `compute_stat_diff` now take an optional `scaling: ThemeScalingLayer` keyword. When given,
+  the sheet (or key-stat snapshot / before-after diff) is computed against the theme-scaled
+  ruleset via `apply_theme_scaling`, so a campaign's setting (sci-fi, modern warfare, …) shapes
+  the character's mechanical values. `scaling=None` (default) reproduces the stock 5e behaviour
+  exactly — existing callers are unaffected. New `tests/test_character_theme_scaling.py`.
+
 ## [0.22.0] — 2026-06-05
 
 ### Added
@@ -403,7 +413,8 @@ from a working application.
 Pure (pydantic + stdlib); no application/framework coupling. Rules content derives
 from the SRD 5.2 (CC-BY-4.0); see NOTICE.
 
-[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.22.0...HEAD
+[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.23.0...HEAD
+[0.23.0]: https://github.com/sligara7/dndwright/compare/v0.22.0...v0.23.0
 [0.22.0]: https://github.com/sligara7/dndwright/compare/v0.21.0...v0.22.0
 [0.21.0]: https://github.com/sligara7/dndwright/compare/v0.20.0...v0.21.0
 [0.20.0]: https://github.com/sligara7/dndwright/compare/v0.19.0...v0.20.0
