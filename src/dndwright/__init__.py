@@ -102,6 +102,16 @@ from .rules.validation import (
 
 __version__ = "0.23.2"
 
+# homebrew validation (structural rules checks on LLM-generated components)
+from .rules.homebrew_validator import (
+    validate_class_homebrew,
+    validate_species_homebrew,
+    validate_subclass_homebrew,
+    validate_background_homebrew,
+    validate_homebrew,
+    VALIDATORS as HOMEBREW_VALIDATORS,
+)
+
 __all__ = [
     # high-level (dict in -> computed sheet out)
     "evaluate_character",
@@ -187,4 +197,11 @@ __all__ = [
     "Modifier",
     # dice engine (full typed surface in dndwright.dice)
     "DiceEngine",
+    # homebrew validation (structural rules checks on LLM-generated components)
+    "validate_class_homebrew",
+    "validate_species_homebrew",
+    "validate_subclass_homebrew",
+    "validate_background_homebrew",
+    "validate_homebrew",
+    "HOMEBREW_VALIDATORS",
 ]

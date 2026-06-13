@@ -75,6 +75,13 @@ EXPECTED_PUBLIC = {
     "Condition",
     "Modifier",
     "DiceEngine",
+    # homebrew validation
+    "validate_class_homebrew",
+    "validate_species_homebrew",
+    "validate_subclass_homebrew",
+    "validate_background_homebrew",
+    "validate_homebrew",
+    "HOMEBREW_VALIDATORS",
 }
 
 
@@ -198,6 +205,11 @@ EXPECTED_SIGNATURES = {
     "validate_ruleset": "(ruleset: 'Ruleset') -> 'list[ValidationIssue]'",
     # Public classes whose constructor is a documented call site.
     "DiceEngine": "(seed: 'int | None' = None, *, rng: 'random.Random | None' = None)",
+    "validate_class_homebrew": "(class_data: 'dict[str, Any]') -> 'list[str]'",
+    "validate_species_homebrew": "(species_data: 'dict[str, Any]') -> 'list[str]'",
+    "validate_subclass_homebrew": "(subclass_data: 'dict[str, Any]') -> 'list[str]'",
+    "validate_background_homebrew": "(background_data: 'dict[str, Any]') -> 'list[str]'",
+    "validate_homebrew": "(component_type: 'str', component_data: 'dict[str, Any]') -> 'list[str]'",
 }
 
 
