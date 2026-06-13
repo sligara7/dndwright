@@ -10,6 +10,30 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+## [0.24.0] — 2026-06-13
+
+### Added
+- **Homebrew validation module.** New `rules/homebrew_validator.py` with
+  `validate_class_homebrew()`, `validate_species_homebrew()`,
+  `validate_subclass_homebrew()`, and `validate_background_homebrew()` — each
+  returns a list of human-readable rule-violation strings (empty = legal).
+  Structural checks per SRD 5.2.1: hit-die legality (d6/d8/d10/d12),
+  saving-throw proficiency pairs (one strong + one weak), archetype and
+  spellcasting-type validity, feature-level ranges (1–20, no duplicates),
+  species speed limits, background skill counts, and more.
+- `validate_homebrew(component_type, data)` router and `HOMEBREW_VALIDATORS`
+  lookup dict. All new names exported in `dndwright.__all__`.
+- 30+ unit tests for all validators, covering legal components (empty
+  return), illegal components (each check catches), and the aggregate
+  router.
+
+### Changed
+- `__all__` expanded: +7 names (`validate_class_homebrew`,
+  `validate_species_homebrew`, `validate_subclass_homebrew`,
+  `validate_background_homebrew`, `validate_homebrew`, `HOMEBREW_VALIDATORS`).
+- `tests/test_api_contract.py` `EXPECTED_PUBLIC` and `EXPECTED_SIGNATURES`
+  updated for the new exports.
+
 ## [0.23.2] — 2026-06-06
 
 ### Documentation
