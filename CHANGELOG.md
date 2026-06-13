@@ -10,6 +10,11 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+## [0.24.1] — 2026-06-13
+
+### Documentation
+- Homebrew validators added to README feature table.
+
 ## [0.24.0] — 2026-06-13
 
 ### Added
