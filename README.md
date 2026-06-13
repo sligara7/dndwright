@@ -174,6 +174,7 @@ rs.lookup_tables["armor_base_ac"]["plate"]   # 19 (base is still 18, untouched)
 | `evaluate` / `assemble_character_inputs` / `apply_modifiers` | The lower-level engine. |
 | `Ruleset` / `ComputationNode` / `FormulaSpec` / `NodeType` | The DAG schema. |
 | `validate_ruleset` / `assert_valid_ruleset` | Static integrity check for a ruleset (unknown ops, cycles, dangling refs) — catch authoring errors before evaluation. |
+| `validate_class_homebrew` / `validate_species_homebrew` / `validate_subclass_homebrew` / `validate_background_homebrew` / `validate_homebrew` | Validate homebrew class/species/subclass/background data against SRD 5.2.1 structural rules (hit die, save profs, archetype, feature levels, skill counts, speed limits). Returns `list[str]` of violations — empty = legal. |
 | `compose` / `modifier` / `Component` | Snap mini-graphs (items/feats/traits) onto a ruleset; downstream values cascade. |
 | `component_from_content` | Build a `Component` from a bundled item/feat's `component` field — magic items & feats as data that snap onto a character (constant, dynamic, player-chosen, or *conditional* effects). |
 | `apply_theme_scaling` / `ThemeScalingLayer` / `get_theme_scaling` | Re-skin the ruleset for any setting (sci-fi, modern, steampunk, …): override node defaults & lookup tables and re-flavor names, same graph shape. `PREDEFINED_THEME_SCALING` ships ready-made themes. |
