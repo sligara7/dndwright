@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.25.1
+
+### Fixed
+- Hit-die compute/display desync: the displayed hit die now matches the archetype/class override used for HP computation (was showing the raw LLM value).
+- Species natural armor now contributes to AC via a `natural_armor_ac` computation-graph input; AC = max(natural, equipped + dex + magic + shield) per 5e.
+
+
 All notable changes to dndwright are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/), and the project aims to follow
 [Semantic Versioning](https://semver.org/).

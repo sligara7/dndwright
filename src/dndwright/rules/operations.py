@@ -172,15 +172,17 @@ def op_multiclass_hp(args: list[Any], _tables: dict) -> int:
 
 
 def op_ac_with_armor(args: list[Any], tables: dict) -> int:
-    """Compute AC from armor type + dex mod.
+    """Compute AC from armor type + dex mod + natural armor.
 
-    args: [armor_type, dex_mod, magic_bonus, has_shield]
+    args: [armor_type, dex_mod, magic_bonus, has_shield, natural_armor_ac]
     Uses lookup tables: armor_base_ac, armor_max_dex
+    AC = max(natural_armor_ac, armor_base_ac + dex(capped) + magic + shield) per 5e.
     """
     armor_type = str(args[0]).lower().replace(" ", "_") if args[0] else "none"
     dex_mod = int(args[1])
     magic_bonus = int(args[2]) if len(args) > 2 else 0
     has_shield = bool(args[3]) if len(args) > 3 else False
+    natural_armor_ac = int(args[4]) if len(args) > 4 else 0
 
     armor_base_ac = tables.get("armor_base_ac", {})
     armor_max_dex = tables.get("armor_max_dex", {})
@@ -199,7 +201,7 @@ def op_ac_with_armor(args: list[Any], tables: dict) -> int:
     if has_shield:
         ac += 2
 
-    return ac
+    return max(natural_armor_ac, ac)
 
 
 def op_spell_slots(args: list[Any], tables: dict) -> dict[str, int]:

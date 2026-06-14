@@ -18,6 +18,67 @@ from .lookup_tables import (
     SPELLCASTING_TYPE_BY_CLASS,
 )
 
+import re
+
+
+import re
+
+
+def _resolve_hit_die(class_data: dict) -> int:
+    """Return the resolved hit die size, applying lookup-table overrides.
+
+    Mirrors the logic in ``character_data_to_inputs`` lines 51-58 so the display
+    value matches the computation.
+    """
+    hit_die_str = class_data.get("hit_die", "d8")
+    hit_die_size = int(hit_die_str.replace("d", "")) if isinstance(hit_die_str, str) else 8
+
+    class_name = class_data.get("class_name", "").lower()
+    archetype = (
+        class_data.get("archetype")
+        or class_data.get("properties", {}).get("archetype", "")
+    )
+    if class_name in HIT_DIE_BY_CLASS:
+        hit_die_size = HIT_DIE_BY_CLASS[class_name]
+    elif archetype in HIT_DIE_BY_ARCHETYPE:
+        hit_die_size = HIT_DIE_BY_ARCHETYPE[archetype]
+
+    return hit_die_size
+
+
+_NATURAL_ARMOR_KEYWORDS = re.compile(
+    r"(carapace|natural armor|chitin|exoskeleton|scales|tough hide|bark skin|"
+    r"thick fur|bony plates|armored shell)",
+    re.IGNORECASE,
+)
+_AC_VALUE_RE = re.compile(r"\bAC\b.*?(\d+)", re.IGNORECASE)
+
+
+def _parse_natural_armor(species_data: dict) -> int:
+    """Extract natural armor AC from species traits, or 0 if none."""
+    # Explicit field (future-proof)
+    explicit = species_data.get("natural_armor_ac")
+    if isinstance(explicit, int) and explicit > 0:
+        return explicit
+
+    traits: list[dict] = species_data.get("traits", []) or []
+    if not isinstance(traits, list):
+        return 0
+
+    for trait in traits:
+        if not isinstance(trait, dict):
+            continue
+        name = (trait.get("name") or "").lower()
+        desc = (trait.get("description") or "").lower()
+        combined = name + " " + desc
+
+        if _NATURAL_ARMOR_KEYWORDS.search(combined):
+            match = _AC_VALUE_RE.search(combined)
+            if match:
+                return int(match.group(1))
+
+    return 0
+
 
 def character_data_to_inputs(
     ability_scores: dict[str, int],
@@ -85,6 +146,9 @@ def character_data_to_inputs(
     inputs["armor_type"] = armor_type
     inputs["armor_magic_bonus"] = armor_magic
     inputs["has_shield"] = has_shield
+
+    # --- Species natural armor ---
+    inputs["natural_armor_ac"] = _parse_natural_armor(species_data)
 
     # --- Spellcasting ---
     spellcasting_type = class_data.get("properties", {}).get("spellcasting_type") or class_data.get(
@@ -227,7 +291,8 @@ def computed_values_to_sheet(
         speed_val = speed
 
     # --- Hit dice ---
-    hit_die = class_data.get("hit_die", "d8")
+    hit_die_size = _resolve_hit_die(class_data)
+    hit_die = f"d{hit_die_size}"
     hit_dice_str = computed.get("hit_dice", f"{level}{hit_die}")
 
     # --- Spellcasting ---
