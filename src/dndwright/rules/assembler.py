@@ -153,6 +153,7 @@ def assemble_character_inputs(
         inputs["armor_type"] = "none"
         inputs["armor_magic_bonus"] = 0
     inputs["has_shield"] = has_shield
+    inputs["natural_armor_ac"] = 0
 
     # ------------------------------------------------------------------
     # 8. Saving throw proficiencies

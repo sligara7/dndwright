@@ -184,6 +184,20 @@ def _build_nodes() -> dict[str, ComputationNode]:
 
     add(
         ComputationNode(
+            id="natural_armor_ac",
+            node_type=NodeType.INPUT,
+            label="Natural Armor AC",
+            layer=0,
+            group="equipment",
+            default_value=0,
+            min_value=0,
+            max_value=30,
+            description="Base AC from species natural armor (0 = none).",
+        )
+    )
+
+    add(
+        ComputationNode(
             id="speed_base",
             node_type=NodeType.INPUT,
             label="Base Speed",
@@ -446,9 +460,9 @@ def _build_nodes() -> dict[str, ComputationNode]:
             group="combat",
             formula=FormulaSpec(
                 op="ac_with_armor",
-                args=["armor_type", "dexterity_mod", "armor_magic_bonus", "has_shield"],
+                args=["armor_type", "dexterity_mod", "armor_magic_bonus", "has_shield", "natural_armor_ac"],
             ),
-            inputs=["armor_type", "dexterity_mod", "armor_magic_bonus", "has_shield"],
+            inputs=["armor_type", "dexterity_mod", "armor_magic_bonus", "has_shield", "natural_armor_ac"],
             min_value=1,
             description="Base AC from armor + DEX (capped) + magic + shield. PHB p.14.",
         )
