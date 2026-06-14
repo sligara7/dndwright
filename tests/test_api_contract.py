@@ -81,6 +81,7 @@ EXPECTED_PUBLIC = {
     "validate_subclass_homebrew",
     "validate_background_homebrew",
     "validate_homebrew",
+    "validate_power_budget",
     "HOMEBREW_VALIDATORS",
 }
 
@@ -210,6 +211,10 @@ EXPECTED_SIGNATURES = {
     "validate_subclass_homebrew": "(subclass_data: 'dict[str, Any]') -> 'list[str]'",
     "validate_background_homebrew": "(background_data: 'dict[str, Any]') -> 'list[str]'",
     "validate_homebrew": "(component_type: 'str', component_data: 'dict[str, Any]') -> 'list[str]'",
+    "validate_power_budget": (
+        "(species_data: 'dict[str, Any]', class_data: 'dict[str, Any]', "
+        "subclass_data: 'dict[str, Any] | None' = None, level: 'int' = 1) -> 'list[str]'"
+    ),
 }
 
 
