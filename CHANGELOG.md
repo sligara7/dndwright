@@ -10,6 +10,21 @@ breaking changes; these will always be noted here.
 
 ## [Unreleased]
 
+## [0.25.0] — 2026-06-13
+
+### Added
+- **Power-budget validator.** `validate_power_budget(species_data, class_data,
+  subclass_data, level)` returns budget overage problems (species traits,
+  class+subclass features per level, combined species-vs-learned split). Baselines
+  derived from dndwright's own SRD 5.2.1 content: 9 species (5 trait max, 3
+  high-impact max) and 12 classes (cumulative feature budgets by level). High-impact
+  traits (flight, innate casting, resistance, breath weapon) weighted heavier.
+  Superman+Batman double-stacking caught at low levels. Exported in `dndwright.__all__`.
+- 17 new unit tests for power-budget coverage (balanced vs over-budget vs edge cases).
+
+### Changed
+- `__all__` expanded: +1 name (`validate_power_budget`).
+
 ## [0.24.1] — 2026-06-13
 
 ### Documentation

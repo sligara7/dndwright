@@ -6,6 +6,7 @@ from dndwright.rules.homebrew_validator import (
     validate_subclass_homebrew,
     validate_background_homebrew,
     validate_homebrew,
+    validate_power_budget,
 )
 
 
@@ -287,3 +288,233 @@ class TestValidateHomebrewRouter:
     def test_router_passes_bad_data_to_validator(self):
         problems = validate_homebrew("background", {})
         assert len(problems) >= 1
+
+    def test_router_handles_power_budget_kwargs(self):
+        problems = validate_homebrew("power_budget", {
+            "species_data": {"traits": []},
+            "class_data": {"features": []},
+            "level": 1,
+        })
+        assert problems == []
+
+
+# ---------------------------------------------------------------------------
+# Power-budget validator tests
+# ---------------------------------------------------------------------------
+
+
+class TestValidatePowerBudget:
+    """validate_power_budget(species_data, class_data, subclass_data, level)."""
+
+    # --- OK cases ------------------------------------------------------------
+
+    def test_balanced_low_level_character_passes(self):
+        species = {
+            "traits": [
+                {"name": "Darkvision", "description": "You have Darkvision 60 ft."},
+                {"name": "Lucky", "description": "You can reroll 1s."},
+                {"name": "Brave", "description": "Advantage against Frightened."},
+            ]
+        }
+        class_ = {
+            "features": [
+                {"name": "Fighting Style", "level": 1},
+                {"name": "Second Wind", "level": 1},
+            ]
+        }
+        subclass = {
+            "features": [
+                {"name": "Sub Feature A", "level": 3},
+                {"name": "Sub Feature B", "level": 6},
+            ]
+        }
+        assert validate_power_budget(species, class_, subclass, level=1) == []
+
+    def test_balanced_level_5_character_passes(self):
+        species = {
+            "traits": [
+                {"name": "Giant Ancestry", "description": "Supernatural boon."},
+                {"name": "Large Form", "description": "Become Large at level 5."},
+                {"name": "Powerful Build", "description": "Carry more weight."},
+            ]
+        }
+        class_ = {
+            "features": [
+                {"name": "Rage", "level": 1},
+                {"name": "Unarmored Defense", "level": 1},
+                {"name": "Reckless Attack", "level": 2},
+                {"name": "Subclass", "level": 3},
+                {"name": "ASI", "level": 4},
+                {"name": "Extra Attack", "level": 5},
+                {"name": "Fast Movement", "level": 5},
+            ]
+        }
+        subclass = {
+            "features": [
+                {"name": "Frenzy", "level": 3},
+                {"name": "Mindless Rage", "level": 6},
+                {"name": "Retaliation", "level": 10},
+                {"name": "Intimidating Presence", "level": 14},
+            ]
+        }
+        assert validate_power_budget(species, class_, subclass, level=5) == []
+
+    def test_no_subclass_passes(self):
+        species = {"traits": [{"name": "Resourceful"}, {"name": "Skillful"}, {"name": "Versatile"}]}
+        class_ = {"features": [{"name": "Fighting Style", "level": 1}, {"name": "Action Surge", "level": 2}]}
+        assert validate_power_budget(species, class_, level=1) == []
+
+    def test_level_20_balanced_character_passes(self):
+        species = {"traits": [{"name": "Darkvision"}, {"name": "Fey Ancestry"}]}
+        # ~15 features is within the level-20 budget of 26
+        class_ = {
+            "features": [{"name": f"F{i}", "level": i} for i in range(1, 17)]
+        }
+        subclass = {
+            "features": [{"name": f"SF{i}", "level": i} for i in [3, 6, 10, 14, 17]]
+        }
+        assert validate_power_budget(species, class_, subclass, level=20) == []
+
+    # --- Species trait budget failures ---------------------------------------
+
+    def test_too_many_species_traits_fails(self):
+        species = {
+            "traits": [
+                {"name": f"Trait {i}"} for i in range(7)  # 7 > 5 max
+            ]
+        }
+        class_ = {"features": [{"name": "Attack", "level": 1}]}
+        problems = validate_power_budget(species, class_, level=1)
+        assert any("Species has 7 traits" in p for p in problems)
+        assert any("over budget" in p for p in problems)
+
+    def test_too_many_high_impact_traits_fails(self):
+        species = {
+            "traits": [
+                {"name": "Flight", "description": "You have a fly speed of 30 ft."},
+                {"name": "Damage Resistance", "description": "Resistance to fire damage."},
+                {"name": "Breath Weapon", "description": "15 ft cone of fire damage."},
+                {"name": "Magic Resistance", "description": "Advantage on saves vs spells."},
+            ]  # 4 high-impact > 3 max
+        }
+        class_ = {"features": [{"name": "Fighting Style", "level": 1}]}
+        problems = validate_power_budget(species, class_, level=1)
+        assert any("high-impact" in p.lower() for p in problems)
+
+    def test_innate_spellcasting_high_level_fails(self):
+        species = {
+            "traits": [
+                {"name": "Arcane Heritage", "description": "Innate spellcasting."},
+            ],
+            "innate_spellcasting": {
+                "spells": [
+                    {"name": "Fireball", "level": 3},
+                    {"name": "Disintegrate", "level": 6},
+                ]
+            },
+        }
+        class_ = {"features": [{"name": "Attack", "level": 1}]}
+        problems = validate_power_budget(species, class_, level=1)
+        assert any("level-6" in p or "4" in p for p in problems)
+
+    # --- Class feature budget failures ---------------------------------------
+
+    def test_too_many_features_at_level_1_fails(self):
+        species = {"traits": []}
+        class_ = {
+            "features": [
+                {"name": f"Feature {i}", "level": 1} for i in range(6)  # 6 > 4 max at L1
+            ]
+        }
+        problems = validate_power_budget(species, class_, level=1)
+        assert any("Class+subclass has 6 features" in p for p in problems)
+        assert any("over budget" in p for p in problems)
+
+    def test_too_many_features_at_level_3_fails(self):
+        species = {"traits": []}
+        class_ = {
+            "features": [{"name": f"F{i}", "level": 1} for i in range(3)] + [
+                {"name": f"F3_{i}", "level": 3} for i in range(5)
+            ]
+        }
+        subclass = {
+            "features": [{"name": f"SF{i}", "level": 3} for i in range(4)]
+        }
+        # At L3: 3 base (L1) + 5 base (L3) + 4 subclass (L3) = 12 > 9 max
+        problems = validate_power_budget(species, class_, subclass, level=3)
+        assert any("Class+subclass has 12 features" in p for p in problems)
+
+    # --- Combined budget (Superman + Batman) ---------------------------------
+
+    def test_superman_batman_stack_fails(self):
+        """At level 1: 5 species + 5 class = 10, exceeds class budget (4) + combined."""
+        species = {
+            "traits": [
+                {"name": "Flight", "description": "Fly speed 60 ft."},
+                {"name": "Heat Vision", "description": "Ranged damage."},
+                {"name": "Super Strength", "description": "Advantage on Strength."},
+                {"name": "Invulnerability", "description": "Damage resistance to all."},
+                {"name": "Super Speed", "description": "Dash as bonus action."},
+            ]
+        }
+        class_ = {
+            "features": [
+                {"name": "Martial Arts", "level": 1},
+                {"name": "Detective Training", "level": 1},
+                {"name": "Gadget Belt", "level": 1},
+                {"name": "Combat Expertise", "level": 1},
+                {"name": "Shadow Strike", "level": 1},
+            ]
+        }
+        subclass = {
+            "features": [
+                {"name": "Stealth Mastery", "level": 1},
+            ]
+        }
+        problems = validate_power_budget(species, class_, subclass, level=1)
+        # Should fail class-feature budget: 6 > 4 at L1
+        assert any("Class+subclass has 6 features" in p for p in problems)
+        # Should also fail combined: 5 species + 6 class = 11 > 9 at L1
+        assert any("Combined power budget exceeded" in p for p in problems)
+
+    def test_just_under_combined_budget_passes(self):
+        # At level 1: budget = 5 + 4 = 9 (no extra margin for combined).
+        # 4 species + 4 class = 8 < 9 passes.
+        species = {"traits": [{"name": f"T{i}"} for i in range(4)]}
+        class_ = {"features": [{"name": f"F{i}", "level": 1} for i in range(4)]}
+        assert validate_power_budget(species, class_, level=1) == []
+
+    def test_just_over_combined_budget_fails(self):
+        # At level 1: budget = 5 + 4 = 9.  6 species + 4 class = 10 > 9 fails.
+        species = {"traits": [{"name": f"T{i}"} for i in range(6)]}
+        class_ = {"features": [{"name": f"F{i}", "level": 1} for i in range(4)]}
+        problems = validate_power_budget(species, class_, level=1)
+        assert any("Combined power budget exceeded" in p for p in problems)
+
+    # --- Edge cases ---------------------------------------------------------
+
+    def test_empty_data_passes(self):
+        assert validate_power_budget({}, {}, level=1) == []
+
+    def test_missing_traits_passes(self):
+        species = {}
+        class_ = {"features": [{"name": "Attack", "level": 1}]}
+        assert validate_power_budget(species, class_, level=1) == []
+
+    def test_string_traits_list_handled(self):
+        """Malformed traits list (strings) should not crash."""
+        species = {"traits": ["not_a_dict"]}
+        class_ = {"features": [{"name": "Attack", "level": 1}]}
+        problems = validate_power_budget(species, class_, level=1)
+        assert problems == []
+
+    def test_features_below_level_ignored(self):
+        species = {"traits": []}
+        class_ = {
+            "features": [
+                {"name": "F1", "level": 1},
+                {"name": "F5", "level": 5},
+                {"name": "F10", "level": 10},
+            ]
+        }
+        assert validate_power_budget(species, class_, level=2) == []

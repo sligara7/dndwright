@@ -100,7 +100,7 @@ from .rules.validation import (
     validate_ruleset,
 )
 
-__version__ = "0.23.2"
+__version__ = "0.25.0"
 
 # homebrew validation (structural rules checks on LLM-generated components)
 from .rules.homebrew_validator import (
@@ -109,6 +109,7 @@ from .rules.homebrew_validator import (
     validate_subclass_homebrew,
     validate_background_homebrew,
     validate_homebrew,
+    validate_power_budget,
     VALIDATORS as HOMEBREW_VALIDATORS,
 )
 
@@ -203,5 +204,6 @@ __all__ = [
     "validate_subclass_homebrew",
     "validate_background_homebrew",
     "validate_homebrew",
+    "validate_power_budget",
     "HOMEBREW_VALIDATORS",
 ]
