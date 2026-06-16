@@ -45,6 +45,27 @@ MAX_SWIM_SPEED = 60
 MAX_CLIMB_SPEED = 40
 MAX_BURROW_SPEED = 30
 
+
+def _coerce_hit_die(value: Any) -> int | None:
+    """Coerce a hit die to its integer faces, or ``None`` if unparseable.
+
+    Accepts the integer form (``8``) and the canonical dice-string form
+    (``"d8"``, case-insensitive) — ``CharClass.hit_die`` is typed ``str``
+    ("d6".."d12") and normalized homebrew output carries the string, so the
+    validator must understand both. ``bool`` is rejected (it is an ``int``
+    subclass but never a valid die).
+    """
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, int):
+        return value
+    if isinstance(value, str):
+        faces = value.strip().lower().lstrip("d")
+        if faces.isdigit():
+            return int(faces)
+    return None
+
+
 # ---------------------------------------------------------------------------
 # Class validator
 # ---------------------------------------------------------------------------
@@ -55,28 +76,38 @@ def validate_class_homebrew(class_data: dict[str, Any]) -> list[str]:
     problems: list[str] = []
 
     # --- Hit die ---
-    hit_die = class_data.get("hit_die")
-    if hit_die is None:
+    # Accept both the integer form (8) and the canonical dice-string form
+    # ("d8"); ``CharClass.hit_die`` is typed ``str`` and normalized homebrew
+    # output carries the string, so coerce "dN" -> N before the range check.
+    raw_hit_die = class_data.get("hit_die")
+    hit_die = _coerce_hit_die(raw_hit_die)
+    if raw_hit_die is None:
         problems.append("Missing hit_die")
-    elif not isinstance(hit_die, int) or hit_die not in VALID_HIT_DICE:
-        problems.append(f"Invalid hit_die: {hit_die} (must be one of {sorted(VALID_HIT_DICE)})")
+    elif hit_die is None or hit_die not in VALID_HIT_DICE:
+        problems.append(
+            f"Invalid hit_die: {raw_hit_die!r} "
+            f"(must be one of {sorted(VALID_HIT_DICE)} or 'd6'/'d8'/'d10'/'d12')"
+        )
 
     # --- Saving throw proficiencies ---
-    saves: list[str] = class_data.get("saving_throw_proficiencies") or class_data.get("saving_throws") or []
-    if len(saves) != 2:
-        problems.append(f"Must have exactly 2 saving throw proficiencies, got {len(saves)}: {saves}")
+    # Ability names are compared case-insensitively: the canonical model and the
+    # normalized homebrew output capitalize them ("Strength"), while the SRD
+    # ability sets here are lowercase.
+    raw_saves = class_data.get("saving_throw_proficiencies") or class_data.get("saving_throws") or []
+    if not isinstance(raw_saves, list):
+        problems.append(f"saving_throw_proficiencies must be a list, got {type(raw_saves).__name__}")
+    elif len(raw_saves) != 2:
+        problems.append(f"Must have exactly 2 saving throw proficiencies, got {len(raw_saves)}: {raw_saves}")
     else:
-        if not isinstance(saves, list):
-            problems.append(f"saving_throw_proficiencies must be a list, got {type(saves).__name__}")
-        else:
-            unknown = [s for s in saves if s not in ALL_ABILITIES]
-            if unknown:
-                problems.append(f"Unknown ability in saving throws: {unknown}")
-            if not (set(saves) & STRONG_SAVES and set(saves) & WEAK_SAVES):
-                problems.append(
-                    f"Must have one strong ({sorted(STRONG_SAVES)}) and one weak "
-                    f"({sorted(WEAK_SAVES)}) save proficiency, got {saves}"
-                )
+        saves = [str(s).strip().lower() for s in raw_saves]
+        unknown = [orig for orig, s in zip(raw_saves, saves) if s not in ALL_ABILITIES]
+        if unknown:
+            problems.append(f"Unknown ability in saving throws: {unknown}")
+        elif not (set(saves) & STRONG_SAVES and set(saves) & WEAK_SAVES):
+            problems.append(
+                f"Must have one strong ({sorted(STRONG_SAVES)}) and one weak "
+                f"({sorted(WEAK_SAVES)}) save proficiency, got {raw_saves}"
+            )
 
     # --- Archetype ---
     archetype = class_data.get("archetype", "")

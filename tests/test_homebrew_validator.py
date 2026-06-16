@@ -35,6 +35,50 @@ class TestValidateClassHomebrew:
             "archetype": "full_martial",
         }) == []
 
+    # --- Canonical / generated shape (regression pins) ---------------------
+    # The validator must accept the shape that ``CharClass`` actually uses and
+    # that the LLM-normalized homebrew output produces: a dice-STRING hit_die
+    # ("d10", since ``CharClass.hit_die`` is typed ``str``) and CAPITALIZED
+    # ability names ("Strength"). It previously demanded an int + lowercase and
+    # so false-positive-rejected every valid generated class.
+
+    def test_legal_dice_string_hit_die(self):
+        assert validate_class_homebrew({
+            "hit_die": "d10",
+            "saving_throws": ["strength", "constitution"],
+            "archetype": "full_martial",
+        }) == []
+
+    def test_legal_capitalized_saving_throws(self):
+        assert validate_class_homebrew({
+            "hit_die": 8,
+            "saving_throws": ["Strength", "Constitution"],
+            "archetype": "full_martial",
+        }) == []
+
+    def test_legal_full_generated_class_shape(self):
+        """The exact gen_plus normalize_class output must validate clean."""
+        assert validate_class_homebrew({
+            "name": "Ironguard",
+            "hit_die": "d10",
+            "saving_throws": ["Strength", "Constitution"],
+            "archetype": "full_martial",
+            "spellcasting_type": "none",
+            "progression_table": [{"level": i, "features": ["x"]} for i in range(1, 21)],
+        }) == []
+
+    def test_dice_string_invalid_die_still_caught(self):
+        problems = validate_class_homebrew({
+            "hit_die": "d7",
+            "saving_throws": ["Strength", "Constitution"]})
+        assert any("hit_die" in p.lower() for p in problems)
+
+    def test_capitalized_two_strong_saves_still_caught(self):
+        problems = validate_class_homebrew({
+            "hit_die": "d8",
+            "saving_throws": ["Dexterity", "Constitution"]})
+        assert any("strong" in p or "weak" in p for p in problems)
+
     def test_invalid_hit_die(self):
         problems = validate_class_homebrew({"hit_die": 4,
             "saving_throw_proficiencies": ["dexterity", "intelligence"]})
