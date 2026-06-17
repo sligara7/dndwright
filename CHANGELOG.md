@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.25.2
+
+### Fixed
+- `validate_class_homebrew` now accepts the canonical `CharClass` shape: dice-string `hit_die`
+  (e.g. `"d10"`) and case-insensitive ability names in saving throws. It previously demanded an
+  int `hit_die` + lowercase abilities, false-positiving on every valid generated class — and
+  contradicting dndwright's own `CharClass` model (`hit_die: str`). Bare-int hit_die and lowercase
+  abilities still validate; genuinely-bad data is still caught.
+
 ## 0.25.1
 
 ### Fixed
