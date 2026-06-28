@@ -119,3 +119,56 @@ def test_clean_damage_types_normalises_and_filters():
     from dndwright.combat import combatant_defenses
     d = combatant_defenses({"resistances": ["Fire", "junk"], "immunities": ["poison"]})
     assert d["resistances"] == frozenset({"fire"}) and d["immunities"] == frozenset({"poison"})
+
+
+# --- allowed-set injection (caller-governed type vocabulary) ----------------
+
+def test_clean_damage_types_allowed_widens_vocabulary():
+    from dndwright.combat import DAMAGE_TYPES, clean_damage_types
+    # default = SRD-13: a custom type is dropped (the silent-drop the registry replaces)
+    assert clean_damage_types(["fire", "radiation"]) == ("fire",)
+    # widened allowed = SRD-13 ∪ {radiation}: the custom type now survives
+    allowed = DAMAGE_TYPES | {"radiation"}
+    assert clean_damage_types(["fire", "radiation"], allowed=allowed) == ("fire", "radiation")
+    # still normalises (lower-case/dedupe/sort) and still drops genuine junk
+    assert clean_damage_types(["Radiation", "RADIATION", "junk"], allowed=allowed) == ("radiation",)
+
+
+def test_clean_damage_types_default_unchanged_backcompat():
+    from dndwright.combat import DAMAGE_TYPES, clean_damage_types
+    # no allowed kwarg → identical to intersecting with DAMAGE_TYPES (existing callers unaffected)
+    assert clean_damage_types(["fire", "radiation"]) == clean_damage_types(
+        ["fire", "radiation"], allowed=DAMAGE_TYPES
+    )
+
+
+def test_combatant_defenses_threads_allowed_per_channel():
+    from dndwright.combat import DAMAGE_TYPES, combatant_defenses
+    allowed = DAMAGE_TYPES | {"radiation"}
+    d = combatant_defenses(
+        {"resistances": ["radiation", "fire"], "immunities": ["radiation"]}, allowed=allowed
+    )
+    assert d["resistances"] == frozenset({"radiation", "fire"})
+    assert d["immunities"] == frozenset({"radiation"})
+    # without allowed, the custom type is dropped on every channel (default SRD-13)
+    d0 = combatant_defenses({"resistances": ["radiation", "fire"], "immunities": ["radiation"]})
+    assert d0["resistances"] == frozenset({"fire"}) and d0["immunities"] == frozenset()
+
+
+def test_registered_type_governs_actual_combat_damage():
+    """The real-path proof: a caller-registered type must HALVE damage in apply_damage,
+    not just survive the filter — i.e. it is governed at the point damage is applied."""
+    from dndwright.combat import DAMAGE_TYPES, combatant_defenses
+    allowed = DAMAGE_TYPES | {"radiation"}
+    composed = compose(
+        R, modifier("r", target="resistances", amount=["radiation"], mode="union")
+    )
+    sheet = evaluate(composed, _inputs())
+    # with the widened allowed set, the registered resistance reaches the combat state
+    state = CombatantState(current_hp=20, max_hp=20, **combatant_defenses(sheet, allowed=allowed))
+    resisted, applied = apply_damage(state, 10, damage_type="radiation")
+    assert resisted.current_hp == 15 and applied.multiplier == 0.5
+    # default (SRD-13) drops the resistance → full damage = the split-brain we are preventing
+    state0 = CombatantState(current_hp=20, max_hp=20, **combatant_defenses(sheet))
+    full, applied0 = apply_damage(state0, 10, damage_type="radiation")
+    assert full.current_hp == 10 and applied0.multiplier == 1.0
