@@ -100,7 +100,7 @@ from .rules.validation import (
     validate_ruleset,
 )
 
-__version__ = "0.25.0"
+__version__ = "0.26.0"
 
 # homebrew validation (structural rules checks on LLM-generated components)
 from .rules.homebrew_validator import (
