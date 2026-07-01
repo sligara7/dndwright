@@ -179,7 +179,8 @@ EXPECTED_SIGNATURES = {
     "evaluate": "(ruleset: 'Ruleset', input_values: 'dict[str, Any]') -> 'dict[str, Any]'",
     "evaluate_character": (
         "(session_data: 'dict', *, strict: 'bool' = False, "
-        "scaling: 'ThemeScalingLayer | None' = None) -> 'dict'"
+        "scaling: 'ThemeScalingLayer | None' = None, "
+        "components: 'list | None' = None) -> 'dict'"
     ),
     "generate_library": (
         "(llm: 'JsonLLM', classes: 'int' = 6, species: 'int' = 6, creatures: 'int' = 12) "

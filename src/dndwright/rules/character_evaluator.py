@@ -17,6 +17,7 @@ from typing import Any
 
 from .adapters import character_data_to_inputs, computed_values_to_sheet
 from .assembler import apply_modifiers
+from .compose import Component, compose, component_from_dict
 from .dnd_5e_2024 import DND_5E_2024_RULESET
 from .evaluator import evaluate
 from .theme_scaling import ThemeScalingLayer, apply_theme_scaling
@@ -178,6 +179,7 @@ def evaluate_character(
     *,
     strict: bool = False,
     scaling: ThemeScalingLayer | None = None,
+    components: list | None = None,
 ) -> dict:
     """Evaluate a character from session data → full computed character sheet.
 
@@ -218,8 +220,15 @@ def evaluate_character(
         equipment=fields["equipment"],
     )
 
-    # Evaluate the computation graph (theme-scaled when a scaling layer is supplied)
-    computed = evaluate(_ruleset_for(scaling), inputs)
+    # Compose any adopted item/equipment components onto the ruleset before evaluating —
+    # e.g. an allocated "+1 armor_class" or "resistance to fire" item snaps its modifier onto
+    # the computed sheet (each `component` is a Component, or a component_from_dict-shaped spec
+    # dict as persisted on a GraphComponent). Then evaluate the (theme-scaled) computation graph.
+    ruleset = _ruleset_for(scaling)
+    if components:
+        comps = [c if isinstance(c, Component) else component_from_dict(c) for c in components]
+        ruleset = compose(ruleset, *comps)
+    computed = evaluate(ruleset, inputs)
 
     # Apply NodeModifiers from feats, class features, etc.
     computed = apply_modifiers(computed, inputs)
