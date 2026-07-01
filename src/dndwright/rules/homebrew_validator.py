@@ -231,7 +231,7 @@ def validate_species_homebrew(species_data: dict[str, Any]) -> list[str]:
                 continue
             name = trait.get("name", "?")
             if not isinstance(name, str) or not name.strip():
-                problems.append(f"Species trait missing name")
+                problems.append("Species trait missing name")
 
     return problems
 

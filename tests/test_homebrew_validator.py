@@ -1,5 +1,4 @@
 """Tests for homebrew validators."""
-import pytest
 from dndwright.rules.homebrew_validator import (
     validate_class_homebrew,
     validate_species_homebrew,

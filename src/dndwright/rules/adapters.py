@@ -21,7 +21,6 @@ from .lookup_tables import (
 import re
 
 
-import re
 
 
 def _resolve_hit_die(class_data: dict) -> int:
