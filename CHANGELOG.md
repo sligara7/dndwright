@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.27.0] — 2026-07-29
+
 ### Added
 - `clean_damage_types()` and `combatant_defenses()` now accept an optional keyword-only
   `allowed: frozenset[str] = DAMAGE_TYPES`. By default they intersect with the SRD-13
@@ -12,6 +14,23 @@
   not know where `allowed` comes from; members must be lower-cased (the caller owns canonicalisation).
   Enables host applications to support per-campaign/per-universe custom damage types without a
   split-brain between the character sheet and combat. Public API names (`__all__`) unchanged.
+
+## [0.26.0] — 2026-07-01
+
+> Backfilled 2026-07-29: this version was released to PyPI on 2026-07-01 but the
+> CHANGELOG section was missed at the time. Recorded here from PR #9.
+
+### Added
+- `evaluate_character(components=...)` — item/equipment dndwright Components (or
+  `component_from_dict`-shaped spec dicts) are `compose()`'d onto the ruleset before
+  evaluation, so an allocated item's modifier lands on the computed sheet (a `+1
+  armor_class` item yields `+1` AC). `None`/`[]` is a pure no-op, so the kwarg is
+  additive and existing callers are unaffected. This is `compose`'s first shipping
+  caller. Item components MUST carry unique ids — dndwright namespaces by
+  `component.id`, and the `component_from_content` default `"item"` collides across
+  items. Confirmed against the sheet-reshape reads (`armor_class`, `initiative`);
+  ability-score and resistance targets compose the node but still need a
+  sheet-reshape follow-up.
 
 ## 0.25.2
 
@@ -525,7 +544,14 @@ from a working application.
 Pure (pydantic + stdlib); no application/framework coupling. Rules content derives
 from the SRD 5.2 (CC-BY-4.0); see NOTICE.
 
-[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.23.2...HEAD
+[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.27.0...HEAD
+[0.27.0]: https://github.com/sligara7/dndwright/compare/v0.26.0...v0.27.0
+[0.26.0]: https://github.com/sligara7/dndwright/compare/v0.25.2...v0.26.0
+[0.25.2]: https://github.com/sligara7/dndwright/compare/v0.25.1...v0.25.2
+[0.25.1]: https://github.com/sligara7/dndwright/compare/v0.25.0...v0.25.1
+[0.25.0]: https://github.com/sligara7/dndwright/compare/v0.24.1...v0.25.0
+[0.24.1]: https://github.com/sligara7/dndwright/compare/v0.24.0...v0.24.1
+[0.24.0]: https://github.com/sligara7/dndwright/compare/v0.23.2...v0.24.0
 [0.23.2]: https://github.com/sligara7/dndwright/compare/v0.23.1...v0.23.2
 [0.23.1]: https://github.com/sligara7/dndwright/compare/v0.23.0...v0.23.1
 [0.23.0]: https://github.com/sligara7/dndwright/compare/v0.22.0...v0.23.0
