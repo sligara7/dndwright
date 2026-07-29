@@ -27,7 +27,13 @@ classifiers = [
 dependencies = ["pydantic>=2.5", "pyyaml>=6.0"]
 
 [project.optional-dependencies]
-dev = ["pytest>=7.4", "ruff>=0.1", "hypothesis>=6.0"]
+# ruff is bounded on BOTH sides on purpose. CI installs this extra fresh on every
+# run, so an open-ended floor means the lint gate silently adopts whatever ruff
+# shipped that morning — which is exactly how main went red: 0.16.0 widened the
+# DEFAULT rule set (I/RUF/SIM/PL/UP) and 40 pre-existing findings appeared in
+# files nobody had touched. The floor is 0.5 because the rule set below uses the
+# `[tool.ruff.lint]` table; the ceiling keeps a new minor from moving the gate again.
+dev = ["pytest>=7.4", "ruff>=0.5,<0.17", "hypothesis>=6.0"]
 
 [project.scripts]
 dndwright = "dndwright.cli:main"
@@ -47,3 +53,15 @@ testpaths = ["tests"]
 [tool.ruff]
 line-length = 100
 target-version = "py310"
+
+[tool.ruff.lint]
+# State the enforced rule set EXPLICITLY rather than inheriting ruff's defaults.
+# Inheriting means the gate's meaning is a property of whichever ruff CI happened
+# to install, so a release that widens the defaults retroactively fails commits
+# that were green when written — with findings in files the change never touched.
+# These four are what this project has actually been enforcing (ruff's historical
+# default): pyflakes plus the pycodestyle errors that catch real mistakes.
+# Adopting more (import sorting `I`, `RUF`, `SIM`, `UP`) is a deliberate choice to
+# make on its own, with the resulting fixes in their own commit — not a side effect
+# of a dependency resolving forward.
+select = ["E4", "E7", "E9", "F"]
