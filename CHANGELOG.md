@@ -1,5 +1,18 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- `clean_damage_types()` and `combatant_defenses()` now accept an optional keyword-only
+  `allowed: frozenset[str] = DAMAGE_TYPES`. By default they intersect with the SRD-13
+  `DAMAGE_TYPES` exactly as before (fully backward-compatible); a caller that governs its own
+  damage-type vocabulary can pass a wider set (e.g. `SRD-13 ∪ custom`) so caller-registered
+  types survive the filter — at component assembly, the computed-stats read, **and** live combat
+  damage application — instead of being silently dropped. dndwright stays domain-agnostic: it does
+  not know where `allowed` comes from; members must be lower-cased (the caller owns canonicalisation).
+  Enables host applications to support per-campaign/per-universe custom damage types without a
+  split-brain between the character sheet and combat. Public API names (`__all__`) unchanged.
+
 ## 0.25.2
 
 ### Fixed
@@ -23,8 +36,6 @@ All notable changes to dndwright are documented here. The format follows
 **Public API** = the names exported in `dndwright.__all__` (pinned by
 `tests/test_api_contract.py`). While the version is `0.x`, minor versions may make
 breaking changes; these will always be noted here.
-
-## [Unreleased]
 
 ## [0.25.0] — 2026-06-13
 

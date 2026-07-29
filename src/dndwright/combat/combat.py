@@ -69,18 +69,29 @@ def damage_multiplier(
     return mult
 
 
-def clean_damage_types(values: Any) -> tuple[str, ...]:
+def clean_damage_types(
+    values: Any, *, allowed: frozenset[str] = DAMAGE_TYPES
+) -> tuple[str, ...]:
     """Normalise a collection of damage-type strings: lower-cased, de-duplicated, sorted, and
-    intersected with :data:`DAMAGE_TYPES` so narrative junk (``"Fire Resistance"``, prose like
+    intersected with ``allowed`` so narrative junk (``"Fire Resistance"``, prose like
     ``"nonmagical piercing"``) is dropped. The single source of truth for damage-type cleaning —
     used by :func:`combatant_defenses` and by callers that build resistance contributions.
+
+    ``allowed`` defaults to the SRD-13 :data:`DAMAGE_TYPES` (so existing callers are unchanged),
+    but may be widened by a caller that governs its own type vocabulary — e.g. an application that
+    lets a campaign register custom damage types passes ``SRD-13 ∪ custom`` so those types survive
+    the filter instead of being silently dropped. dndwright stays domain-agnostic: it does not know
+    where ``allowed`` comes from. **Members of ``allowed`` must already be lower-cased**, matching
+    how :data:`DAMAGE_TYPES` is defined (the caller owns canonicalisation).
     """
     if not values:
         return ()
-    return tuple(sorted({str(v).lower() for v in values} & DAMAGE_TYPES))
+    return tuple(sorted({str(v).lower() for v in values} & allowed))
 
 
-def combatant_defenses(computed: Mapping[str, Any]) -> dict[str, frozenset[str]]:
+def combatant_defenses(
+    computed: Mapping[str, Any], *, allowed: frozenset[str] = DAMAGE_TYPES
+) -> dict[str, frozenset[str]]:
     """Pull the damage-defence channels out of an evaluated character graph (or a plain
     ``{"resistances": [...], "immunities": [...], "vulnerabilities": [...]}`` snapshot).
 
@@ -92,13 +103,17 @@ def combatant_defenses(computed: Mapping[str, Any]) -> dict[str, frozenset[str]]
         computed = evaluate(compose(DND_5E_2024_RULESET, *components), inputs)
         state = CombatantState(current_hp=hp, max_hp=hp, **combatant_defenses(computed))
 
-    Members are cleaned via :func:`clean_damage_types` (lower-cased, intersected with
-    :data:`DAMAGE_TYPES`), so junk can't slip in and silently break multiplier matching.
+    Members are cleaned via :func:`clean_damage_types` (lower-cased, intersected with ``allowed``),
+    so junk can't slip in and silently break multiplier matching. ``allowed`` defaults to the
+    SRD-13 :data:`DAMAGE_TYPES`; pass a wider set (``SRD-13 ∪ custom``) to keep caller-registered
+    types — it is threaded unchanged to :func:`clean_damage_types` for every channel.
     """
     return {
-        "resistances": frozenset(clean_damage_types(computed.get("resistances"))),
-        "immunities": frozenset(clean_damage_types(computed.get("immunities"))),
-        "vulnerabilities": frozenset(clean_damage_types(computed.get("vulnerabilities"))),
+        "resistances": frozenset(clean_damage_types(computed.get("resistances"), allowed=allowed)),
+        "immunities": frozenset(clean_damage_types(computed.get("immunities"), allowed=allowed)),
+        "vulnerabilities": frozenset(
+            clean_damage_types(computed.get("vulnerabilities"), allowed=allowed)
+        ),
     }
 
 
