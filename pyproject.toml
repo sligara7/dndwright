@@ -33,7 +33,12 @@ dependencies = ["pydantic>=2.5", "pyyaml>=6.0"]
 # DEFAULT rule set (I/RUF/SIM/PL/UP) and 40 pre-existing findings appeared in
 # files nobody had touched. The floor is 0.5 because the rule set below uses the
 # `[tool.ruff.lint]` table; the ceiling keeps a new minor from moving the gate again.
-dev = ["pytest>=7.4", "ruff>=0.5,<0.17", "hypothesis>=6.0"]
+# tomli is the 3.10 backport of stdlib tomllib (3.11+). tests/test_packaging_contract.py
+# reads pyproject.toml to assert the dependency and lint-gate rules; without this the
+# check would have to skip on 3.10 — the LOWEST version we claim to support, and so the
+# one where an unguarded gate matters most. A check that cannot fail on a supported
+# interpreter is not a gate.
+dev = ["pytest>=7.4", "ruff>=0.5,<0.17", "hypothesis>=6.0", "tomli>=2.0; python_version<'3.11'"]
 
 [project.scripts]
 dndwright = "dndwright.cli:main"
