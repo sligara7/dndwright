@@ -23,7 +23,7 @@ Lower level (assemble typed inputs, evaluate against the ruleset):
 
     from dndwright import (DND_5E_2024_RULESET, assemble_character_inputs,
                            evaluate, apply_modifiers)
-    from dndwright.rules.components import ClassMechanics
+    from dndwright import ClassMechanics
     inputs = assemble_character_inputs(class_mechanics=..., ability_scores={...}, level=5)
     computed = apply_modifiers(evaluate(DND_5E_2024_RULESET, inputs), inputs)
 
@@ -31,6 +31,7 @@ The rules tables (hit dice, spell slots, armour AC, save proficiencies) encode
 game mechanics derived from the **D&D SRD 5.2 (CC-BY-4.0)** — see NOTICE.
 """
 
+from .combat import weapon_attack
 from .content import categories, generate_library, load_content
 from .content.models import (
     CONTENT_MODELS,
@@ -57,6 +58,7 @@ from .rules.character_evaluator import (
     evaluate_character,
     validate_character_data,
 )
+from .rules.components import ClassMechanics
 from .rules.compose import (
     COMPONENT_SCHEMA_VERSION,
     Component,
@@ -134,6 +136,7 @@ __all__ = [
     "Background",
     "CharClass",
     "CharacterInputError",
+    "ClassMechanics",
     "Component",
     "ComputationNode",
     "Condition",
@@ -208,4 +211,5 @@ __all__ = [
     "validate_ruleset",
     "validate_species_homebrew",
     "validate_subclass_homebrew",
+    "weapon_attack",
 ]

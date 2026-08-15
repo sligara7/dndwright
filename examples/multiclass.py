@@ -8,11 +8,11 @@ multiclass you assemble typed inputs and hand them to the engine.
 
 from dndwright import (
     DND_5E_2024_RULESET,
+    ClassMechanics,
     apply_modifiers,
     assemble_character_inputs,
     evaluate,
 )
-from dndwright.rules.components import ClassMechanics
 
 fighter = ClassMechanics(hit_die=10, archetype="warrior",
                          saving_throw_proficiencies=["strength", "constitution"])

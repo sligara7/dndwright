@@ -6,7 +6,7 @@ differ — handy for "what did this change do?" UIs.
     python examples/stat_diff.py
 """
 
-from dndwright.rules.character_evaluator import compute_stat_diff
+from dndwright import compute_stat_diff
 
 base = {
     "ability_scores": {"strength": 15, "dexterity": 14, "constitution": 14,

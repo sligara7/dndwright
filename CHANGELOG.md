@@ -2,6 +2,36 @@
 
 ## [Unreleased]
 
+### Added
+- **`ClassMechanics` and `weapon_attack` are now part of the public API** (`dndwright.__all__`,
+  72 → 74 names). Both were already reachable — `ClassMechanics` only via the private
+  `dndwright.rules.components`, and `weapon_attack` via the published `dndwright.combat`
+  sub-API — and both are now importable directly from `dndwright`. Additive: no existing
+  import path was removed, so nothing breaks.
+  - The API contract test pins all three of its surfaces accordingly: the exported name set,
+    `weapon_attack`'s signature (every public free function must be pinned), and
+    `ClassMechanics`'s field list (every public pydantic model must be pinned).
+  - **A minor version bump is owed at the next release** under SemVer, since this widens the
+    public surface. Deliberately not bumped here: bumping without releasing is what left
+    the sibling package mapwright with a 0.28.0 that looks shipped and never was.
+
+### Changed
+- **Examples and the module docstring now teach published import paths only.**
+  `examples/multiclass.py` and the `__init__` docstring imported `ClassMechanics` from
+  `dndwright.rules.components`; `examples/stat_diff.py` imported `compute_stat_diff` from
+  `dndwright.rules.character_evaluator` even though that name was already public. Since
+  `tests/test_examples.py` executes every example, the package was effectively guaranteeing
+  that private import paths keep working.
+
+### Known
+- **`examples/conditions.py` and `examples/initiative.py` still import names that are on no
+  published surface** — `attempt_save`, `tick_conditions`, `ActiveCondition`, `ROUND_END`,
+  `SAVE_ENDS`, `order_initiative`, `advance_turn`, `roll_initiative`, `InitiativeEntry`.
+  `dndwright.combat.__all__` exports the `conditions` and `initiative` *submodules* but none
+  of the functions within them. Widening the surface further is a separate decision and has
+  not been taken.
+
+
 ### Changed
 - **Adopted the wider lint families** (`I`, `SIM`, `UP`, `RUF`) on top of the existing
   explicit rule set, in a deliberate pass rather than as a dependency side effect:
