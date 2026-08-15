@@ -3,17 +3,17 @@
 from dndwright import (
     DND_5E_2024_RULESET,
     Component,
-    Contribution,
     ComputationNode,
+    Contribution,
     FormulaSpec,
     NodeType,
     Ruleset,
+    character_data_to_inputs,
     compose,
     evaluate,
     modifier,
     validate_ruleset,
 )
-from dndwright import character_data_to_inputs
 
 R = DND_5E_2024_RULESET
 
@@ -139,7 +139,8 @@ class TestComponentSurface:
 # --- override mode (0.14.0): authoritative value that holds below the input default ---
 
 def test_override_holds_below_input_default():
-    from dndwright import DND_5E_2024_RULESET as R, modifier, compose, evaluate
+    from dndwright import DND_5E_2024_RULESET as R
+    from dndwright import compose, evaluate, modifier
     # strength_score INPUT defaults to 10; a creature's authoritative STR 8 must win.
     sheet = evaluate(compose(R, modifier("sb", target="strength_score", amount=8, mode="override")), {})
     assert sheet["strength_score"] == 8
@@ -147,13 +148,15 @@ def test_override_holds_below_input_default():
 
 
 def test_set_mode_clamps_but_override_does_not():
-    from dndwright import DND_5E_2024_RULESET as R, modifier, compose, evaluate
+    from dndwright import DND_5E_2024_RULESET as R
+    from dndwright import compose, evaluate, modifier
     assert evaluate(compose(R, modifier("a", target="strength_score", amount=6, mode="set")), {})["strength_score"] == 10
     assert evaluate(compose(R, modifier("b", target="strength_score", amount=6, mode="override")), {})["strength_score"] == 6
 
 
 def test_override_then_add_stacks():
-    from dndwright import DND_5E_2024_RULESET as R, modifier, compose, evaluate
+    from dndwright import DND_5E_2024_RULESET as R
+    from dndwright import compose, evaluate, modifier
     composed = compose(
         R,
         modifier("sb", target="strength_score", amount=8, mode="override"),
@@ -163,7 +166,8 @@ def test_override_then_add_stacks():
 
 
 def test_multiple_overrides_last_wins():
-    from dndwright import DND_5E_2024_RULESET as R, modifier, compose, evaluate, validate_ruleset
+    from dndwright import DND_5E_2024_RULESET as R
+    from dndwright import compose, evaluate, modifier, validate_ruleset
     composed = compose(
         R,
         modifier("a", target="strength_score", amount=5, mode="override"),

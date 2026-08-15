@@ -110,9 +110,7 @@ def weapon_attack(
     is_ranged = w["kind"].lower() == "ranged"
 
     # ability selection: Ranged -> Dex; Finesse melee -> better of Str/Dex; else Str
-    if is_ranged:
-        ability, ability_mod = "dexterity", dexterity_mod
-    elif is_finesse and dexterity_mod >= strength_mod:
+    if is_ranged or (is_finesse and dexterity_mod >= strength_mod):
         ability, ability_mod = "dexterity", dexterity_mod
     else:
         ability, ability_mod = "strength", strength_mod

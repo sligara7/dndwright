@@ -152,7 +152,7 @@ class TestDeathSaves:
         assert state.is_dead and r.is_dead
 
     def test_manual_roll(self):
-        state, r = roll_death_save(CombatantState(0, 30), DiceEngine(seed=1), manual_roll=18)
+        _state, r = roll_death_save(CombatantState(0, 30), DiceEngine(seed=1), manual_roll=18)
         assert r.roll == 18 and r.is_success
 
     def test_no_op_when_already_stable(self):

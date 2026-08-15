@@ -66,7 +66,34 @@ target-version = "py310"
 # that were green when written — with findings in files the change never touched.
 # These four are what this project has actually been enforcing (ruff's historical
 # default): pyflakes plus the pycodestyle errors that catch real mistakes.
-# Adopting more (import sorting `I`, `RUF`, `SIM`, `UP`) is a deliberate choice to
-# make on its own, with the resulting fixes in their own commit — not a side effect
-# of a dependency resolving forward.
-select = ["E4", "E7", "E9", "F"]
+# The wider families were adopted DELIBERATELY on 2026-08-15, in their own commit,
+# which is the order this rule demands. `PL` is not adopted: 262 findings, nearly all
+# magic-value comparison in rules tables where the constants ARE the ruleset.
+select = ["E4", "E7", "E9", "F", "I", "SIM", "UP", "RUF"]
+
+ignore = [
+    # Ambiguous-unicode in docstrings/comments. This project's prose uses en/em
+    # dashes and arrows on purpose; flagging them fights the house style rather
+    # than catching a defect.
+    "RUF001", "RUF002", "RUF003",
+    # Cosmetic, and each deserves its own reasoning rather than riding along in a
+    # lint sweep: a list concatenation in the compose() hot path, and a mutable
+    # class attribute in a test fixture.
+    "RUF005", "RUF012",
+]
+
+# ⚠️ RUF046 IS DELIBERATELY *NOT* IGNORED HERE, AND THAT IS A LOAD-BEARING DIFFERENCE
+# FROM mapwright, WHICH DOES IGNORE IT.
+#
+# RUF046 rewrites `int(round(x))` -> `round(x)`. That is correct ONLY when `x` is a
+# plain Python float: `round(np.float64)` returns a np.float64, NOT an int, so on a
+# numpy codebase the rewrite silently changes the TYPE flowing downstream. mapwright
+# is numpy-based and declines it for exactly that reason.
+#
+# dndwright is safe to enable it because this package has NO numpy — which is not an
+# accident, it is `rule:dw_dependency_light` ("pydantic and pyyaml plus the standard
+# library, and explicitly no NumPy"), asserted by tests/test_packaging_contract.py.
+#
+# ⇒ THE SAFETY OF THIS LINE DEPENDS ON A DEPENDENCY RULE, AND THAT LINK IS ITSELF
+# CHECKED: TestRuf046SafetyIsLinkedToNumpyAbsence fails if numpy is ever added while
+# RUF046 is still active, so the two decisions cannot drift apart silently.

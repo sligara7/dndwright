@@ -6,7 +6,6 @@ the composed resistances/immunities/vulnerabilities into combat.
 from dndwright import (
     COMPONENT_SCHEMA_VERSION,
     DAMAGE_CHANNELS,
-    DND_5E_2024_RULESET as R,
     IMMUNITIES_NODE,
     RESISTANCES_NODE,
     VULNERABILITIES_NODE,
@@ -18,6 +17,9 @@ from dndwright import (
     evaluate,
     modifier,
     validate_ruleset,
+)
+from dndwright import (
+    DND_5E_2024_RULESET as R,
 )
 from dndwright.combat import CombatantState, apply_damage, combatant_defenses
 

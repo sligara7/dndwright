@@ -17,7 +17,7 @@ from typing import Any
 
 from .adapters import character_data_to_inputs, computed_values_to_sheet
 from .assembler import apply_modifiers
-from .compose import Component, compose, component_from_dict
+from .compose import Component, component_from_dict, compose
 from .dnd_5e_2024 import DND_5E_2024_RULESET
 from .evaluator import evaluate
 from .theme_scaling import ThemeScalingLayer, apply_theme_scaling

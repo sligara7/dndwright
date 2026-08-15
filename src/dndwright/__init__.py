@@ -84,6 +84,7 @@ from .rules.evaluator import (
 from .rules.export import to_dot, to_mermaid
 from .rules.lookup_tables import get_all_lookup_tables
 from .rules.operations import Operation, describe_operations, register_operation
+from .rules.schema import ComputationNode, FormulaSpec, NodeType, Ruleset
 from .rules.theme_scaling import (
     PREDEFINED_THEME_SCALING,
     ThemeScalingLayer,
@@ -91,7 +92,6 @@ from .rules.theme_scaling import (
     get_theme_scaling,
     list_predefined_themes,
 )
-from .rules.schema import ComputationNode, FormulaSpec, NodeType, Ruleset
 from .rules.validation import (
     RulesetValidationError,
     ValidationIssue,
@@ -104,106 +104,108 @@ __version__ = "0.27.0"
 
 # homebrew validation (structural rules checks on LLM-generated components)
 from .rules.homebrew_validator import (
-    validate_class_homebrew,
-    validate_species_homebrew,
-    validate_subclass_homebrew,
+    VALIDATORS as HOMEBREW_VALIDATORS,
+)
+from .rules.homebrew_validator import (
     validate_background_homebrew,
+    validate_class_homebrew,
     validate_homebrew,
     validate_power_budget,
-    VALIDATORS as HOMEBREW_VALIDATORS,
+    validate_species_homebrew,
+    validate_subclass_homebrew,
 )
 
 __all__ = [
-    # high-level (dict in -> computed sheet out)
-    "evaluate_character",
-    "compute_key_stats",
-    "compute_stat_diff",
-    "validate_character_data",
-    "CharacterInputError",
-    # ruleset + low-level evaluation
-    "DND_5E_2024_RULESET",
-    "evaluate",
-    "assemble_character_inputs",
-    "apply_modifiers",
-    # graph introspection (evaluation order, dependencies, edges)
-    "get_evaluation_order",
-    "get_node_dependencies",
-    "get_downstream_nodes",
-    "get_graph_edges",
-    # SRD reference tables (hit dice, spell slots, AC, rarity, XP, …)
-    "get_all_lookup_tables",
-    # graph composition — snap mini-graphs (items/feats/traits) onto a ruleset
-    "compose",
-    "modifier",
-    "component_from_content",
-    "Component",
-    "Contribution",
-    # component (de)serialisation — persist a Component as data + rebuild it
-    "component_to_dict",
-    "component_from_dict",
     "COMPONENT_SCHEMA_VERSION",
-    # damage-defence channels (union nodes on the ruleset; feed combatant_defenses)
-    "RESISTANCES_NODE",
-    "IMMUNITIES_NODE",
-    "VULNERABILITIES_NODE",
-    "DAMAGE_CHANNELS",
-    # neutral adapters
-    "character_data_to_inputs",
-    "computed_values_to_sheet",
-    # schema types
-    "Ruleset",
-    "ComputationNode",
-    "FormulaSpec",
-    "NodeType",
-    # ruleset validation (catch authoring errors before evaluation)
-    "validate_ruleset",
-    "assert_valid_ruleset",
-    "ValidationIssue",
-    "RulesetValidationError",
-    "known_operations",
-    # extend the formula DSL with custom operations
-    "register_operation",
-    "Operation",
-    "describe_operations",
-    # theme scaling (mechanical profiles per setting theme)
-    "apply_theme_scaling",
-    "get_theme_scaling",
-    "list_predefined_themes",
-    "PREDEFINED_THEME_SCALING",
-    "ThemeScalingLayer",
-    # graph export (visualise the DAG)
-    "to_mermaid",
-    "to_dot",
-    # component ontology (graph schema)
-    "load_ontology",
-    "Ontology",
-    # content (bundled starter + generator)
-    "load_content",
-    "categories",
-    "generate_library",
     # content structure contract — canonical Pydantic models per category.
     # Consumers (e.g. generation_plus homebrew) conform to / subclass these so
     # generated content is structurally identical to official SRD content.
     "CONTENT_MODELS",
-    "Creature",
-    "CharClass",
-    "Species",
-    "Spell",
-    "MagicItem",
-    "Background",
-    "Feat",
-    "Weapon",
+    "DAMAGE_CHANNELS",
+    # ruleset + low-level evaluation
+    "DND_5E_2024_RULESET",
+    "HOMEBREW_VALIDATORS",
+    "IMMUNITIES_NODE",
+    "PREDEFINED_THEME_SCALING",
+    # damage-defence channels (union nodes on the ruleset; feed combatant_defenses)
+    "RESISTANCES_NODE",
+    "VULNERABILITIES_NODE",
     "Armor",
+    "Background",
+    "CharClass",
+    "CharacterInputError",
+    "Component",
+    "ComputationNode",
     "Condition",
-    "Modifier",
+    "Contribution",
+    "Creature",
     # dice engine (full typed surface in dndwright.dice)
     "DiceEngine",
+    "Feat",
+    "FormulaSpec",
+    "MagicItem",
+    "Modifier",
+    "NodeType",
+    "Ontology",
+    "Operation",
+    # schema types
+    "Ruleset",
+    "RulesetValidationError",
+    "Species",
+    "Spell",
+    "ThemeScalingLayer",
+    "ValidationIssue",
+    "Weapon",
+    "apply_modifiers",
+    # theme scaling (mechanical profiles per setting theme)
+    "apply_theme_scaling",
+    "assemble_character_inputs",
+    "assert_valid_ruleset",
+    "categories",
+    # neutral adapters
+    "character_data_to_inputs",
+    "component_from_content",
+    "component_from_dict",
+    # component (de)serialisation — persist a Component as data + rebuild it
+    "component_to_dict",
+    # graph composition — snap mini-graphs (items/feats/traits) onto a ruleset
+    "compose",
+    "compute_key_stats",
+    "compute_stat_diff",
+    "computed_values_to_sheet",
+    "describe_operations",
+    "evaluate",
+    # high-level (dict in -> computed sheet out)
+    "evaluate_character",
+    "generate_library",
+    # SRD reference tables (hit dice, spell slots, AC, rarity, XP, …)
+    "get_all_lookup_tables",
+    "get_downstream_nodes",
+    # graph introspection (evaluation order, dependencies, edges)
+    "get_evaluation_order",
+    "get_graph_edges",
+    "get_node_dependencies",
+    "get_theme_scaling",
+    "known_operations",
+    "list_predefined_themes",
+    # content (bundled starter + generator)
+    "load_content",
+    # component ontology (graph schema)
+    "load_ontology",
+    "modifier",
+    # extend the formula DSL with custom operations
+    "register_operation",
+    "to_dot",
+    # graph export (visualise the DAG)
+    "to_mermaid",
+    "validate_background_homebrew",
+    "validate_character_data",
     # homebrew validation (structural rules checks on LLM-generated components)
     "validate_class_homebrew",
-    "validate_species_homebrew",
-    "validate_subclass_homebrew",
-    "validate_background_homebrew",
     "validate_homebrew",
     "validate_power_budget",
-    "HOMEBREW_VALIDATORS",
+    # ruleset validation (catch authoring errors before evaluation)
+    "validate_ruleset",
+    "validate_species_homebrew",
+    "validate_subclass_homebrew",
 ]

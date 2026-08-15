@@ -110,4 +110,4 @@ class TestDeterminism:
         import copy
         before = copy.deepcopy(WIZARD_L5)
         evaluate_character(WIZARD_L5)
-        assert WIZARD_L5 == before
+        assert before == WIZARD_L5

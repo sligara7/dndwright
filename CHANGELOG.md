@@ -2,6 +2,31 @@
 
 ## [Unreleased]
 
+### Changed
+- **Adopted the wider lint families** (`I`, `SIM`, `UP`, `RUF`) on top of the existing
+  explicit rule set, in a deliberate pass rather than as a dependency side effect:
+  import sorting, f-string conversions, `__all__` sorting, and a deprecated import.
+  `PL` is not adopted (262 findings, magic values that are the ruleset itself);
+  `RUF001-003`, `RUF005` and `RUF012` are declined with reasons stated in
+  `pyproject.toml`.
+
+### Added
+- **`RUF046` is enabled here, and the reason is now checked.** `RUF046` rewrites
+  `int(round(x))` into `round(x)`, which is only safe while no value is a numpy
+  scalar — `round(np.float64)` returns a numpy float, not an `int`. dndwright has no
+  numpy by rule, so the rewrite is safe; the sibling package mapwright is numpy-based
+  and declines the same rule. Those two decisions are coupled and nothing said so, so
+  `tests/test_packaging_contract.py` now fails if numpy is ever added while `RUF046`
+  is still enforced, naming the reason.
+
+### Notes
+- **No behavioural change and no version bump.** The public API is the same set of 72
+  names (`__all__` declaration order moved when it was sorted; the set did not), and
+  seeded dice rolls and a computed character sheet hash identically against a detached
+  worktree of the previous commit.
+
+## [Unreleased]
+
 ## [0.27.0] — 2026-07-29
 
 ### Added

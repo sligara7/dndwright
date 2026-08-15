@@ -23,7 +23,7 @@ class TestLoad:
         assert isinstance(ONTO.version, int)
 
     def test_has_core_component_node_types(self):
-        assert CORE_NODE_TYPES <= set(ONTO.node_types)
+        assert set(ONTO.node_types) >= CORE_NODE_TYPES
 
     def test_node_types_are_typed(self):
         cls = ONTO.node_types["Class"]
@@ -46,7 +46,7 @@ class TestLoad:
 
 class TestQueries:
     def test_edges_from_character(self):
-        assert CHARACTER_EDGES <= set(ONTO.edges_from("Character"))
+        assert set(ONTO.edges_from("Character")) >= CHARACTER_EDGES
 
     def test_edges_to_class(self):
         assert "HAS_CLASS" in ONTO.edges_to("Class")

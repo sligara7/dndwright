@@ -37,30 +37,30 @@ from .combat import (
 from .weapons import WeaponAttack, weapon_attack
 
 __all__ = [
+    "DAMAGE_TYPES",
+    "DEATH_SAVES_TO_DIE",
+    "DEATH_SAVES_TO_STABILIZE",
+    # rule constants
+    "DEATH_SAVE_DC",
     # state + result value types
     "CombatantState",
     "DamageApplication",
-    "HPChange",
     "DeathSaveResult",
+    "HPChange",
     "WeaponAttack",
     # operations (state, input) -> (new_state, explanation)
     "apply_damage",
     "apply_healing",
-    "set_temp_hp",
-    "roll_death_save",
-    "stabilize",
-    "reset_death_saves",
     "calculate_damage_application",
-    "damage_multiplier",
-    "combatant_defenses",
     "clean_damage_types",
-    "weapon_attack",
-    # rule constants
-    "DEATH_SAVE_DC",
-    "DEATH_SAVES_TO_STABILIZE",
-    "DEATH_SAVES_TO_DIE",
-    "DAMAGE_TYPES",
+    "combatant_defenses",
+    "conditions",
+    "damage_multiplier",
     # submodules: initiative ordering + turn advancement; conditions tick/save
     "initiative",
-    "conditions",
+    "reset_death_saves",
+    "roll_death_save",
+    "set_temp_hp",
+    "stabilize",
+    "weapon_attack",
 ]

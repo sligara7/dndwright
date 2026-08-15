@@ -97,3 +97,61 @@ class TestLintGateStatesItsOwnRules:
             f"ruff has no lower bound ({ruff!r}); the explicit rule set needs the "
             f"[tool.ruff.lint] table, which older ruff does not read."
         )
+
+
+class TestRuf046SafetyIsLinkedToNumpyAbsence:
+    """The one lint decision here whose correctness depends on a *dependency* rule.
+
+    `RUF046` rewrites ``int(round(x))`` into ``round(x)``. That is correct only while
+    ``x`` is a plain Python float. On a numpy value it is NOT: ``round(np.float64)``
+    returns a ``np.float64`` rather than an ``int``, so the rewrite silently changes
+    the type flowing downstream.
+
+    The sibling package mapwright is numpy-based and therefore DECLINES RUF046 in its
+    own pyproject. dndwright enables it, and is safe to, for one reason only: this
+    package has no numpy — which is not an accident but `rule:dw_dependency_light`,
+    asserted by :class:`TestDependencyLight` above.
+
+    Two independently reasonable decisions — "keep the core numpy-free" and "enable
+    RUF046" — are therefore coupled, and nothing in either file would tell you so.
+    This is that link, made executable: add numpy while RUF046 is still active and
+    this fails, naming the reason.
+    """
+
+    RULE = "RUF046"
+
+    def _lint(self) -> dict:
+        return _config().get("tool", {}).get("ruff", {}).get("lint", {})
+
+    def _rule_is_active(self) -> bool:
+        """True when ruff would actually enforce RUF046 as configured."""
+        lint = self._lint()
+        selected = lint.get("select", [])
+        ignored = lint.get("ignore", [])
+        # A prefix selects its family: "RUF" selects RUF046, as does "RUF046" itself.
+        picked = any(self.RULE.startswith(s) for s in selected)
+        # An ignore entry likewise suppresses by prefix.
+        suppressed = any(self.RULE.startswith(i) for i in ignored)
+        return picked and not suppressed
+
+    def test_ruf046_is_declined_whenever_numpy_is_a_dependency(self):
+        runtime = {_dist_name(r) for r in _config()["project"]["dependencies"]}
+        if "numpy" not in runtime:
+            pytest.skip("numpy absent, which is the precondition — see the paired test")
+        assert not self._rule_is_active(), (
+            "numpy is now a runtime dependency AND RUF046 is still enforced. Those "
+            "two cannot both be true: RUF046 will rewrite int(round(x)) -> round(x), "
+            "and round() on a numpy scalar returns a numpy float rather than an int. "
+            "Add 'RUF046' to [tool.ruff.lint].ignore, as mapwright does, before "
+            "landing numpy."
+        )
+
+    def test_the_precondition_that_makes_ruf046_safe_still_holds(self):
+        """Guards the *other* direction: the reason must stay true, or be restated."""
+        runtime = {_dist_name(r) for r in _config()["project"]["dependencies"]}
+        if not self._rule_is_active():
+            pytest.skip("RUF046 not enforced, so nothing depends on numpy's absence")
+        assert "numpy" not in runtime, (
+            "RUF046 is enforced here only because this package has no numpy. That is "
+            "no longer true, so the lint decision needs revisiting."
+        )

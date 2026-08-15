@@ -8,6 +8,7 @@ Phase 1: transparent refactor — same inputs in, same output shape out.
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 from .lookup_tables import (
@@ -17,10 +18,6 @@ from .lookup_tables import (
     SKILL_ABILITY_MAP,
     SPELLCASTING_TYPE_BY_CLASS,
 )
-
-import re
-
-
 
 
 def _resolve_hit_die(class_data: dict) -> int:

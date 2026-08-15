@@ -40,9 +40,9 @@ bracers = compose(DND_5E_2024_RULESET, component_from_content(items["Bracers of 
 print("Defense fighting style — +1 AC only while wearing armor:")
 for armor in (None, "chain_mail"):
     ac = evaluate(defense, inputs(armor))["armor_class"]
-    print(f"  armor={str(armor):12} AC {ac}")
+    print(f"  armor={armor!s:12} AC {ac}")
 
 print("\nBracers of Defense — +2 AC only while unarmored AND shieldless:")
 for armor, shield in [(None, False), (None, True), ("chain_mail", False)]:
     ac = evaluate(bracers, inputs(armor, shield))["armor_class"]
-    print(f"  armor={str(armor):12} shield={str(shield):5} AC {ac}")
+    print(f"  armor={armor!s:12} shield={shield!s:5} AC {ac}")

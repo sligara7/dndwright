@@ -20,7 +20,8 @@ ontology), so you can drop it straight into your own graph or library.
 
 from __future__ import annotations
 
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 # (prompt, system) -> parsed JSON object. Sync; wrap an async client if needed.
 JsonLLM = Callable[[str, "str | None"], dict[str, Any]]

@@ -32,21 +32,21 @@ from .engine import (
 )
 
 __all__ = [
+    "AbilityScoreRoll",
+    "AdvantageData",
+    # higher-level roll results
+    "AttackRoll",
+    "DamageRoll",
+    "DeathSave",
     "DiceEngine",
     "DiceEngineProtocol",
     # parsed spec + core roll results
     "DiceGroup",
-    "ParsedExpression",
-    "RollResult",
     "ExpressionResult",
-    "AdvantageData",
-    # higher-level roll results
-    "AttackRoll",
-    "SaveRoll",
-    "DamageRoll",
-    "DeathSave",
-    "StatArray",
-    "AbilityScoreRoll",
     "HitDiceResult",
     "HitDieRoll",
+    "ParsedExpression",
+    "RollResult",
+    "SaveRoll",
+    "StatArray",
 ]

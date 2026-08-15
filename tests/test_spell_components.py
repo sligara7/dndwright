@@ -8,6 +8,8 @@ import pytest
 
 from dndwright import (
     DND_5E_2024_RULESET as R,
+)
+from dndwright import (
     character_data_to_inputs,
     component_from_content,
     compose,

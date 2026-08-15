@@ -30,10 +30,10 @@ __all__ = [
     "InitiativeEntry",
     "InitiativeRoll",
     "TurnAdvance",
-    "roll_initiative",
-    "order_initiative",
     "advance_turn",
+    "order_initiative",
     "previous_turn",
+    "roll_initiative",
 ]
 
 

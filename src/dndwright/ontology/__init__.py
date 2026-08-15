@@ -16,10 +16,10 @@ from .loader import (
 )
 
 __all__ = [
+    "EdgeTypeDef",
+    "NodeTypeDef",
+    "Ontology",
+    "PropertyDef",
     "load_ontology",
     "parse_ontology",
-    "Ontology",
-    "NodeTypeDef",
-    "EdgeTypeDef",
-    "PropertyDef",
 ]

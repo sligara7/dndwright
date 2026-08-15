@@ -19,6 +19,7 @@ print("armor_class:", sheet["armor_class"])
 print("hit_points:", sheet["hit_points"])
 
 # strict=True turns malformed input into an error instead of a wrong sheet:
+# (imported here rather than at the top so the example reads in the order it teaches)
 from dndwright import CharacterInputError  # noqa: E402
 
 try:

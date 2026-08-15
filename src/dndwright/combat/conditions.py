@@ -38,26 +38,26 @@ TURN_END = "turn_end"
 TURN_START = "turn_start"
 
 __all__ = [
-    "ConditionEffect",
+    "CONCENTRATION",
+    "INDEFINITE",
+    "ROUNDS",
+    "ROUND_END",
+    "SAVE_ENDS",
+    "TIMED",
+    "TURN_END",
+    "TURN_START",
+    "UNTIL_END_OF_TURN",
+    "UNTIL_START_OF_TURN",
     "ActiveCondition",
     "ConditionChange",
+    "ConditionEffect",
     "SaveResult",
+    "attempt_save",
     "condition_effects",
     "condition_names",
     "implied_conditions",
     "is_immune",
     "tick_conditions",
-    "attempt_save",
-    "ROUNDS",
-    "UNTIL_END_OF_TURN",
-    "UNTIL_START_OF_TURN",
-    "CONCENTRATION",
-    "INDEFINITE",
-    "SAVE_ENDS",
-    "TIMED",
-    "ROUND_END",
-    "TURN_END",
-    "TURN_START",
 ]
 
 
@@ -183,9 +183,7 @@ def tick_conditions(
                 changes.append(ConditionChange(c.name, "expired"))
             else:
                 changes.append(ConditionChange(c.name, "ticked", rounds_remaining=remaining))
-        elif event == TURN_END and c.duration_type == UNTIL_END_OF_TURN:
-            changes.append(ConditionChange(c.name, "removed"))
-        elif event == TURN_START and c.duration_type == UNTIL_START_OF_TURN:
+        elif (event == TURN_END and c.duration_type == UNTIL_END_OF_TURN) or (event == TURN_START and c.duration_type == UNTIL_START_OF_TURN):
             changes.append(ConditionChange(c.name, "removed"))
     return changes
 
