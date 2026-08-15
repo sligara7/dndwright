@@ -25,8 +25,6 @@
   seeded dice rolls and a computed character sheet hash identically against a detached
   worktree of the previous commit.
 
-## [Unreleased]
-
 ## [0.27.0] — 2026-07-29
 
 ### Added
