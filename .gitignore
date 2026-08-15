@@ -25,3 +25,7 @@ htmlcov/
 # Local planning / scratch notes (never committed)
 *.local.md
 *.local
+
+# reflow2 design graph — LOCAL ONLY. This package is published to PyPI;
+# the design brain must never ship in an sdist or wheel.
+.reflow2/
