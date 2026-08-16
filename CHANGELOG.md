@@ -23,6 +23,22 @@
   `tests/test_examples.py` executes every example, the package was effectively guaranteeing
   that private import paths keep working.
 
+### Added (2)
+- **`dndwright.combat` now re-exports both submodules' full declared surfaces** — the 20 names
+  in `conditions.__all__` and the 7 in `initiative.__all__`. `combat.__all__` goes 22 → 49, so
+  `from dndwright.combat import attempt_save, order_initiative` works instead of needing a
+  second import from the submodule. Additive: `dndwright.combat.conditions` and
+  `.initiative` remain importable exactly as before.
+  - Both submodule surfaces were ALREADY contract-pinned (`EXPECTED_CONDITIONS_PUBLIC`,
+    `EXPECTED_INITIATIVE_PUBLIC`); this publishes them one level up and pins the wider
+    `EXPECTED_COMBAT_PUBLIC` to match.
+  - The full submodule surfaces were taken rather than only the nine names the examples
+    happened to use, because four of those nine return types (`SaveResult`,
+    `ConditionChange`, `TurnAdvance`, `InitiativeRoll`) would otherwise have stayed
+    unpublished — leaving callers able to invoke a function but unable to name its result.
+- `examples/conditions.py` and `examples/initiative.py` now import from `dndwright.combat`.
+  **No example imports a private path any more.**
+
 ### Known
 - **`examples/conditions.py` and `examples/initiative.py` still import names that are on no
   published surface** — `attempt_save`, `tick_conditions`, `ActiveCondition`, `ROUND_END`,

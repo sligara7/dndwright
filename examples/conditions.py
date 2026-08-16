@@ -3,7 +3,7 @@
     python examples/conditions.py
 """
 
-from dndwright.combat.conditions import (
+from dndwright.combat import (
     ROUND_END,
     SAVE_ENDS,
     ActiveCondition,

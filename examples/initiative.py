@@ -3,7 +3,7 @@
     python examples/initiative.py
 """
 
-from dndwright.combat.initiative import (
+from dndwright.combat import (
     InitiativeEntry,
     advance_turn,
     order_initiative,
