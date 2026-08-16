@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.28.0] — 2026-08-15
+
 ### Added
 - **`ClassMechanics` and `weapon_attack` are now part of the public API** (`dndwright.__all__`,
   72 → 74 names). Both were already reachable — `ClassMechanics` only via the private
@@ -613,7 +615,8 @@ from a working application.
 Pure (pydantic + stdlib); no application/framework coupling. Rules content derives
 from the SRD 5.2 (CC-BY-4.0); see NOTICE.
 
-[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.27.0...HEAD
+[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.28.0...HEAD
+[0.28.0]: https://github.com/sligara7/dndwright/compare/v0.27.0...v0.28.0
 [0.27.0]: https://github.com/sligara7/dndwright/compare/v0.26.0...v0.27.0
 [0.26.0]: https://github.com/sligara7/dndwright/compare/v0.25.2...v0.26.0
 [0.25.2]: https://github.com/sligara7/dndwright/compare/v0.25.1...v0.25.2
