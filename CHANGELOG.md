@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+
+## [0.29.0] — 2026-08-15
+
 ### Changed — BREAKING
 - **`evaluate_character` now defaults to `strict=True`.** Malformed input raises
   `CharacterInputError` instead of being coerced into a plausible-but-wrong sheet.
@@ -639,7 +642,8 @@ from a working application.
 Pure (pydantic + stdlib); no application/framework coupling. Rules content derives
 from the SRD 5.2 (CC-BY-4.0); see NOTICE.
 
-[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.28.0...HEAD
+[Unreleased]: https://github.com/sligara7/dndwright/compare/v0.29.0...HEAD
+[0.29.0]: https://github.com/sligara7/dndwright/compare/v0.28.0...v0.29.0
 [0.28.0]: https://github.com/sligara7/dndwright/compare/v0.27.0...v0.28.0
 [0.27.0]: https://github.com/sligara7/dndwright/compare/v0.26.0...v0.27.0
 [0.26.0]: https://github.com/sligara7/dndwright/compare/v0.25.2...v0.26.0
