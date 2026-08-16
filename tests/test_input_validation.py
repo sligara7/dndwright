@@ -88,7 +88,28 @@ class TestStrictMode:
         sheet = evaluate_character(GOOD, strict=True)
         assert sheet["proficiency_bonus"] == 3
 
-    def test_lenient_default_still_coerces(self):
-        # Without strict, garbage input must NOT raise (back-compat).
-        sheet = evaluate_character({"ability_scores": {}, "level": 1})
+    def test_default_is_strict_since_0_29_0(self):
+        # THE DEFAULT FLIPPED in 0.29.0. Malformed input now raises rather than
+        # being coerced into a plausible-but-wrong sheet, because a coerced sheet
+        # has every expected key and plausible numbers and is therefore
+        # indistinguishable from a correct one at every downstream surface.
+        # This test replaces test_lenient_default_still_coerces, which asserted
+        # the opposite and was correct until the default changed.
+        with pytest.raises(CharacterInputError):
+            evaluate_character({"ability_scores": {}, "level": 1})
+
+    def test_lenient_is_still_available_on_request(self):
+        # The old behaviour is not gone, only opt-in: strict=False restores it
+        # exactly, so a caller who genuinely wants coercion says so.
+        sheet = evaluate_character({"ability_scores": {}, "level": 1}, strict=False)
         assert sheet["ability_modifiers"]["strength"] == 0  # defaulted to 10 → mod 0
+
+    def test_the_coerced_sheet_is_indistinguishable_from_a_good_one(self):
+        # The reason the default changed, made executable: a lenient sheet from
+        # empty input carries the SAME KEYS as a sheet from complete input, so no
+        # downstream consumer can tell them apart by shape — only by having been
+        # told. That is why there was no error to swallow.
+        coerced = evaluate_character({"ability_scores": {}, "level": 1}, strict=False)
+        good = evaluate_character(GOOD, strict=False)
+        assert set(coerced) == set(good)
+        assert all(isinstance(coerced[k], type(good[k])) for k in ("proficiency_bonus",))

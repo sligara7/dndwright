@@ -2,6 +2,30 @@
 
 ## [Unreleased]
 
+### Changed — BREAKING
+- **`evaluate_character` now defaults to `strict=True`.** Malformed input raises
+  `CharacterInputError` instead of being coerced into a plausible-but-wrong sheet.
+  **Pass `strict=False` to restore the previous behaviour** — the lenient path is unchanged
+  and still available, it is simply no longer the default.
+
+  **Why this is worth a breaking change.** A coerced sheet has every expected key and
+  plausible numbers: missing ability scores default to 10, an omitted level to 1, a missing
+  class zeroes HP and spellcasting. It is therefore *indistinguishable from a correct sheet
+  at every downstream surface*. There was no error to swallow and nothing looked broken, so
+  no consumer could report it — the signal was never generated rather than hidden. A new
+  test, `test_the_coerced_sheet_is_indistinguishable_from_a_good_one`, pins exactly that.
+
+  **What to check before upgrading.** Anything calling `evaluate_character` without the flag
+  on data it did not itself validate. Callers behind a schema gate (e.g. a Pydantic request
+  model that already requires ability scores, class and level) are unaffected — the data is
+  complete by construction. Callers that build input internally, especially from
+  LLM output, are the ones that may newly raise.
+
+  ⚠️ **If you depend on this package with a `>=` floor rather than an exact pin, a rebuild
+  will pick this up automatically.** That is the intended behaviour of a floor, but it means
+  the change can arrive without anyone editing a version file.
+
+
 ## [0.28.0] — 2026-08-15
 
 ### Added

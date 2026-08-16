@@ -180,7 +180,7 @@ EXPECTED_SIGNATURES = {
     "describe_operations": "() -> 'dict[str, str]'",
     "evaluate": "(ruleset: 'Ruleset', input_values: 'dict[str, Any]') -> 'dict[str, Any]'",
     "evaluate_character": (
-        "(session_data: 'dict', *, strict: 'bool' = False, "
+        "(session_data: 'dict', *, strict: 'bool' = True, "
         "scaling: 'ThemeScalingLayer | None' = None, "
         "components: 'list | None' = None) -> 'dict'"
     ),

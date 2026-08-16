@@ -177,7 +177,7 @@ def _extract_session_fields(data: dict) -> dict:
 def evaluate_character(
     session_data: dict,
     *,
-    strict: bool = False,
+    strict: bool = True,
     scaling: ThemeScalingLayer | None = None,
     components: list | None = None,
 ) -> dict:
@@ -188,9 +188,17 @@ def evaluate_character(
 
     Args:
         session_data: Session data dict (full session or inner data sub-dict).
-        strict: If True, raise :class:`CharacterInputError` when the input is malformed
-            (see :func:`validate_character_data`) instead of silently coercing it into a
-            plausible-but-wrong sheet. Default False preserves the lenient behaviour.
+        strict: Raise :class:`CharacterInputError` when the input is malformed
+            (see :func:`validate_character_data`) instead of coercing it into a
+            plausible-but-wrong sheet. **Defaults to True since 0.29.0.**
+
+            Pass ``strict=False`` to restore the pre-0.29.0 lenient behaviour, in
+            which missing ability scores default to 10, an omitted level defaults
+            to 1 and a missing class zeroes HP and spellcasting — producing a sheet
+            that has every expected key and plausible numbers, and is therefore
+            indistinguishable from a correct one at every downstream surface.
+            That is the reason the default changed: there was no error to swallow,
+            so nothing anywhere reported it.
         scaling: Optional :class:`ThemeScalingLayer` (e.g. ``get_theme_scaling("sci_fi")``
             or an LLM-generated layer). When given, the sheet is computed against the
             theme-scaled ruleset (re-baselined input defaults + merged lookup tables) so
